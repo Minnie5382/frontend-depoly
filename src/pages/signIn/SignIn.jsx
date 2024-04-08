@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, TextField, Link } from '@mui/material';
 import style from './SignIn.module.css';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo2.png';
 
 const SignIn = () => {
   return (
     <div className={style.pageContainer}>
-      <img src={logo} alt='로고' />
+      <img src={logo} alt='로고' className={style.logo} />
       <div className={style.signInContainer}>
         <span className={style.title}>로그인</span>
         <form className={style.form}>
@@ -83,7 +83,6 @@ const SignIn = () => {
             sx={{
               backgroundColor: 'var(--point-color)',
               color: 'var(--text-color)',
-              '&:hover': {},
             }}
           >
             로그인
@@ -94,7 +93,7 @@ const SignIn = () => {
             sx={{
               backgroundColor: 'var(--kakao-login)',
               color: 'black',
-              '&:hover': {},
+              '&:hover': { backgroundColor: 'var(--kakao-login)' },
             }}
           >
             카카오로 로그인
