@@ -2,14 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 1.7vh;
   background-color: var(--background-color);
   border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
   margin: 0;
-  height: 40px;
+  height: 38px;
   color: var(--text-color);
 }
 
@@ -17,16 +17,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1vw;
+}
+
+.rightMenu {
+  display: flex;
+  gap: 3vw;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .menuLink {
   color: var(--text-color);
-  margin: 0 10px;
+  margin: 10px 20px;
   text-decoration: none;
+  background-color: var(--background-color);
+  border: 0;
+  cursor: pointer;
+  font-size: large;
 }
-
-.menuLink:last-child {
-  margin-right: 0;
+.signBtn {
+  color: var(--text-color);
+  margin: 10px 20px;
+  text-decoration: none;
+  background-color: var(--background-color);
+  border: 0;
+  cursor: pointer;
+  font-size: medium;
 }
 
 .searchField {
@@ -34,6 +52,33 @@
   border-radius: 4px;
 }
 
+.searchBtn {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
 .searchIcon {
   color: var(--point-color);
+  background-color: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px #101418 inset;
+  box-shadow: 0 0 0px 1000px #101418 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0px 1000px #101418 inset;
+  box-shadow: 0 0 0px 1000px #101418 inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
