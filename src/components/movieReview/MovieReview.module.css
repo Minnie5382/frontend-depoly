@@ -1,0 +1,65 @@
+.container {
+  min-width: 360px;
+  max-width: 360px;
+  height: 170px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--sub-color);
+  color: var(--text-color);
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container hr {
+  width: 100%;
+  border: 0.3px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.stars {
+  font-size: 20px;
+}
+.content {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 10px 0;
+  padding-right: 10px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+}
+
+.likeButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
