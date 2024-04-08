@@ -1,0 +1,19 @@
+.reviewContainer {
+  padding: 30px 100px;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.reviewsList {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
