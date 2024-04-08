@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  margin: 0;
+  height: 40px;
+  color: var(--text-color);
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menuLink {
+  color: var(--text-color);
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.menuLink:last-child {
+  margin-right: 0;
+}
+
+.searchField {
+  background-color: var(--sub-color);
+  border-radius: 4px;
+}
+
+.searchIcon {
+  color: var(--point-color);
+}
