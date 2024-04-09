@@ -5,6 +5,7 @@ import SignIn from '../../pages/signIn/SignIn';
 import SignUp from '../../pages/signUp/SignUp';
 import MovieDetail from '../../pages/movieDetail/MovieDetail';
 import MovieReviews from '../../pages/movieReviews/MovieReviews';
+import Search from '../../pages/search/Search';
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
       <Route path='/signup' element={<SignUp />} />
       <Route path='/movieDetail' element={<MovieDetail />} />
       <Route path='/movieReviews' element={<MovieReviews />} />
+      <Route path='/search' element={<Search />} />
       {/* <Route path='/movies/:movieId' element={<MovieDetail />} />
       <Route path='/movies/:movieId/reviews' element={<MovieReview />} /> */}
     </Routes>

@@ -1,0 +1,39 @@
+.container {
+  padding: 0 20px;
+  color: var(--text-color);
+}
+
+.moviesContainer {
+  display: flex;
+  overflow-x: auto;
+  white-space: wrap;
+  gap: 20px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.moviesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.movie {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.poster {
+  width: 150px;
+  height: 225px;
+  border-radius: 5px;
+}
+
+.movieInfo {
+  padding: 10px 0;
+  width: 150px;
+}
+
+.movieTitle {
+  font-weight: 600;
+}
