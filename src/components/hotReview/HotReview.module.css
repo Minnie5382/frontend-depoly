@@ -1,0 +1,76 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  color: var(--text-color);
+}
+.reviewBox {
+  min-width: 180px;
+  min-height: 153px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  display: flex;
+  background-color: var(--sub-color);
+}
+
+.moviePoster {
+  width: 100px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.movieReview {
+  margin: 5px;
+}
+.divisionLine {
+  border-top: 1px solid var(--border-color);
+  margin: 0.7vh 0px;
+  width: 23vw;
+  max-width: 200px;
+}
+.nameSpan {
+  display: flex;
+  justify-content: space-between;
+}
+.contentBox {
+  position: relative;
+}
+.reviewContent {
+  word-wrap: break-word;
+  white-space: normal;
+
+  max-height: 70px;
+  overflow-y: auto;
+  font-size: small;
+}
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--point-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--border-color2);
+}
+.movieName {
+  overflow-x: auto;
+  /* text-overflow: clip; block 상태의 부모일경우 적용가능 및 말줄임표시*/
+  white-space: nowrap;
+  /* height: 3vh; */
+}
+.movieName::-webkit-scrollbar {
+  height: 1px;
+}
+.likeCount {
+  /* white-space: nowrap; */
+  /* float: inline-end; */
+  position: absolute;
+  /* bottom: 0; */
+  right: 0;
+  /* top: 3px; */
+  /* font-size: small; */
+}

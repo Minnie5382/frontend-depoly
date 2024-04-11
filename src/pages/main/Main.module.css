@@ -1,0 +1,106 @@
+.container {
+  /* display: flex;
+  flex-direction: column; */
+  width: 100%;
+  height: 100%;
+  color: var(--text-color);
+}
+
+.reviewContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewBox {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.reviewContainerInner {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  /* flex: 1; */
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 2vw;
+}
+
+.moveLeftBtn {
+  padding: 10px;
+  width: 30px;
+  height: 160px;
+  border: none;
+  background: none;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.moveRightBtn {
+  width: 30px;
+  padding: 10px;
+  height: 160px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+/* 영화리스트 */
+.movieContainer {
+  padding: 20px;
+}
+
+.movieBox {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.movieContainerInner {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  /* flex: 1; */
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 2vw;
+}
+
+.moviePoster {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.moviePoster > img {
+  width: 150px;
+  height: 220px;
+  border: 1px solid var(--text-color);
+  object-fit: cover;
+}
+
+.moviePoster > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  margin: 6px;
+  text-align: center;
+  border-radius: 2px;
+  color: var(--text-color);
+  background-color: rgba(255, 255, 255, 0.3);
+}
