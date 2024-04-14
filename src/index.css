@@ -33,3 +33,11 @@ code {
   --text-color: #fff;
   --kakao-login: #fee500;
 }
+
+::-webkit-scrollbar-thumb {
+  background: var(--point-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--border-color2);
+}
