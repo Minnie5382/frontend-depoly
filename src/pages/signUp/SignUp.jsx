@@ -6,6 +6,12 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Checkbox,
+  Box,
+  Typography,
   Link,
 } from '@mui/material';
 import style from './SignUp.module.css';
@@ -15,6 +21,9 @@ import KakaoSignUpForm from './KakaoSignUpForm';
 
 const SignUp = () => {
   const [signUpOption, setSignUpOption] = useState('kakao');
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
+
   const inputTheme = {
     '& .MuiInputLabel-root': { color: 'var(--text-color)' },
     '& .Mui-focused': { color: 'var(--point-color)' },
@@ -59,22 +68,23 @@ const SignUp = () => {
             />
           </RadioGroup>
         </FormControl>
-        <form className={style.form}>
-          {signUpOption === 'mobile' && (
-            <MobileSignUpForm inputTheme={inputTheme} />
-          )}
-          {signUpOption === 'kakao' && (
-            <KakaoSignUpForm inputTheme={inputTheme} />
-          )}
-          <Button
-            variant='contained'
-            fullWidth
-            type='submit'
-            sx={{ height: '40px' }}
-          >
-            회원가입
-          </Button>
-        </form>
+        {termsAgreed && privacyAgreed && (
+          <form className={style.form}>
+            {signUpOption === 'mobile' ? (
+              <MobileSignUpForm inputTheme={inputTheme} />
+            ) : (
+              <KakaoSignUpForm inputTheme={inputTheme} />
+            )}
+            <Button
+              variant='contained'
+              fullWidth
+              type='submit'
+              sx={{ height: '40px' }}
+            >
+              회원가입
+            </Button>
+          </form>
+        )}
         <div className={style.signInPrompt}>
           <span>이미 아이디가 있으신가요?&nbsp;</span>
           <Link href='/signin' underline='none'>
@@ -82,6 +92,86 @@ const SignUp = () => {
           </Link>
         </div>
       </div>
+      <Dialog
+        open={!termsAgreed || !privacyAgreed}
+        id='dialog'
+        maxWidth='sm'
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            bgcolor: 'var(--background-color)',
+            color: 'var(--text-color)',
+          }}
+        >
+          서비스 이용약관 및 개인정보 수집 동의
+        </DialogTitle>
+        <DialogContent sx={{ bgcolor: 'var(--background-color)' }}>
+          <Box
+            sx={{
+              maxHeight: 150,
+              overflow: 'auto',
+              typography: 'body2',
+              bgcolor: 'var(--sub-color)',
+              color: 'var(--text-color)',
+              padding: '10px',
+            }}
+          >
+            <Typography
+              variant='subtitle1'
+              gutterBottom
+              sx={{ color: 'var(--text-color)' }}
+            >
+              서비스 이용약관
+            </Typography>
+            <Typography paragraph sx={{ color: 'var(--text-color)' }}>
+              서비스 이용 약관 내용 추가하기
+            </Typography>
+          </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                sx={{ color: 'var(--text-color)' }}
+              />
+            }
+            label='서비스 이용약관에 동의합니다.'
+            sx={{ color: 'var(--text-color)' }}
+          />
+          <Box
+            sx={{
+              maxHeight: 150,
+              overflow: 'auto',
+              typography: 'body2',
+              bgcolor: 'var(--sub-color)',
+              padding: '10px',
+            }}
+          >
+            <Typography
+              variant='subtitle1'
+              gutterBottom
+              sx={{ color: 'var(--text-color)' }}
+            >
+              개인 정보 수집 및 이용
+            </Typography>
+            <Typography paragraph sx={{ color: 'var(--text-color)' }}>
+              개인 정보 수집 및 이용 내용 추가하기
+            </Typography>
+          </Box>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={privacyAgreed}
+                onChange={(e) => setPrivacyAgreed(e.target.checked)}
+                sx={{ color: 'var(--text-color)' }}
+              />
+            }
+            label='개인정보 수집 및 이용에 동의합니다.'
+            sx={{ color: 'var(--text-color)' }}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
