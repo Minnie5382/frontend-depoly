@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './MovieDetail.module.css';
+import ReviewModal from './ReviewModal';
 
 const MovieInfo = ({ title, genre, description, castAndCrew }) => {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSubmitReview = (reviewText) => {
+    console.log('Review Submitted: ', reviewText);
+    setModalOpen(false);
+  };
+
   return (
     <div className={style.movieInfo}>
       <div className={style.topSection}>
@@ -10,7 +26,9 @@ const MovieInfo = ({ title, genre, description, castAndCrew }) => {
           <p className={style.genre}>{genre}</p>
         </div>
         <div className={style.actions}>
-          <span className={style.reviewButton}>평론 남기기</span>
+          <span onClick={handleOpenModal} className={style.reviewButton}>
+            평론 남기기
+          </span>
           <span className={style.heartButton}>❤</span>
         </div>
       </div>
@@ -25,6 +43,11 @@ const MovieInfo = ({ title, genre, description, castAndCrew }) => {
           ))}
         </div>
       </div>
+      <ReviewModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitReview}
+      />
     </div>
   );
 };
