@@ -4,6 +4,32 @@ import style from './SignIn.module.css';
 import logo from '../../assets/logo2.png';
 
 const SignIn = () => {
+  const textFieldTheme = {
+    '& .MuiInputLabel-root': {
+      color: 'var(--text-color)',
+    },
+    '& .Mui-focused': {
+      color: 'var(--point-color)',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'var(--text-color)',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'var(--text-color)',
+      },
+      '&:hover fieldset': {
+        borderColor: 'var(--point-color)',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--point-color)',
+      },
+      '& input': {
+        color: '#fff',
+      },
+    },
+  };
+
   return (
     <div className={style.pageContainer}>
       <img src={logo} alt='로고' className={style.logo} />
@@ -11,36 +37,12 @@ const SignIn = () => {
         <span className={style.title}>로그인</span>
         <form className={style.form}>
           <TextField
-            label='이메일'
-            type='email'
+            label='휴대폰 번호'
+            type='text'
             variant='outlined'
             fullWidth
             required
-            sx={{
-              '& .MuiInputLabel-root': {
-                color: 'var(--text-color)',
-              },
-              '& .Mui-focused': {
-                color: 'var(--point-color)',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottomColor: 'var(--text-color)',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'var(--text-color)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-              },
-            }}
+            sx={textFieldTheme}
           />
 
           <TextField
@@ -49,31 +51,7 @@ const SignIn = () => {
             fullWidth
             required
             className={style.textField}
-            sx={{
-              '& .MuiInputLabel-root': {
-                color: 'var(--text-color)',
-              },
-              '& .Mui-focused': {
-                color: 'var(--point-color)',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottomColor: 'var(--text-color)',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'var(--text-color)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-              },
-            }}
+            sx={textFieldTheme}
           />
 
           <Button
