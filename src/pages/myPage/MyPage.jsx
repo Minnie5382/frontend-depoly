@@ -11,10 +11,8 @@ const MyPage = () => {
     <div>
       <Header />
       <div className={style.container}>
-        <div style={{ display: 'flex', height: '100%' }}>
-          <LeftContainer tab={tab} setTab={setTab} />
-          <RightContainer tab={tab} />
-        </div>
+        <LeftContainer tab={tab} setTab={setTab} />
+        <RightContainer tab={tab} />
       </div>
     </div>
   );

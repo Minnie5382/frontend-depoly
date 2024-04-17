@@ -43,7 +43,7 @@ const Scrap = () => {
     <div>
       <h2 className={style.title}>스크랩</h2>
       <div className={style.scrapCardContainer}>
-        {dataToShow.map((scrap, index) => (
+        {dataToShow.map((scrap) => (
           <ScrapCard
             key={scrap.movieId}
             poster={scrap.poster}

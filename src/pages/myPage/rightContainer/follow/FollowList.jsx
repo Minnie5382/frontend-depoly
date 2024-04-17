@@ -19,8 +19,8 @@ const FollowList = ({ data, title }) => {
     <div>
       <h2 className={style.title}>{title}</h2>
       <div className={style.cardContainer}>
-        {dataToShow.map((item, followId) => (
-          <FollowCard key={followId} {...item} />
+        {dataToShow.map((item) => (
+          <FollowCard key={item.followId} {...item} />
         ))}
       </div>
       <Stack spacing={2} alignItems='center' sx={{ margin: '20px 0' }}>

@@ -15,6 +15,7 @@ const Collections = () => {
       star: 5,
       likeNumber: 120,
       createdAt: '2024-04-17',
+      reviewId: 1,
     },
   ];
 
@@ -36,8 +37,8 @@ const Collections = () => {
     <div>
       <h2 className={style.title}>컬렉션</h2>
       <div className={style.cardContainer}>
-        {dataToShow.map((data, index) => (
-          <CollectionCard key={index} {...data} />
+        {dataToShow.map((data) => (
+          <CollectionCard key={data.reviewId} {...data} />
         ))}
       </div>
       <Stack spacing={2} alignItems='center' sx={{ margin: '20px 0' }}>

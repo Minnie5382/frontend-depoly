@@ -1,6 +1,8 @@
 .container {
   padding: 40px;
   color: var(--text-color);
+  display: flex;
+  height: 100%;
 }
 
 .leftContainer {
