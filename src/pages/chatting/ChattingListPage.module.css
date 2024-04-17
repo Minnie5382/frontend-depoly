@@ -1,0 +1,135 @@
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--sub-color);
+  color: var(--text-color);
+  border: solid var(--border-color2);
+  border-radius: 5px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+}
+
+.chatContainer {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatBox {
+  padding: 0rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableList {
+  display: inline;
+}
+
+.tableList > button {
+  padding-right: 2rem;
+  background-color: var(--background-color);
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+}
+
+.creatBtn {
+  height: 2.5rem;
+  width: 7rem;
+  cursor: pointer;
+}
+
+.chattingRoom {
+  padding: 0rem 2rem;
+}
+
+.roomBox {
+  padding: 1rem;
+  margin: 1rem;
+  position: relative;
+
+  background-color: var(--sub-color);
+  border: 1px solid var(--border-color2);
+  border-radius: 5px;
+}
+
+.roomBox > button {
+  padding: 0;
+  border: none;
+  font-size: medium;
+  text-align: start;
+}
+
+.roomBox > h6 {
+  display: table-row-group;
+  gap: 1rem;
+  font-weight: 200;
+}
+
+.roomBox > h5 {
+  margin: 0;
+  padding-top: 0.5rem;
+  font-weight: 200;
+}
+
+.participants {
+  position: absolute;
+  /* bottom: 0rem; */
+  top: 1rem;
+  right: 1rem;
+}
+
+/* 모달 */
+.tagBox {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 50px;
+  margin: 10px;
+  padding: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.tagBox:focus-within {
+  border-color: tomato;
+}
+
+.tagItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
+  background-color: tomato;
+  border-radius: 5px;
+  color: white;
+  font-size: 13px;
+}
+
+.tagDeleteBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  background-color: white;
+  border-radius: 50%;
+  color: tomato;
+}
+
+.tagInput {
+  display: inline-flex;
+  min-width: 150px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: text;
+}

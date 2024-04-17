@@ -7,6 +7,7 @@ import MovieDetail from '../../pages/movieDetail/MovieDetail';
 import MovieReviews from '../../pages/movieReviews/MovieReviews';
 import Search from '../../pages/search/Search';
 import HotReviewsPage from '../../pages/hotReviews/HotReviewsPage';
+import ChattingListPage from '../../pages/chatting/ChattingListPage';
 
 const Router = () => {
   return (
@@ -20,6 +21,7 @@ const Router = () => {
       {/* <Route path='/movies/:movieId' element={<MovieDetail />} />
       <Route path='/movies/:movieId/reviews' element={<MovieReview />} /> */}
       <Route path="/hotReviews" element={<HotReviewsPage />} />
+      <Route path="/chattingList" element={<ChattingListPage />} />
     </Routes>
   );
 };
