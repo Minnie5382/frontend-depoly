@@ -1,0 +1,217 @@
+.container {
+  padding: 40px;
+  color: var(--text-color);
+  display: flex;
+  height: 100%;
+}
+
+.leftContainer {
+  background-color: var(--sub-color);
+  width: 30vw;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.userImg img {
+  height: 170px;
+  border-radius: 50%;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.userName {
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.rightContainer {
+  background-color: var(--sub-color);
+  margin-left: 20px;
+  width: 70%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.title {
+  margin: 0 0 20px;
+}
+
+/* collection */
+.collection {
+  width: 300px;
+  min-height: 160px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: var(--sub-color);
+  color: var(--text-color);
+  box-sizing: border-box;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.collection hr {
+  width: 100%;
+  border: 0.3px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.stars {
+  font-size: 20px;
+}
+.content {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin: 10px 0;
+  padding-right: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+}
+
+.likeButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.cardContainer {
+  width: 920px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* follow */
+
+.followCard {
+  width: 300px;
+  min-height: 160px;
+  max-height: 160px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.profileImage {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.infoSection {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.level {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.nameAndIcon {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.icon {
+  font-size: 16px;
+}
+
+.followBtn {
+  padding: 5px 10px;
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.followBtnFollow {
+  background-color: var(--point-color);
+}
+
+.followBtnUnfollow {
+  background-color: #da383d;
+}
+
+/* scrap */
+
+.scrapCardContainer {
+  width: 920px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.scrap {
+  margin: 10px 30px 0 0;
+}
+
+.scrap:nth-child(5n) {
+  margin-right: 0;
+}
+
+.movieInfo {
+  text-align: center;
+}
