@@ -13,7 +13,7 @@
   color: var(--text-color);
 }
 
-.menu {
+.signBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -81,4 +81,43 @@ input:autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px #101418 inset;
   box-shadow: 0 0 0px 1000px #101418 inset;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 로그인 했을 때 */
+
+.myInfoBox {
+  display: flex;
+  justify-content: center;
+  width: 11.8rem;
+}
+
+.myInfoBtn {
+  padding: 0.3rem;
+  width: fit-content;
+  height: 2.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.infoImg {
+  width: 33px;
+  height: 33px;
+  border-radius: 18px;
+  margin-right: 7px;
+}
+
+.myName {
+  font-size: larger;
+  margin-left: 6px;
+}
+.mybadge {
+  font-size: medium;
+  margin: 8px;
+}
+
+/* media */
+/* 뷰크기가 1130px 이하일 때 */
+@media (max-width: 900px) {
 }
