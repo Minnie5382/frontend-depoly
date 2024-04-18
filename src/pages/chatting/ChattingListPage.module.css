@@ -4,7 +4,7 @@ button {
   appearance: none;
   background-color: var(--sub-color);
   color: var(--text-color);
-  border: solid var(--border-color2);
+  border: 1px solid var(--border-color2);
   border-radius: 5px;
 }
 
