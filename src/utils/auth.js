@@ -8,18 +8,21 @@ const API_URL = process.env.REACT_APP_API_URL;
 export const signup = (userData) =>
   axios.post(`${API_URL}/auth/signup`, userData);
 
-/** 모바일 로그인 */
-export const loginMobile = (userData) =>
-  axios.post(`${API_URL}/auth/login/mobile`, userData);
+/** 이메일 로그인 */
+export const loginEmail = (userData) =>
+  axios.post(`${API_URL}/auth/login/email`, userData);
 
 /** 카카오 로그인 */
-export const loginKakao = (userData) =>
-  axios.post(`${API_URL}/auth/login/kakao`, userData);
+export const loginKakao = () => {
+  const clientId = process.env.REACT_APP_CLIENT_ID;
+  const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+  return `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+};
 
-/** 모바일 인증 코드 발송 */
-export const verifyMobile = (verificationData) =>
-  axios.post(`${API_URL}/auth/verify/mobile`, verificationData);
+/** 이메일 인증 코드 발송 */
+export const verifyEmail = (email) =>
+  axios.post(`${API_URL}/auth/verify/email`, email);
 
-/** 카카오 회원인증 */
-export const verifyKakao = (verificationData) =>
-  axios.post(`${API_URL}/auth/verify/kakao`, verificationData);
+/** 이메일 인증 코드 확인 */
+export const verifyEmailCheck = (verifyCode) =>
+  axios.post(`${API_URL}/auth/verify/email/check`, verifyCode);
