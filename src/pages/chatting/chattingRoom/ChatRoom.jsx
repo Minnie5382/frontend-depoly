@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 import style from './ChatRoom.module.css';
 import Header from '../../../components/header/Header';
+import ChatReportModal from './ChatReportModal';
 
 const ChattingRoomPage = () => {
   const [message, setMessage] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const openModal = () => {
+    setOpen(true);
+  };
+
+  const closeModal = () => {
+    setOpen(false);
+  };
+
   const user = 'user1';
   return (
     <div className={style.container}>
@@ -15,7 +26,9 @@ const ChattingRoomPage = () => {
             <h5>#시빌워 #캡틴아메리카</h5>
           </div>
           <div className={style.btnBox}>
-            <button className={style.reportBtn}>🚨</button>
+            <button className={style.reportBtn} onClick={openModal}>
+              🚨
+            </button>
             <button className={style.returnBtn}>
               채팅방 목록으로 돌아가기
             </button>
@@ -85,6 +98,7 @@ const ChattingRoomPage = () => {
           </div>
         </div>
       </div>
+      <ChatReportModal isOpen={open} onClose={closeModal} />
     </div>
   );
 };
