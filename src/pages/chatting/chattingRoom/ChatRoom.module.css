@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+}
+
+.chatContainer {
+  padding: 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.chatTitleBox {
+  margin: 0.5rem 0rem;
+  width: 99%;
+  padding: 0rem 0.5rem;
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+
+.chatTitle > label {
+  /* margin: 1rem; */
+  font-size: x-large;
+}
+
+.chatTitle > h5 {
+  margin: 0.5rem;
+  font-size: small;
+}
+
+.chatTitle {
+  display: flex;
+  align-items: baseline;
+  width: auto;
+}
+
+.btnBox {
+  position: relative;
+}
+
+.reportBtn {
+  position: relative;
+  top: 0.2rem;
+  border: none;
+  background-color: unset;
+  font-size: large;
+}
+.returnBtn {
+  padding: 7px;
+}
+
+.chatBox {
+  border: 1px solid var(--border-color2);
+  border-radius: 5px;
+  height: 65vh;
+  margin: 0rem 0.5rem;
+  padding: 0rem 0.5rem 4rem 0.5rem;
+  display: inline-block;
+  /* flex-direction: column; */
+  /* display: grid; */
+  /* grid-template-columns: minmax(50px, max-content); */
+  background-color: var(--my-comment-color);
+  width: 97%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+/* 다른 사람 메시지 */
+.othersChatBox {
+  width: 100%;
+  float: left;
+}
+.othersChatBox > label {
+  margin: 0.2rem 0.5rem;
+  font-size: small;
+}
+
+.othersChat {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color2);
+  border-radius: 10px;
+  width: fit-content;
+  background-color: var(--other-user-chat-color);
+}
+
+/* 내 메시지 */
+.myChatBox {
+  width: 100%;
+  float: right;
+}
+.myChatBox > label {
+  margin: 0.2rem 0.5rem;
+  font-size: small;
+}
+
+.myChat {
+  margin: 0.5rem 0rem;
+  float: right;
+  right: 0;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color2);
+  width: fit-content;
+  border-radius: 10px;
+  background-color: var(--border-color2);
+}
+
+/* 채팅 치는 input */
+.chatInputBox {
+  position: absolute;
+  width: -webkit-fill-available;
+  margin: 0rem 6.3rem 0rem 0rem;
+  padding: 0.5rem;
+  height: 45px;
+  left: 107px;
+  bottom: 33px;
+  background-color: var(--my-comment-color);
+}
+.chatInput {
+  width: -webkit-fill-available;
+  margin: 0.5rem;
+  padding: 0.3rem;
+  height: 1.2rem;
+  background-color: var(--border-color2);
+  border: 1px solid var(--border-color2);
+  color: var(--text-color);
+}
+.sandBtn {
+  height: 2rem;
+  position: absolute;
+  bottom: 12px;
+  right: 17px;
+  font-size: x-large;
+  cursor: pointer;
+  background-color: unset;
+  border: none;
+}
