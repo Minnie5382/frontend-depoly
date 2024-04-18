@@ -1,81 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, TextField, Link } from '@mui/material';
+import { useMutation } from 'react-query';
+import { loginEmail, loginKakao } from '../../utils/auth';
 import style from './SignIn.module.css';
 import logo from '../../assets/logo2.png';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const { mutate: doLoginEmail, isLoading: isEmailLoading } = useMutation(
+    loginEmail,
+    {
+      onSuccess: () => {
+        alert('로그인 성공');
+        navigate('/');
+      },
+      onError: (error) => {
+        alert(`로그인에 실패하였습니다. : ${error.message}`);
+      },
+    }
+  );
+
+  const handleEmailLogin = (event) => {
+    event.preventDefault();
+    // doLoginEmail({ email, password });
+  };
+
+  const handleKakaoLoginClick = () => {
+    window.location.href = loginKakao();
+  };
+
+  const textFieldTheme = {
+    '& .MuiInputLabel-root': {
+      color: 'var(--text-color)',
+    },
+    '& .Mui-focused': {
+      color: 'var(--point-color)',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'var(--text-color)',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: 'var(--text-color)',
+      },
+      '&:hover fieldset': {
+        borderColor: 'var(--point-color)',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'var(--point-color)',
+      },
+      '& input': {
+        color: 'var(--text-color)',
+      },
+    },
+  };
+
   return (
     <div className={style.pageContainer}>
       <img src={logo} alt='로고' className={style.logo} />
       <div className={style.signInContainer}>
         <span className={style.title}>로그인</span>
-        <form className={style.form}>
+        <form className={style.form} onSubmit={handleEmailLogin}>
           <TextField
             label='이메일'
             type='email'
             variant='outlined'
             fullWidth
             required
-            sx={{
-              '& .MuiInputLabel-root': {
-                color: 'var(--text-color)',
-              },
-              '& .Mui-focused': {
-                color: 'var(--point-color)',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottomColor: 'var(--text-color)',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'var(--text-color)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-              },
-            }}
+            sx={textFieldTheme}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-
           <TextField
             label='비밀번호'
             type='password'
             fullWidth
             required
-            className={style.textField}
-            sx={{
-              '& .MuiInputLabel-root': {
-                color: 'var(--text-color)',
-              },
-              '& .Mui-focused': {
-                color: 'var(--point-color)',
-              },
-              '& .MuiInput-underline:after': {
-                borderBottomColor: 'var(--text-color)',
-              },
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'var(--text-color)',
-                },
-                '&:hover fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'var(--point-color)',
-                },
-                '& input': {
-                  color: '#fff',
-                },
-              },
-            }}
+            sx={textFieldTheme}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-
           <Button
             type='submit'
             variant='contained'
@@ -84,12 +92,14 @@ const SignIn = () => {
               backgroundColor: 'var(--point-color)',
               color: 'var(--text-color)',
             }}
+            disabled={isEmailLoading}
           >
-            로그인
+            {isEmailLoading ? '처리 중...' : '로그인'}
           </Button>
           <Button
             variant='contained'
             fullWidth
+            onClick={handleKakaoLoginClick}
             sx={{
               backgroundColor: 'var(--kakao-login)',
               color: 'black',
