@@ -2,6 +2,14 @@ import React from 'react';
 import style from '../../MyPage.module.css';
 
 const CollectionCard = ({ content, star, likeNumber, createdAt }) => {
+  const confirmAlert = (cardId) => {
+    const agree = window.confirm('삭제하시겠습니까?');
+    if (agree) {
+      window.alert('삭제되었습니다.');
+    } else {
+      return;
+    }
+  };
   return (
     <div className={style.collection}>
       <div className={style.topSection}>
@@ -20,7 +28,7 @@ const CollectionCard = ({ content, star, likeNumber, createdAt }) => {
         </div>
         <div>
           <button>수정</button>
-          <button>삭제</button>
+          <button onClick={confirmAlert}>삭제</button>
         </div>
       </div>
     </div>

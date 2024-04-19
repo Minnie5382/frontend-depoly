@@ -12,8 +12,8 @@ const LeftContainer = ({ tab, setTab }) => {
     border: `1px solid ${
       isSelected ? 'var(--point-color)' : 'var(--text-color)'
     }`,
-    borderRadius: '10px',
-    padding: '10px 20px',
+    borderRadius: '23px',
+    padding: '10px 18px',
     color: `${isSelected ? 'var(--point-color)' : 'var(--text-color)'}`,
   });
 
@@ -32,8 +32,8 @@ const LeftContainer = ({ tab, setTab }) => {
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src='http://via.placeholder.com/170x170' alt='' />
-          <p title='애니메이션 영화 선호'>
+          <img src="http://via.placeholder.com/170x170" alt="" />
+          <p title="애니메이션 영화 선호">
             다채로운 색상과 독특한 캐릭터, 그 화면 속 영원한 어린이
           </p>
         </div>
@@ -45,7 +45,7 @@ const LeftContainer = ({ tab, setTab }) => {
           <span>왕관</span>
         </div>
         <LinearProgress
-          variant='determinate'
+          variant="determinate"
           value={60}
           style={{
             width: '100%',
@@ -56,11 +56,11 @@ const LeftContainer = ({ tab, setTab }) => {
         />
       </div>
       <Tabs
-        orientation='vertical'
-        variant='scrollable'
+        orientation="vertical"
+        variant="scrollable"
         value={tab}
         onChange={(event, newValue) => setTab(newValue)}
-        aria-label='profile tabs'
+        aria-label="profile tabs"
       >
         {Object.entries(tabNames).map(([key, label]) => (
           <Tab
@@ -68,14 +68,14 @@ const LeftContainer = ({ tab, setTab }) => {
             value={key}
             label={
               <Box sx={tabStyle(tab === key)}>
-                <Typography variant='body1'>{label}</Typography>
+                <Typography variant="body1">{label}</Typography>
                 <Typography
-                  variant='body1'
+                  variant="body1"
                   sx={{
                     backgroundColor: 'var(--point-color)',
                     color: 'white',
                     padding: '0 8px',
-                    borderRadius: '5px',
+                    borderRadius: '12px',
                   }}
                 >
                   100

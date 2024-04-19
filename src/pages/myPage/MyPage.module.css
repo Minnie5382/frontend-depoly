@@ -7,7 +7,8 @@
 
 .leftContainer {
   background-color: var(--sub-color);
-  width: 30vw;
+  /* width: 30vw; */
+  width: 22vw;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 5px;
@@ -44,7 +45,8 @@
 .rightContainer {
   background-color: var(--sub-color);
   margin-left: 20px;
-  width: 70%;
+  /* width: 70%; */
+  width: 75%;
   padding: 20px;
   box-sizing: border-box;
   border-radius: 5px;
@@ -121,10 +123,37 @@
 }
 
 .cardContainer {
-  width: 920px;
+  /* width: 920px; */
   display: flex;
-  gap: 10px;
+  column-gap: 2.3rem;
+  row-gap: 1rem;
+  /* gap: 10px; */
   flex-wrap: wrap;
+}
+@media (min-height: 830px) {
+  .leftContainer {
+    display: grid;
+    gap: 0.5rem;
+    height: 83vh;
+  }
+  .userContainer {
+    display: grid;
+  }
+  .collection {
+    height: 20vh;
+  }
+}
+
+@media (min-width: 1660px) {
+  .collection {
+    width: 357px;
+  }
+}
+
+@media (min-width: 1880px) {
+  .collection {
+    width: 410px;
+  }
 }
 
 .btnBox {
