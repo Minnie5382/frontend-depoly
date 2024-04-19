@@ -32,6 +32,9 @@
 .movieInfo {
   padding: 10px 0;
   width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .movieTitle {
