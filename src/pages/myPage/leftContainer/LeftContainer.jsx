@@ -33,7 +33,9 @@ const LeftContainer = ({ tab, setTab }) => {
       <div className={style.userContainer}>
         <div className={style.userImg}>
           <img src='http://via.placeholder.com/170x170' alt='' />
-          <p>다채로운 색상과 독특한 캐릭터, 그 화면 속 영원한 어린이</p>
+          <p title='애니메이션 영화 선호'>
+            다채로운 색상과 독특한 캐릭터, 그 화면 속 영원한 어린이
+          </p>
         </div>
         <div className={style.userInfo}>
           <div>

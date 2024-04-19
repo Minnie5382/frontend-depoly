@@ -18,7 +18,7 @@ const MoviesList = ({ movies, query }) => {
               alt={movie.title}
               className={style.poster}
             />
-            <div className={style.movieInfo}>
+            <div className={style.movieInfo} title={movie.title}>
               <span className={style.movieTitle}>{movie.title}</span>
             </div>
           </Link>
