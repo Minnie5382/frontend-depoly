@@ -5,7 +5,7 @@ import logo from '../../assets/logo.png';
 const MainMovieList = ({ title, movieName, year }) => {
   return (
     <div className={style.movieContainer}>
-      <h4>{title}</h4>
+      <h2>{title}</h2>
       <div className={style.movieBox}>
         <button className={style.moveLeftBtn}>〈</button>
         <div className={style.movieContainerInner}>
