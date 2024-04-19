@@ -5,7 +5,7 @@ import HotReview from '../../components/hotReview/HotReview';
 const MainHotReviewList = () => {
   return (
     <div className={style.reviewContainer}>
-      <h4>최신 인기 평론</h4>
+      <h2>최신 인기 평론</h2>
       <div className={style.reviewBox}>
         <button className={style.moveLeftBtn}>〈</button>
         <div className={style.reviewContainerInner}>

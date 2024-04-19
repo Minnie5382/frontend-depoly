@@ -1,5 +1,7 @@
-h4 {
-  font-size: large;
+.movieContainer > h2 {
+  padding: 0rem 0rem 0rem 2.5rem;
+}
+.reviewContainer > h2 {
   padding: 0rem 0rem 0rem 2.5rem;
 }
 
