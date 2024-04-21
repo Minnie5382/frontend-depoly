@@ -1,20 +1,28 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import style from './MovieDetail.module.css';
 import Header from '../../components/header/Header';
-import MovieReview from '../../components/movieReview/MovieReview';
 import MoviePoster from './MoviePoster';
 import MovieInfo from './MovieInfo';
 import MovieRatings from './MovieRatings';
 import logo from '../../assets/logo.png';
+import MovieReviewContainer from './MovieReviewContainer';
+import MovieReview from '../../components/movieReview/MovieReview';
 
 const MovieDetail = () => {
+  const { movieId } = useParams();
+
   const movieData = {
     title: '영화 제목',
     genre: '장르 / 액션, 모험',
     description: '영화 줄거리...',
-    cinephileRating: '★★★★☆',
-    levelTenRating: '★★★☆☆',
-    allUserRating: '★★★★☆',
+    cinephileRating: 4,
+    levelTenRating: 3,
+    allUserRating: 1.5,
+    isScrap: true,
+    rating: 3,
+    myReview: true,
+    reviewId: 123,
   };
 
   return (
@@ -31,9 +39,8 @@ const MovieDetail = () => {
             <MovieRatings {...movieData} />
           </div>
         </div>
-        <div className={style.reviewContainer}>
-          <MovieReview />
-        </div>
+        <MovieReviewContainer movieId={movieId} />
+        <MovieReview {...movieData} />
       </div>
     </div>
   );

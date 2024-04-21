@@ -1,8 +1,9 @@
 import React from 'react';
 import style from './MovieReview.module.css';
+import LikeButton from '../button/LikeButton';
+import EditDeleteButtons from '../button/EditDeleteButtons';
 
 const MovieReview = ({
-  nickname,
   name,
   level,
   profileImage,
@@ -10,6 +11,9 @@ const MovieReview = ({
   star,
   likeNumber,
   createdAt,
+  myReview,
+  reviewId,
+  isLiked,
 }) => {
   return (
     <div className={style.container}>
@@ -31,8 +35,16 @@ const MovieReview = ({
       </div>
       <hr />
       <div className={style.content}>{content}</div>
-      <div className={style.likes}>
-        <button className={style.likeButton}>👍</button> {likeNumber}
+      <div className={style.btnBox}>
+        <div className={style.likes}>
+          <LikeButton isLiked={isLiked} />
+          <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
+        </div>
+        {myReview && (
+          <span className={style.editControls}>
+            <EditDeleteButtons reviewId={reviewId} />
+          </span>
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMutation } from 'react-query';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -7,14 +8,49 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { createReview, editReview } from '../../utils/review';
 
-const ReviewModal = ({ isOpen, onClose, onSubmit }) => {
-  const [review, setReview] = useState('');
+const ReviewModal = ({
+  isOpen,
+  onClose,
+  movieId,
+  reviewId,
+  content: initialContent = '',
+}) => {
+  const [content, setContent] = useState(initialContent || '');
+
+  const apiFunction = reviewId ? editReview : createReview;
+
+  const { mutate: submitReview, isLoading } = useMutation(
+    (data) => {
+      if (reviewId) {
+        return apiFunction(reviewId, data);
+      }
+      return apiFunction(data);
+    },
+    {
+      onSuccess: () => {
+        alert('평론이 성공적으로 제출되었습니다.');
+        setContent('');
+        onClose();
+      },
+      onError: (error) => {
+        alert(`평론 제출 실패! : ${error.message}`);
+      },
+    }
+  );
 
   const handleReviewSubmit = () => {
-    onSubmit(review);
-    setReview('');
-    onClose();
+    if (content.trim()) {
+      const reviewData = { movieId, content };
+      if (reviewId) {
+        submitReview({ ...reviewData, reviewId });
+      } else {
+        submitReview(reviewData);
+      }
+    } else {
+      alert('평론 내용을 입력해주세요.');
+    }
   };
 
   return (
@@ -32,21 +68,21 @@ const ReviewModal = ({ isOpen, onClose, onSubmit }) => {
       }}
     >
       <DialogTitle id='form-dialog-title' sx={{ color: 'var(--text-color)' }}>
-        평론 작성하기
+        {reviewId ? '평론 수정하기' : '평론 작성하기'} {reviewId}
       </DialogTitle>
       <DialogContent>
         <Box sx={{ position: 'relative', width: '100%' }}>
           <TextField
             autoFocus
             margin='dense'
-            id='name'
-            label='평론을 작성해보세요!'
+            id={`review-${reviewId || 'new'}`}
+            label={reviewId ? '평론을 수정해보세요!' : '평론을 작성해보세요!'}
             type='text'
             fullWidth
             multiline
             rows={6}
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
             sx={{
               bgcolor: 'var(--sub-color)',
               '& .MuiInputLabel-root': {
@@ -80,7 +116,7 @@ const ReviewModal = ({ isOpen, onClose, onSubmit }) => {
               borderRadius: '4px',
             }}
           >
-            {review.length} / 1000
+            {content.length} / 1000
           </Typography>
         </Box>
       </DialogContent>
@@ -105,6 +141,7 @@ const ReviewModal = ({ isOpen, onClose, onSubmit }) => {
             color: 'var(--text-color)',
             ':hover': { bgcolor: 'primary.dark' },
           }}
+          disabled={isLoading}
         >
           제출
         </Button>

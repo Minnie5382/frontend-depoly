@@ -1,15 +1,9 @@
 import React from 'react';
 import style from '../../MyPage.module.css';
+import EditDeleteButtons from '../../../../components/button/EditDeleteButtons';
+import LikeButton from '../../../../components/button/LikeButton';
 
-const CollectionCard = ({ content, star, likeNumber, createdAt }) => {
-  const confirmAlert = (cardId) => {
-    const agree = window.confirm('삭제하시겠습니까?');
-    if (agree) {
-      window.alert('삭제되었습니다.');
-    } else {
-      return;
-    }
-  };
+const CollectionCard = ({ content, star, likeNumber, createdAt, reviewId }) => {
   return (
     <div className={style.collection}>
       <div className={style.topSection}>
@@ -24,11 +18,11 @@ const CollectionCard = ({ content, star, likeNumber, createdAt }) => {
       <div className={style.content}>{content}</div>
       <div className={style.btnBox}>
         <div className={style.likes}>
-          <button className={style.likeButton}>👍</button> {likeNumber}
+          <LikeButton />
+          <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
         <div>
-          <button>수정</button>
-          <button onClick={confirmAlert}>삭제</button>
+          <EditDeleteButtons reviewId={reviewId} />
         </div>
       </div>
     </div>
