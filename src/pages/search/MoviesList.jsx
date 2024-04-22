@@ -2,19 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import style from './Search.module.css';
 
-const MoviesList = ({ movies, query }) => {
+const MoviesList = ({ movies, query, isLoading, error }) => {
   return (
     <div>
-      <h2>'{query}' 에 대한 검색 결과</h2>
+      <h2>'{query}'에 대한 검색 결과</h2>
       <div className={style.moviesContainer}>
         {movies?.results.map((movie) => (
           <Link
             to={`/movies/${movie.movieId}`}
-            key={movie.id}
+            key={movie.movieId}
             className={style.movie}
           >
             <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              src={movie.poster}
               alt={movie.title}
               className={style.poster}
             />
@@ -24,6 +24,12 @@ const MoviesList = ({ movies, query }) => {
           </Link>
         ))}
       </div>
+      {isLoading && <div className={style.statusMessage}>로딩중...</div>}
+      {error && (
+        <div className={style.statusMessage}>
+          오류가 발생했습니다!: {error.message}
+        </div>
+      )}
     </div>
   );
 };

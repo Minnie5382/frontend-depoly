@@ -1,33 +1,44 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import { useSearchMovies } from '../../utils/useSearchMovies';
+import { useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { searchMovies } from '../../utils/movie';
 import Header from '../../components/header/Header';
 import style from './Search.module.css';
 import MoviesList from './MoviesList';
 import ChatroomsList from './ChatroomsList';
 
-function useQuery() {
+function useQueryParams() {
   return new URLSearchParams(useLocation().search);
 }
 
 const Search = () => {
-  const query = useQuery().get('query');
+  const query = useQueryParams().get('query');
   console.log(query);
+
   const {
     data: moviesData,
     isLoading: isLoadingMovies,
     error: errorMovies,
-  } = useSearchMovies(query);
-
-  if (isLoadingMovies) return <div>로딩중...</div>;
-  if (errorMovies) return <div>{errorMovies.message}</div>;
+  } = useQuery(['searchMovies', query], () => searchMovies(query), {
+    enabled: !!query,
+  });
 
   return (
     <div>
       <Header />
       <div className={style.container}>
-        <MoviesList movies={moviesData} query={query} />
-        {/* <ChatroomsList chatrooms={chatroomsData} /> */}
+        <MoviesList
+          movies={moviesData}
+          query={query}
+          isLoading={isLoadingMovies}
+          error={errorMovies}
+        />
+        {/* <ChatroomsList
+          chatrooms={chatroomsData}
+          query={query}
+          isLoading={isLoadingMovies}
+          error={errorMovies}
+        /> */}
       </div>
     </div>
   );
