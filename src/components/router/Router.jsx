@@ -10,6 +10,7 @@ import HotReviewsPage from '../../pages/hotReviews/HotReviewsPage';
 import ChattingListPage from '../../pages/chatting/ChattingListPage';
 import MyPage from '../../pages/myPage/MyPage';
 import ChattingRoomPage from '../../pages/chatting/chattingRoom/ChatRoom';
+import Test from '../Test';
 
 const Router = () => {
   return (
@@ -28,7 +29,9 @@ const Router = () => {
       <Route path="/chattingRoom/*" element={<ChattingRoomPage />}>
         <Route path=":roomId" element={<ChattingRoomPage />} />
       </Route>
+      <Route path="/test" element={<Test />} />
     </Routes>
+    
   );
 };
 
