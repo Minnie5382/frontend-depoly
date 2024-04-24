@@ -38,7 +38,17 @@
 .btnBox {
   position: relative;
 }
-
+.participantListBtn {
+  position: relative;
+  top: 0.3rem;
+  border: none;
+  background-color: unset;
+  font-size: large;
+  cursor: pointer;
+}
+.participantListBtn > img {
+  height: 20px;
+}
 .reportBtn {
   position: relative;
   top: 0.2rem;
@@ -46,6 +56,9 @@
   background-color: unset;
   font-size: large;
   cursor: pointer;
+}
+.reportBtn > img {
+  height: 20px;
 }
 .returnBtn {
   padding: 7px;
@@ -55,15 +68,20 @@
 .chatBox {
   border: 1px solid var(--border-color2);
   border-radius: 5px;
-  height: 65vh;
-  margin: 0rem 0.5rem;
+  height: 67vh;
   padding: 0rem 0.5rem 4rem 0.5rem;
-  display: inline-block;
+  background-color: var(--my-comment-color);
+}
+.chatBoxInner {
+  height: 65vh;
+  /* margin: 0rem 0.5rem; */
+  padding: 0.5rem;
+  display: block;
   /* flex-direction: column; */
   /* display: grid; */
   /* grid-template-columns: minmax(50px, max-content); */
-  background-color: var(--my-comment-color);
-  width: 97%;
+  /* background-color: var(--my-comment-color); */
+  /* width: 97%; */
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -108,13 +126,13 @@
 
 /* 채팅 치는 input */
 .chatInputBox {
-  position: absolute;
-  width: -webkit-fill-available;
-  margin: 0rem 6.3rem 0rem 0rem;
+  position: relative;
+  width: 100%;
+  /* margin: 0rem 6.3rem 0rem 0rem; */
   padding: 0.5rem;
   height: 45px;
-  left: 107px;
-  bottom: 33px;
+  bottom: -0.3vh;
+  right: 8px;
   background-color: var(--my-comment-color);
 }
 .chatInput {

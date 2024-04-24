@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import style from './ChatRoom.module.css';
 import MenuItem from '@mui/material/MenuItem';
-import { Menu } from '@mui/material';
 
 const ChatReportModal = ({ isOpen, onClose }) => {
   const [userList, setUserList] = useState([
@@ -103,7 +102,12 @@ const ChatReportModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Dialog open={isOpen} aria-labelledby="form-dialog-title" sx={dialogStyle}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="form-dialog-title"
+      sx={dialogStyle}
+    >
       <DialogTitle
         id="form-dialog-title"
         sx={{ m: 1, color: 'var(--text-color)' }}
@@ -113,7 +117,6 @@ const ChatReportModal = ({ isOpen, onClose }) => {
       <DialogContent sx={{ p: '5px 24px' }}>
         <Box component="form" sx={{ m: 1 }} noValidate autoComplete="off">
           <TextField
-            autoFocus
             id="outlined-select-currency"
             label="채팅 참여자 목록"
             select
@@ -124,21 +127,6 @@ const ChatReportModal = ({ isOpen, onClose }) => {
             value={reportUser}
             onChange={(e) => setReportUser(e.target.value)}
           >
-            {/* <Menu
-              id="long-menu"
-              MenuListProps={{
-                'aria-labelledby': 'long-button',
-              }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              props={{
-                style: {
-                  maxHeight: 200,
-                  width: 200,
-                },
-              }}
-            > */}
             {userList.map((option) => (
               <MenuItem
                 key={option.value}
