@@ -4,9 +4,13 @@ import axios from './axiosInstance';
 
 /** 채팅방 목록 조회 (검색, 관련 영화 제목, 방 제목 포함) */
 export const searchChatrooms = (query, page, size) =>
-  axios.get('/chat/chatroom', {
-    params: { q: query, page, size },
-  });
+  axios.get(
+    '/chat/chatroom',
+    {
+      params: { q: query, page, size },
+    },
+    { withCredentials: false }
+  );
 
 /** 채팅방 생성 */
 export const createChatroom = (chatroomData) =>

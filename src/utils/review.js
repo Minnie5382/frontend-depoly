@@ -15,11 +15,15 @@ export const deleteReview = (reviewId) => axios.delete(`/reviews/${reviewId}`);
 
 /** 해당 영화 평론 목록 조회 */
 export const getReviewsByMovieId = (movieId, page, size) =>
-  axios.get(`/reviews/${movieId}`, { params: { page, size } });
+  axios.get(
+    `/reviews/${movieId}`,
+    { params: { page, size } },
+    { withCredentials: false }
+  );
 
 /** 특정 유저의 모든 평론 목록 조회 */
 export const getReviewsByUserNickname = (nickname) =>
-  axios.get(`/reviews/users/${nickname}`);
+  axios.get(`/reviews/users/${nickname}`, { withCredentials: false });
 
 /** 평론 좋아요 */
 export const likeReview = (reviewId) =>

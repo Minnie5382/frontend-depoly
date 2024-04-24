@@ -4,10 +4,15 @@ import axios from './axiosInstance';
 
 /** 영화 목록 조회(검색, 주제별 목록 포함) */
 export const searchMovies = (query, page, size) =>
-  axios.get('/movies/search', { params: { q: query, page, size } });
+  axios.get(
+    '/movies/search',
+    { params: { q: query, page, size } },
+    { withCredentials: false }
+  );
 
 /** 영화 상세페이지 조회 */
-export const moviesDetail = (movieId) => axios.post(`/movies/${movieId}/`);
+export const moviesDetail = (movieId) =>
+  axios.post(`/movies/${movieId}/`, { withCredentials: false });
 
 /** 영화 스크랩 */
 export const likeMovie = (movieId) => axios.post(`/movies/${movieId}/likes`);

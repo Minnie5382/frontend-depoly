@@ -3,11 +3,12 @@ import axios from './axiosInstance';
 // 인증 관련 API
 
 /** 회원가입 */
-export const signup = (userData) => axios.post('/auth/signup', userData);
+export const signup = (userData) =>
+  axios.post('/auth/signup', userData, { withCredentials: false });
 
 /** 이메일 로그인 */
 export const loginEmail = (userData) =>
-  axios.post('/auth/login/email', userData);
+  axios.post('/auth/login/email', userData, { withCredentials: false });
 
 /** 카카오 로그인 */
 export const loginKakao = () => {
@@ -17,8 +18,11 @@ export const loginKakao = () => {
 };
 
 /** 이메일 인증 코드 발송 */
-export const verifyEmail = (email) => axios.post('/auth/verify/email', email);
+export const verifyEmail = (email) =>
+  axios.post('/auth/verify/email', email, { withCredentials: false });
 
 /** 이메일 인증 코드 확인 */
 export const verifyEmailCheck = (verifyCode) =>
-  axios.post('/auth/verify/email/check', verifyCode);
+  axios.post('/auth/verify/email/check', verifyCode, {
+    withCredentials: false,
+  });
