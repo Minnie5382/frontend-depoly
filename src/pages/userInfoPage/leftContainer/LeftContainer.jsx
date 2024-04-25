@@ -4,10 +4,14 @@ import { LinearProgress, Tab, Tabs, Box, Typography } from '@mui/material';
 import style from '../UserInfoPage.module.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import FollowButton from '../../../components/button/FollowButton';
 
 const LeftContainer = ({ tab, setTab }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [userId, setUserId] = useState(true);
+  const myId = true;
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,10 +49,13 @@ const LeftContainer = ({ tab, setTab }) => {
   return (
     <div className={style.leftContainer}>
       <div className={style.topBar}>
-        <span>유저_1234</span>
-        <button className={style.settingBtn} onClick={handleClick}>
-          <SettingsIcon />
-        </button>
+        {userId === myId ? (
+          <FollowButton />
+        ) : (
+          <button className={style.settingBtn} onClick={handleClick}>
+            <SettingsIcon />
+          </button>
+        )}
         <Menu
           id="demo-positioned-menu"
           aria-labelledby="demo-positioned-button"

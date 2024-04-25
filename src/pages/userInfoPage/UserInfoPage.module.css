@@ -16,9 +16,10 @@
 
 .topBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
+
 .settingBtn {
   border: 0px;
   cursor: pointer;
