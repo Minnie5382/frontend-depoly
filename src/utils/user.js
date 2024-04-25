@@ -2,8 +2,12 @@ import axios from './axiosInstance';
 
 // 사용자 관련 API
 
+/** 닉네임 중복검사 */
+export const checkNicknameDuplication = (nickname) =>
+  axios.get('/auth/nickname/check', nickname);
+
 /** 유저 마이 페이지 조회 */
-export const getMyPage = (nickname) => axios.get(`/users/${nickname}`);
+export const getMyPage = (userID) => axios.get(`/users/${userID}`);
 
 /** 내 프로필 조회 */
 export const getUserProfile = () => axios.get('/users/profile');
@@ -21,7 +25,7 @@ export const getUserFollowings = (nickname) =>
   axios.get(`/users/${nickname}/followings`);
 
 /** 팔로우 */
-export const followUser = (userId) => axios.post(`/users/follow`, { userId });
+export const followUser = (userId) => axios.post(`/users/follow`, userId);
 
 /** 팔로우 취소 */
 export const unfollowUser = (userId) =>
@@ -30,3 +34,10 @@ export const unfollowUser = (userId) =>
 /** 신고하기 */
 export const reportUser = (reportData) =>
   axios.post(`/users/report`, reportData);
+
+/** 특정 유저의 컬렉션 조회 */
+export const getUserReviews = (userId) => axios.get(`/users/${userId}/reviews`);
+
+/** 특정 유저의 스크랩 목록 조회 */
+export const getUserScraps = (userId) =>
+  axios.get(`/api/users/${userId}/scrap`);
