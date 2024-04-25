@@ -24,7 +24,13 @@ const FollowList = ({ data, title }) => {
           <FollowCard key={index} {...item} />
         ))}
       </div>
-      <PaginationComponent count={count} page={page} onChange={handleChange} />
+      {count > 1 && (
+        <PaginationComponent
+          count={count}
+          page={page}
+          onChange={handleChange}
+        />
+      )}
     </div>
   );
 };

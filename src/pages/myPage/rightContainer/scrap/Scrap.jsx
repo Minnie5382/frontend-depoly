@@ -51,7 +51,13 @@ const Scrap = () => {
           />
         ))}
       </div>
-      <PaginationComponent count={count} page={page} onChange={handleChange} />
+      {count > 1 && (
+        <PaginationComponent
+          count={count}
+          page={page}
+          onChange={handleChange}
+        />
+      )}
     </div>
   );
 };

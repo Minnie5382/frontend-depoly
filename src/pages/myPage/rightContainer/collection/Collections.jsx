@@ -38,7 +38,13 @@ const Collections = () => {
           <CollectionCard key={data.reviewId} {...data} />
         ))}
       </div>
-      <PaginationComponent count={count} page={page} onChange={handleChange} />
+      {count > 1 && (
+        <PaginationComponent
+          count={count}
+          page={page}
+          onChange={handleChange}
+        />
+      )}
     </div>
   );
 };
