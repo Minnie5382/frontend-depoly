@@ -25,7 +25,7 @@ export const unlikeMovie = (movieId) =>
 export const getUserMovies = (nickname) => axios.get(`/movies/${nickname}`);
 
 /** 일간 박스오피스 영화 목록 조회 */
-export const getDailyBoxOffice = () => axios.post('/api/movies/boxOffice');
+export const getDailyBoxOffice = () => axios.get('/api/movies/boxOffice');
 
 /** 장르별 랜덤 영화 목록 조회 */
 export const getMoviesByGenre = () => axios.get(`/api/movies/genre`);
