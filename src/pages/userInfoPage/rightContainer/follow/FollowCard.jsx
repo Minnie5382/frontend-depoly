@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '../../MyPage.module.css';
+import style from '../../UserInfoPage.module.css';
 import FollowButton from '../../../../components/button/FollowButton';
 
 const FollowCard = ({

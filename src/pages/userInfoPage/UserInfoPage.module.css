@@ -19,7 +19,10 @@
   justify-content: space-between;
   align-items: center;
 }
-
+.settingBtn {
+  border: 0px;
+  cursor: pointer;
+}
 .userImg {
   display: flex;
   flex-direction: column;

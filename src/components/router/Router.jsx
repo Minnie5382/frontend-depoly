@@ -8,7 +8,7 @@ import MovieReviews from '../../pages/movieReviews/MovieReviews';
 import Search from '../../pages/search/Search';
 import HotReviewsPage from '../../pages/hotReviews/HotReviewsPage';
 import ChattingListPage from '../../pages/chatting/ChattingListPage';
-import MyPage from '../../pages/myPage/MyPage';
+import UserInfoPage from '../../pages/userInfoPage/UserInfoPage';
 import ChattingRoomPage from '../../pages/chatting/chattingRoom/ChatRoom';
 import Test from '../Test';
 
@@ -25,13 +25,12 @@ const Router = () => {
       <Route path='/movies/:movieId/reviews' element={<MovieReview />} /> */}
       <Route path="/hotReviews" element={<HotReviewsPage />} />
       <Route path="/chattingList" element={<ChattingListPage />} />
-      <Route path="/myPage" element={<MyPage />} />
+      <Route path="/userInfo" element={<UserInfoPage />} />
       <Route path="/chattingRoom/*" element={<ChattingRoomPage />}>
         <Route path=":roomId" element={<ChattingRoomPage />} />
       </Route>
       <Route path="/test" element={<Test />} />
     </Routes>
-    
   );
 };
 

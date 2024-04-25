@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import Header from '../../components/header/Header';
 import LeftContainer from './leftContainer/LeftContainer';
 import RightContainer from './rightContainer/RightContainer';
-import style from './MyPage.module.css';
+import style from './UserInfoPage.module.css';
 
-const MyPage = () => {
+const UserInfoPage = () => {
   const [tab, setTab] = useState('collection');
 
   return (
@@ -18,4 +18,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default UserInfoPage;

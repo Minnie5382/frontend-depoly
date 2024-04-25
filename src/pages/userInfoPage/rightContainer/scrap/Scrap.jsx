@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ScrapCard from './ScrapCard';
-import style from '../../MyPage.module.css';
+import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
 const Scrap = () => {

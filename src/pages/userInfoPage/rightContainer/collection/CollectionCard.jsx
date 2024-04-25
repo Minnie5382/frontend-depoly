@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '../../MyPage.module.css';
+import style from '../../UserInfoPage.module.css';
 import EditDeleteButtons from '../../../../components/button/EditDeleteButtons';
 import LikeButton from '../../../../components/button/LikeButton';
 
