@@ -208,23 +208,6 @@
 .icon {
   font-size: 16px;
 }
-
-.followBtn {
-  padding: 5px 10px;
-  color: var(--text-color);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.followBtnFollow {
-  background-color: var(--point-color);
-}
-
-.followBtnUnfollow {
-  background-color: #da383d;
-}
-
 /* scrap */
 
 .scrapCardContainer {

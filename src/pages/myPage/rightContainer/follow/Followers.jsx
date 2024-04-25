@@ -5,7 +5,7 @@ const Followers = () => {
   const followerData = [
     {
       profileImage: 'http://via.placeholder.com/130x130',
-      followId: 1,
+      userId: 1,
       level: 100,
       name: '김희석',
       isCertified: true,
@@ -13,7 +13,7 @@ const Followers = () => {
     },
     {
       profileImage: 'http://via.placeholder.com/130x130',
-      followId: 2,
+      userId: 2,
       level: 50,
       name: '최재영',
       isCertified: false,
@@ -21,7 +21,7 @@ const Followers = () => {
     },
     {
       profileImage: 'http://via.placeholder.com/130x130',
-      followId: 3,
+      userId: 3,
       level: 20,
       name: '김예지',
       isCertified: false,

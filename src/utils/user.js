@@ -1,6 +1,7 @@
 import axios from './axiosInstance';
 
 // 사용자 관련 API
+
 /** 유저 마이 페이지 조회 */
 export const getMyPage = (nickname) => axios.get(`/users/${nickname}`);
 
