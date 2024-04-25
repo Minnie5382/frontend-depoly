@@ -2,6 +2,10 @@ import axios from './axiosInstance';
 
 // 리뷰 관련 API
 
+/** 별점 남기기 및 수정 */
+export const createOrUpdateScore = (scoreData) =>
+  axios.post('/api/scores/create', scoreData);
+
 /** 평론 작성 */
 export const createReview = (reviewData) =>
   axios.post('/reviews/create', reviewData);
@@ -21,10 +25,6 @@ export const getReviewsByMovieId = (movieId, page, size) =>
     { withCredentials: false }
   );
 
-/** 특정 유저의 모든 평론 목록 조회 */
-export const getReviewsByUserNickname = (nickname) =>
-  axios.get(`/reviews/users/${nickname}`, { withCredentials: false });
-
 /** 평론 좋아요 */
 export const likeReview = (reviewId) =>
   axios.post(`/reviews/${reviewId}/likes`);
@@ -32,3 +32,7 @@ export const likeReview = (reviewId) =>
 /** 평론 좋아요 취소 */
 export const unlikeReview = (reviewId) =>
   axios.delete(`/reviews/${reviewId}/likes`);
+
+/** 인기 평론 리스트 조회 */
+export const getHotReviews = (size) =>
+  axios.get(`/api/reviews/hot?size=${size}`);
