@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import style from '../../MyPage.module.css';
 import CollectionCard from './CollectionCard';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
 const Collections = () => {
   const collectionsData = [
@@ -27,11 +26,9 @@ const Collections = () => {
     setPage(value);
   };
 
-  // 페이지의 첫 번째 요소 인덱스, 마지막 요소 인덱스 계산
-  const dataToShow = collectionsData.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const dataToShow = collectionsData.slice(startIndex, endIndex);
 
   return (
     <div>
@@ -41,19 +38,13 @@ const Collections = () => {
           <CollectionCard key={data.reviewId} {...data} />
         ))}
       </div>
-      <Stack spacing={2} alignItems='center' sx={{ margin: '20px 0' }}>
-        <Pagination
+      {count > 1 && (
+        <PaginationComponent
           count={count}
           page={page}
           onChange={handleChange}
-          color='primary'
-          sx={{
-            '& .MuiPaginationItem-root': {
-              color: 'var(--text-color)',
-            },
-          }}
         />
-      </Stack>
+      )}
     </div>
   );
 };
