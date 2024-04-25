@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import FollowCard from './FollowCard';
 import style from '../../MyPage.module.css';
+import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
 const FollowList = ({ data, title }) => {
   const itemsPerPage = 9;
@@ -13,29 +12,19 @@ const FollowList = ({ data, title }) => {
     setPage(value);
   };
 
-  const dataToShow = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const dataToShow = data.slice(startIndex, endIndex);
 
   return (
     <div>
       <h2 className={style.title}>{title}</h2>
       <div className={style.cardContainer}>
-        {dataToShow.map((item) => (
-          <FollowCard key={item.userId} {...item} />
+        {dataToShow.map((item, index) => (
+          <FollowCard key={index} {...item} />
         ))}
       </div>
-      <Stack spacing={2} alignItems='center' sx={{ margin: '20px 0' }}>
-        <Pagination
-          count={count}
-          page={page}
-          onChange={handleChange}
-          color='primary'
-          sx={{
-            '& .MuiPaginationItem-root': {
-              color: 'var(--text-color)',
-            },
-          }}
-        />
-      </Stack>
+      <PaginationComponent count={count} page={page} onChange={handleChange} />
     </div>
   );
 };
