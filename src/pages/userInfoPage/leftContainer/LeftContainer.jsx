@@ -5,12 +5,14 @@ import style from '../UserInfoPage.module.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import FollowButton from '../../../components/button/FollowButton';
+import UserInfoModal from '../UserInfoModal';
 
 const LeftContainer = ({ tab, setTab }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [userId, setUserId] = useState(true);
+  const [userId, setUserId] = useState(false);
   const myId = true;
+  const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -18,7 +20,12 @@ const LeftContainer = ({ tab, setTab }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const openModal = () => {
+    setUserInfoModalOpen(true);
+  };
+  const closeModal = () => {
+    setUserInfoModalOpen(false);
+  };
   // const confirmAndUserDelete = () => {
   //   if (window.confirm('정말 탈퇴하시겠습니까?')) {
   //     // UserDelete();
@@ -71,7 +78,7 @@ const LeftContainer = ({ tab, setTab }) => {
             horizontal: 'left',
           }}
         >
-          <MenuItem onClick={handleClose}>회원정보 변경</MenuItem>
+          <MenuItem onClick={openModal}>회원정보 변경</MenuItem>
           <MenuItem onClick={handleClose}>로그아웃</MenuItem>
         </Menu>
       </div>
@@ -130,6 +137,7 @@ const LeftContainer = ({ tab, setTab }) => {
           />
         ))}
       </Tabs>
+      <UserInfoModal isOpen={userInfoModalOpen} onClose={closeModal} />
     </div>
   );
 };

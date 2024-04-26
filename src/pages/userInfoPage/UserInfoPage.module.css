@@ -233,3 +233,41 @@
 .movieInfo {
   text-align: center;
 }
+
+/* 회원정보 모달 */
+
+.imgInput {
+  padding: 1px;
+  margin: 1rem;
+  background-color: var(--border-color2);
+  width: 80%;
+}
+.imgSelect {
+  width: 26%;
+  height: 2rem;
+  margin: 1rem 1rem 0rem 0rem;
+  border: 1px solid var(--point-color);
+  border-radius: 5px;
+  color: var(--point-color);
+  cursor: pointer;
+}
+.uploadName {
+  display: inline-block;
+  height: 2rem;
+  padding: 0 10px;
+  vertical-align: middle;
+  background-color: var(--sub-color);
+  border: 1px solid var(--border-color2);
+  border-radius: 5px;
+  width: 62%;
+  color: var(--text-color);
+}
+.imgDelete {
+  position: absolute;
+  top: 300px;
+  right: 3.7rem;
+  font-size: large;
+  border: none;
+  background-color: unset;
+  cursor: pointer;
+}
