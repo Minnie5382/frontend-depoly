@@ -34,6 +34,29 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     },
   };
 
+  // API가 명확하지 않음. 수정 필요
+  useEffect(() => {
+    if (debouncedEmail && emailRegex.test(debouncedEmail)) {
+      checkEmailDuplication(debouncedEmail)
+        .then((response) => {
+          if (response.data.isDuplicate) {
+            setErrors((prev) => ({
+              ...prev,
+              email: '이미 사용중인 이메일입니다.',
+            }));
+          } else {
+            setErrors((prev) => ({ ...prev, email: '' }));
+          }
+        })
+        .catch((error) => {
+          setErrors((prev) => ({
+            ...prev,
+            email: `이메일 중복 검사 실패! (${error.message})`,
+          }));
+        });
+    }
+  }, [debouncedEmail]);
+
   const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
     onSuccess: () => {
       alert('인증 번호가 발송되었습니다.');
@@ -57,6 +80,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
       },
     });
 
+  // 중복검사가 완료되었다면 인증번호 보낼 수 있게 수정 필요.
   const handleSendVerificationEmail = () => {
     sendVerificationEmail({ email: formData.email });
   };
@@ -130,34 +154,10 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    if (!checkVerificationCode.isSuccess) {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData((prev) => ({ ...prev, [name]: value }));
     const errorMessage = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
-
-  useEffect(() => {
-    if (debouncedEmail && emailRegex.test(debouncedEmail)) {
-      checkEmailDuplication(debouncedEmail)
-        .then((response) => {
-          if (response.data.isDuplicate) {
-            setErrors((prev) => ({
-              ...prev,
-              email: '이미 사용중인 이메일입니다.',
-            }));
-          } else {
-            setErrors((prev) => ({ ...prev, email: '' }));
-          }
-        })
-        .catch((error) => {
-          setErrors((prev) => ({
-            ...prev,
-            email: `이메일 중복 검사 실패! (${error.message})`,
-          }));
-        });
-    }
-  }, [debouncedEmail]);
 
   return (
     <form onSubmit={handleSubmit} className={style.form}>
@@ -214,7 +214,11 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           sx={inputTheme}
           value={formData.verificationCode}
           error={!!errors.verificationCode}
-          helperText={errors.verificationCode || ' '}
+          helperText={
+            checkVerificationCode.isSuccess
+              ? formData.verificationCode
+              : errors.verificationCode || ' '
+          }
           onChange={handleChange}
           readOnly={checkVerificationCode.isSuccess}
         />
