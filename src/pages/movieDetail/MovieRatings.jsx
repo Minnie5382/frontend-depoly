@@ -2,7 +2,7 @@ import React from 'react';
 import Rating from '@mui/material/Rating';
 import style from './MovieDetail.module.css';
 
-const MovieRatings = ({ cinephileRating, levelTenRating, allUserRating }) => {
+const MovieRatings = ({ cinephileAvgRating, levelAvgRating, allAvgRating }) => {
   const initRating = {
     '.MuiRating-iconEmpty': {
       color: 'var(--text-color)',
@@ -14,7 +14,7 @@ const MovieRatings = ({ cinephileRating, levelTenRating, allUserRating }) => {
       <div className={style.cinephile}>
         <p>씨네필 별점</p>
         <Rating
-          value={cinephileRating}
+          value={cinephileAvgRating}
           precision={0.5}
           readOnly
           sx={initRating}
@@ -23,7 +23,7 @@ const MovieRatings = ({ cinephileRating, levelTenRating, allUserRating }) => {
       <div className={style.levelTen}>
         <p>Lv.10 이상 별점</p>
         <Rating
-          value={levelTenRating}
+          value={levelAvgRating}
           precision={0.5}
           readOnly
           sx={initRating}
@@ -31,12 +31,7 @@ const MovieRatings = ({ cinephileRating, levelTenRating, allUserRating }) => {
       </div>
       <div className={style.allUser}>
         <p>모든 유저 별점</p>
-        <Rating
-          value={allUserRating}
-          precision={0.5}
-          readOnly
-          sx={initRating}
-        />
+        <Rating value={allAvgRating} precision={0.5} readOnly sx={initRating} />
       </div>
     </div>
   );

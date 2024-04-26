@@ -7,31 +7,31 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import style from './MovieDetail.module.css';
 import ReviewModal from '../../components/reviewModal/ReviewModal';
 import { likeMovie, unlikeMovie } from '../../utils/movie';
-// import { submitRating } from '../../utils/review';
+import { createOrUpdateScore } from '../../utils/review';
 
 const MovieInfo = ({
-  title,
+  movieTitle,
   genre,
-  description,
-  castAndCrew,
+  introduction,
+  crewList,
   movieId,
-  rating: initialRating,
+  myScore,
   isScrap,
+  releaseDate,
+  originCountry,
+  runtime,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [rating, setRating] = useState(initialRating);
+  const [score, setScore] = useState(myScore ? myScore : 0);
 
-  // const { mutate: sendRating, isLoading: ratingLoading } = useMutation(
-  //   (newRating) => submitRating({ movieId, rating: newRating }),
-  //   {
-  //     onSuccess: () => {
-  //       alert('별점이 성공적으로 업데이트 되었습니다.');
-  //     },
-  //     onError: (error) => {
-  //       alert(`별점 업데이트 실패! : ${error.message}`);
-  //     },
-  //   }
-  // );
+  const { mutate: sendScore, isLoading: ratingLoading } = useMutation(
+    (score) => createOrUpdateScore({ movieId, score }),
+    {
+      onError: (error) => {
+        alert(`별점 업데이트 실패! : ${error.message}`);
+      },
+    }
+  );
 
   const { mutate: toggleScrap } = useMutation(
     () => {
@@ -42,9 +42,6 @@ const MovieInfo = ({
       }
     },
     {
-      onSuccess: () => {
-        alert(isScrap ? '영화 스크랩 취소 완료!' : '영화 스크랩 완료!');
-      },
       onError: (error) => {
         alert(`오류가 발생했습니다! : ${error.message}`);
       },
@@ -62,9 +59,9 @@ const MovieInfo = ({
   };
 
   const handleRatingChange = (event, newValue) => {
-    setRating(newValue);
+    setScore(newValue);
     if (newValue > 0) {
-      // sendRating({ movieId, rating: newValue });
+      sendScore({ score: newValue });
     } else {
       alert('0점은 평점에 반영되지 않습니다!');
     }
@@ -82,17 +79,21 @@ const MovieInfo = ({
     <div className={style.movieInfo}>
       <div className={style.topSection}>
         <div>
-          <span className={style.title}>{title}</span>
-          <p className={style.genre}>{genre}</p>
+          <span className={style.title}>
+            {movieTitle} ({releaseDate})
+          </span>
+          <p className={style.genre}>
+            {genre} / {originCountry} / {runtime}
+          </p>
         </div>
         <div className={style.actions}>
           <Rating
             name='simple-controlled'
-            value={rating}
+            value={score}
             onChange={handleRatingChange}
             size='large'
             precision={0.5}
-            // disabled={ratingLoading}
+            disabled={ratingLoading}
             sx={{
               '.MuiRating-iconEmpty': {
                 color: 'var(--text-color)',
@@ -111,14 +112,17 @@ const MovieInfo = ({
           </IconButton>
         </div>
       </div>
-      <p className={style.description}>{description}</p>
+      <p className={style.introduction}>{introduction}</p>
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
         <div className={style.castList}>
-          {castAndCrew.map((person, index) => (
-            <span key={index} className={style.castItem}>
-              {person}
-            </span>
+          {crewList.map((person, index) => (
+            <div key={index} className={style.castItem}>
+              {person.name}
+              {person.profile}
+              {person.job}
+              {person.character}
+            </div>
           ))}
         </div>
       </div>
