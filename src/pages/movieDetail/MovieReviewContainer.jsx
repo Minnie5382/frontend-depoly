@@ -15,23 +15,30 @@ const MovieReviewContainer = ({ movieId }) => {
   );
 
   if (isLoading) return <div>로딩중...</div>;
-  if (error) return <div>{error.message}</div>;
+  if (error) return <div>오류 발생{error.message}</div>;
 
-  const myReview = data.result.find((review) => review.myReview === true);
-  const otherReviews = data.result.filter((review) => !review.myReview);
+  const reviews = data.result ?? [];
+  const myReview = data.result.find((review) => review.isMyReview === true);
+  const otherReviews = data.result.filter((review) => !review.isMyReview);
 
   return (
     <div className={style.reviewContainer}>
-      {myReview && <MovieReview {...myReview} />}
-      {otherReviews.slice(0, 9).map((review) => (
-        <MovieReview key={review.reviewId} {...review} />
-      ))}
-      {otherReviews.length > 9 && (
-        <div className={style.seeMore}>
-          <Link href={`/movies/${movieId}/reviews`}>
-            평론 모아보기로 이동하기
-          </Link>
-        </div>
+      {reviews.length === 0 ? (
+        <div className={style.noReviews}>아직 작성된 평론이 없습니다!</div>
+      ) : (
+        <>
+          {myReview && <MovieReview {...myReview} />}
+          {otherReviews.slice(0, 9).map((review) => (
+            <MovieReview key={review.reviewId} {...review} />
+          ))}
+          {otherReviews.length > 9 && (
+            <div className={style.seeMore}>
+              <Link href={`/movies/${movieId}/reviews`}>
+                평론 모아보기로 이동하기
+              </Link>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

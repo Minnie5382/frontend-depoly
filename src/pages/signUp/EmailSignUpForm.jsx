@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Stack } from '@mui/material';
 import { useMutation } from 'react-query';
-import { signup, verifyEmail, verifyEmailCheck } from '../../utils/auth';
+import {
+  checkEmailDuplication,
+  signup,
+  verifyEmail,
+  verifyEmailCheck,
+} from '../../utils/auth';
 import style from './SignUp.module.css';
+import useDebounce from '../../utils/useDebounce';
 
 const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   const [formData, setFormData] = useState({});
@@ -13,6 +19,8 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     password: '',
     confirmPassword: '',
   });
+
+  const debouncedEmail = useDebounce(formData.email, 500);
 
   const inputTheme = {
     '& .MuiInputLabel-root': { color: 'var(--text-color)' },
@@ -26,27 +34,66 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     },
   };
 
-  const { mutate: sendVerificationEmail, isLoading: isSendingEmail } =
-    useMutation(verifyEmail, {
-      onSuccess: () => alert('인증 번호가 발송되었습니다.'),
-      onError: (error) => alert(`인증 번호 발송 실패! : ${error.message}`),
-    });
+  // API가 명확하지 않음. 수정 필요
+  useEffect(() => {
+    if (debouncedEmail && emailRegex.test(debouncedEmail)) {
+      checkEmailDuplication(debouncedEmail)
+        .then((response) => {
+          if (response.data.isDuplicate) {
+            setErrors((prev) => ({
+              ...prev,
+              email: '이미 사용중인 이메일입니다.',
+            }));
+          } else {
+            setErrors((prev) => ({ ...prev, email: '' }));
+          }
+        })
+        .catch((error) => {
+          setErrors((prev) => ({
+            ...prev,
+            email: `이메일 중복 검사 실패! (${error.message})`,
+          }));
+        });
+    }
+  }, [debouncedEmail]);
+
+  const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
+    onSuccess: () => {
+      alert('인증 번호가 발송되었습니다.');
+    },
+    onError: (error) => alert(`인증 번호 발송 실패! : ${error.message}`),
+  });
 
   const { mutate: checkVerificationCode, isLoading: isCheckingCode } =
     useMutation(verifyEmailCheck, {
-      onSuccess: () => alert('인증 확인 완료!'),
-      onError: (error) => alert(`인증 번호 확인 실패! : ${error.message}`),
+      onSuccess: () => {
+        setFormData((prev) => ({
+          ...prev,
+          verificationCode: '인증이 완료되었습니다!',
+        }));
+      },
+      onError: (error) => {
+        setErrors((prev) => ({
+          ...prev,
+          verificationCode: `인증 번호 확인 실패! : ${error.message}`,
+        }));
+      },
     });
 
+  // 중복검사가 완료되었다면 인증번호 보낼 수 있게 수정 필요.
   const handleSendVerificationEmail = () => {
     sendVerificationEmail({ email: formData.email });
   };
 
   const handleCheckVerificationCode = () => {
-    checkVerificationCode({
-      email: formData.email,
-      code: formData.verificationCode,
-    });
+    if (sendVerificationEmail.isSuccess) {
+      checkVerificationCode({
+        email: formData.email,
+        code: formData.verificationCode,
+      });
+    } else {
+      alert('인증 번호 전송이 완료되지 않았습니다!');
+    }
   };
 
   const { mutate: doSignUp, isLoading } = useMutation(signup, {
@@ -60,13 +107,25 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
-    if (termsAgreed && privacyAgreed) {
-      doSignUp(formData);
+    if (termsAgreed && privacyAgreed && checkVerificationCode.isSuccess) {
+      const signUpData = {
+        email: formData.email,
+        password: formData.password,
+        nickname: formData.nickname,
+        isAuthentication: checkVerificationCode.isSuccess,
+      };
+      doSignUp(signUpData);
     } else {
-      alert('서비스 이용 약관 및 개인정보 수집에 동의해주세요.');
+      if (!checkVerificationCode.isSuccess) {
+        alert('이메일 인증을 완료해주세요.');
+      } else {
+        alert('서비스 이용 약관 및 개인정보 수집에 동의해주세요.');
+      }
     }
   };
+
+  const emailRegex =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
   const validateField = (name, value) => {
     switch (name) {
@@ -76,8 +135,6 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           ? ''
           : '닉네임에는 특수문자를 사용할 수 없습니다.';
       case 'email':
-        const emailRegex =
-          /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         return emailRegex.test(value) ? '' : '올바른 이메일을 입력해주세요.';
       case 'verificationCode':
         return value ? '' : '인증번호를 입력해주세요.';
@@ -132,12 +189,15 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           error={!!errors.email}
           helperText={errors.email || ' '}
           onChange={handleChange}
+          InputProps={{
+            readOnly: checkVerificationCode.isSuccess,
+          }}
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleSendVerificationEmail}
-          disabled={isSendingEmail}
+          disabled={isCheckingCode || checkVerificationCode.isSuccess}
         >
           인증
         </Button>
@@ -154,14 +214,19 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           sx={inputTheme}
           value={formData.verificationCode}
           error={!!errors.verificationCode}
-          helperText={errors.verificationCode || ' '}
+          helperText={
+            checkVerificationCode.isSuccess
+              ? formData.verificationCode
+              : errors.verificationCode || ' '
+          }
           onChange={handleChange}
+          readOnly={checkVerificationCode.isSuccess}
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleCheckVerificationCode}
-          disabled={isCheckingCode}
+          disabled={isCheckingCode || checkVerificationCode.isSuccess}
         >
           확인
         </Button>

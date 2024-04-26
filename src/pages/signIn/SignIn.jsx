@@ -9,13 +9,13 @@ import { useNavigate } from 'react-router-dom';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
 
   const { mutate: doLoginEmail, isLoading: isEmailLoading } = useMutation(
     loginEmail,
     {
       onSuccess: () => {
-        alert('로그인 성공');
         navigate('/');
       },
       onError: (error) => {
@@ -26,7 +26,7 @@ const SignIn = () => {
 
   const handleEmailLogin = (event) => {
     event.preventDefault();
-    // doLoginEmail({ email, password });
+    doLoginEmail({ email, password });
   };
 
   const handleKakaoLoginClick = () => {

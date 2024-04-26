@@ -4,34 +4,38 @@ import LikeButton from '../button/LikeButton';
 import EditDeleteButtons from '../button/EditDeleteButtons';
 
 const MovieReview = ({
-  name,
+  nickname,
   level,
-  profileImage,
+  userProfileImage,
   content,
-  star,
+  score,
   likeNumber,
   createdAt,
-  myReview,
+  isMyReview,
   reviewId,
   isLiked,
+  isCertified,
+  isBad,
 }) => {
   return (
     <div className={style.container}>
       <div className={style.topSection}>
         <div className={style.info}>
           <img
-            src={profileImage}
+            src={userProfileImage}
             alt='Profile'
             className={style.profileImage}
           />
           <div className={style.infoBox}>
             <div className={style.level}>
-              Lv.{level} {name}
+              Lv.{level} {nickname}
+              {isCertified && { isCertified }}
+              {isBad && { isBad }}
             </div>
             <div className={style.time}>{createdAt}</div>
           </div>
         </div>
-        <div className={style.stars}>★ {star}</div>
+        <div className={style.stars}>★ {score}</div>
       </div>
       <hr />
       <div className={style.content}>{content}</div>
@@ -40,7 +44,7 @@ const MovieReview = ({
           <LikeButton isLiked={isLiked} />
           <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
-        {myReview && (
+        {isMyReview && (
           <span className={style.editControls}>
             <EditDeleteButtons reviewId={reviewId} />
           </span>

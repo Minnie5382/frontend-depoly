@@ -13,7 +13,6 @@ function useQueryParams() {
 
 const Search = () => {
   const query = useQueryParams().get('query');
-  console.log(query);
 
   const {
     data: moviesData,
