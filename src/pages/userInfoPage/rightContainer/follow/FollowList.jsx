@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FollowCard from './FollowCard';
-import style from '../../MyPage.module.css';
+import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
 const FollowList = ({ data, title }) => {

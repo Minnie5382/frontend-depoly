@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import style from '../../MyPage.module.css';
+import style from '../../UserInfoPage.module.css';
 import CollectionCard from './CollectionCard';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
