@@ -1,5 +1,5 @@
 import React from 'react';
-import style from '../MyPage.module.css';
+import style from '../UserInfoPage.module.css';
 import Scrap from './scrap/Scrap';
 import Following from './follow/Following';
 import Followers from './follow/Followers';

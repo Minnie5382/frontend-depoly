@@ -1,9 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Settings as SettingsIcon } from '@mui/icons-material';
 import { LinearProgress, Tab, Tabs, Box, Typography } from '@mui/material';
-import style from '../MyPage.module.css';
+import style from '../UserInfoPage.module.css';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import FollowButton from '../../../components/button/FollowButton';
+import UserInfoModal from '../UserInfoModal';
 
 const LeftContainer = ({ tab, setTab }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const [userId, setUserId] = useState(false);
+  const myId = true;
+  const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const openModal = () => {
+    setUserInfoModalOpen(true);
+  };
+  const closeModal = () => {
+    setUserInfoModalOpen(false);
+  };
+  // const confirmAndUserDelete = () => {
+  //   if (window.confirm('정말 탈퇴하시겠습니까?')) {
+  //     // UserDelete();
+  //     handleClose();
+  //   }
+  // };
+
   const tabStyle = (isSelected) => ({
     display: 'flex',
     justifyContent: 'space-between',
@@ -27,8 +56,31 @@ const LeftContainer = ({ tab, setTab }) => {
   return (
     <div className={style.leftContainer}>
       <div className={style.topBar}>
-        <span>유저_1234</span>
-        <SettingsIcon />
+        {userId === myId ? (
+          <FollowButton />
+        ) : (
+          <button className={style.settingBtn} onClick={handleClick}>
+            <SettingsIcon />
+          </button>
+        )}
+        <Menu
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <MenuItem onClick={openModal}>회원정보 변경</MenuItem>
+          <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+        </Menu>
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
@@ -85,6 +137,7 @@ const LeftContainer = ({ tab, setTab }) => {
           />
         ))}
       </Tabs>
+      <UserInfoModal isOpen={userInfoModalOpen} onClose={closeModal} />
     </div>
   );
 };

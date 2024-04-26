@@ -30,15 +30,15 @@ const Header = () => {
 
   return (
     <div className={style.header}>
-      <img src={logo} alt='logo' className={style.logo} />
+      <img src={logo} alt="logo" className={style.logo} />
       <div className={style.menu}>
-        <Link to='/' className={style.menuLink}>
+        <Link to="/" className={style.menuLink}>
           메인
         </Link>
-        <Link to='/chattingList' className={style.menuLink}>
+        <Link to="/chattingList" className={style.menuLink}>
           채팅방
         </Link>
-        <Link to='/' className={style.menuLink}>
+        <Link to="/" className={style.menuLink}>
           게시판
         </Link>
       </div>
@@ -46,15 +46,15 @@ const Header = () => {
         <form onSubmit={handleSearch}>
           <TextField
             hiddenLabel
-            variant='filled'
-            size='small'
+            variant="filled"
+            size="small"
             sx={TextFieldTheme}
             className={style.searchField}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             InputProps={{
               endAdornment: (
-                <button type='submit' className={style.searchBtn}>
+                <button type="submit" className={style.searchBtn}>
                   <SearchIcon className={style.searchIcon} />
                 </button>
               ),
@@ -65,9 +65,9 @@ const Header = () => {
           <div className={style.myInfoBox}>
             <button
               className={style.myInfoBtn}
-              onClick={() => navigate('/myPage')}
+              onClick={() => navigate('/userInfo')}
             >
-              <img className={style.infoImg} src={infoImg} alt='' />
+              <img className={style.infoImg} src={infoImg} alt="" />
               <span>Lv.100</span>
               <span className={style.myName}> 김희석 </span>
               <span className={style.mybadge}>👑</span>
@@ -75,10 +75,10 @@ const Header = () => {
           </div>
         ) : (
           <div className={style.signBox}>
-            <Link to='/signin' className={style.signBtn}>
+            <Link to="/signin" className={style.signBtn}>
               로그인
             </Link>
-            <Link to='/signup' className={style.signBtn}>
+            <Link to="/signup" className={style.signBtn}>
               회원가입
             </Link>
           </div>
