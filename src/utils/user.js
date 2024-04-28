@@ -17,12 +17,12 @@ export const updateUserProfile = (profileData) =>
   axios.post('/users/profile', profileData);
 
 /** 팔로워 목록 조회 */
-export const getUserFollowers = (nickname) =>
-  axios.get(`/users/${nickname}/followers`);
+export const getUserFollowers = (userID) =>
+  axios.get(`/users/${userID}/followers`);
 
 /** 팔로잉 목록 조회 */
-export const getUserFollowings = (nickname) =>
-  axios.get(`/users/${nickname}/followings`);
+export const getUserFollowings = (userID) =>
+  axios.get(`/users/${userID}/followings`);
 
 /** 팔로우 */
 export const followUser = (userId) => axios.post(`/users/follow`, userId);

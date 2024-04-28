@@ -1,8 +1,18 @@
 import React from 'react';
 import FollowList from './FollowList';
+import { getUserFollowers } from '../../../../utils/user';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 const Followers = () => {
-  const followerData = [
+  const { userID } = useParams();
+  const {
+    data: followerData,
+    isLoading,
+    isError,
+  } = useQuery(['followers', userID], () => getUserFollowers(userID));
+
+  const data = [
     {
       profileImage: 'http://via.placeholder.com/130x130',
       userId: 1,
@@ -19,15 +29,10 @@ const Followers = () => {
       isCertified: false,
       isFollowed: true,
     },
-    {
-      profileImage: 'http://via.placeholder.com/130x130',
-      userId: 3,
-      level: 20,
-      name: '김예지',
-      isCertified: false,
-      isFollowed: false,
-    },
   ];
+
+  if (isLoading) return <FollowList data={data} title='팔로워' />;
+  if (isError) return <FollowList data={data} title='팔로워' />;
 
   return <FollowList data={followerData} title='팔로워' />;
 };

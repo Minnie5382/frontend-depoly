@@ -6,8 +6,9 @@ const FollowCard = ({
   userId,
   profileImage,
   level,
-  name,
+  nickname,
   isCertified,
+  isBad,
   isFollowed,
 }) => {
   return (
@@ -15,15 +16,16 @@ const FollowCard = ({
       <div className={style.profileSection}>
         <img
           src={profileImage}
-          alt={`${name} profile`}
+          alt={`${nickname} profile`}
           className={style.profileImage}
         />
       </div>
       <div className={style.infoSection}>
         <span className={style.level}>Lv.{level}</span>
         <div className={style.nameAndIcon}>
-          <span className={style.name}>{name}</span>
+          <span className={style.name}>{nickname}</span>
           {isCertified && <span className={style.icon}>왕관</span>}
+          {isBad && <span className={style.icon}>해골</span>}
         </div>
         <FollowButton isFollowed={isFollowed} userId={userId} />
       </div>

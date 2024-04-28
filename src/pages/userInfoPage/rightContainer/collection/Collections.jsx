@@ -2,8 +2,18 @@ import React, { useState } from 'react';
 import style from '../../UserInfoPage.module.css';
 import CollectionCard from './CollectionCard';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { getUserReviews } from '../../../../utils/user';
 
 const Collections = () => {
+  const { userId } = useParams();
+
+  const { data, isError, isLoading } = useQuery(['userScraps', userId], () =>
+    getUserReviews(userId)
+  );
+
+  // const collectionsData = data?.data || [];
   const collectionsData = [
     {
       nickname: 'user1234',
@@ -13,7 +23,7 @@ const Collections = () => {
       content: '나는야 김희석.',
       star: 5,
       likeNumber: 120,
-      createdAt: '2024-04-17',
+      movieTitle: '곡성',
       reviewId: 1,
     },
   ];
@@ -29,6 +39,9 @@ const Collections = () => {
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const dataToShow = collectionsData.slice(startIndex, endIndex);
+
+  // if (isLoading) return <div>로딩중...</div>;
+  // if (isError) return <div> 에러: {error.message}</div>;
 
   return (
     <div>
