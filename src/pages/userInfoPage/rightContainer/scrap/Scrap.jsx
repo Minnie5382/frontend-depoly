@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import ScrapCard from './ScrapCard';
 import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
+import { getUserScraps } from '../../../../utils/user';
 
 const Scrap = () => {
-  const scraps = [
+  const scrap = [
     {
       poster: 'http://via.placeholder.com/170x230',
       title: '쿵푸팬더4',
@@ -25,9 +28,20 @@ const Scrap = () => {
     },
   ];
 
+  const { userID } = useParams();
+
+  const {
+    data: scraps,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(['getUserScraps', userID], () => getUserScraps(userID), {
+    keepPreviousData: true,
+  });
+
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
-  const count = Math.ceil(scraps.length / itemsPerPage);
+  const count = Math.ceil((scraps?.length || 0) / itemsPerPage);
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -35,7 +49,10 @@ const Scrap = () => {
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dataToShow = scraps.slice(startIndex, endIndex);
+  const dataToShow = (scraps || []).slice(startIndex, endIndex);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>에러! : {error.message}</div>;
 
   return (
     <div>
