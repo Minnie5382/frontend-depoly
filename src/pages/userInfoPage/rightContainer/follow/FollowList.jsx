@@ -21,7 +21,7 @@ const FollowList = ({ data, title }) => {
       <h2 className={style.title}>{title}</h2>
       <div className={style.cardContainer}>
         {dataToShow.map((item, index) => (
-          <FollowCard key={index} {...item} />
+          <FollowCard key={index} {...item} result={data} />
         ))}
       </div>
       {count > 1 && (
