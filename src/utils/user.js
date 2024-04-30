@@ -4,7 +4,7 @@ import axios from './axiosInstance';
 
 /** 닉네임 중복검사 */
 export const checkNicknameDuplication = (nickname) =>
-  axios.get('/auth/nickname/check', nickname);
+  axios.post('/auth/nickname/check', nickname);
 
 /** 유저 마이 페이지 조회 */
 export const getMyPage = (userID) => axios.get(`/users/${userID}`);
