@@ -9,8 +9,11 @@ import {
 } from '../../utils/auth';
 import style from './SignUp.module.css';
 import useDebounce from '../../utils/useDebounce';
+import { useNavigate } from 'react-router-dom';
 
 const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     nickname: '',
     email: '',
@@ -27,6 +30,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   });
   const [emailSent, setEmailSent] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
+  const [authentication, setAuthentication] = useState(false);
 
   const debouncedEmail = useDebounce(formData.email, 500);
 
@@ -46,11 +50,11 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     if (debouncedEmail && emailRegex.test(debouncedEmail)) {
       checkEmailDuplication(debouncedEmail)
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
           if (!response.data.isSuccess) {
             setErrors((prev) => ({
               ...prev,
-              email: '이미 사용중인 이메일입니다.',
+              email: `${response.data.message}`,
             }));
             setEmailValid(false);
           } else {
@@ -59,9 +63,10 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           }
         })
         .catch((error) => {
+          console.log('error', error);
           setErrors((prev) => ({
             ...prev,
-            email: `이메일 중복 검사 실패! (${error.message})`,
+            email: `${error.response.data.message}`,
           }));
           setEmailValid(false);
         });
@@ -88,18 +93,22 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           ...prev,
           verificationCode: '인증이 완료되었습니다!',
         }));
+        setAuthentication(true);
       },
       onError: (error) => {
+        console.log('인증번호 확인 실패', error);
         setErrors((prev) => ({
           ...prev,
-          verificationCode: `인증 번호 확인 실패! : ${error.message}`,
+          verificationCode: `인증 번호 확인 실패!`,
         }));
+        setAuthentication(false);
       },
     });
 
   const handleSendVerificationEmail = () => {
-    if (emailValid) sendVerificationEmail({ email: formData.email });
-    else {
+    if (emailValid) {
+      sendVerificationEmail({ email: formData.email });
+    } else {
       alert('이메일 중복 검사를 통과해야 합니다!');
     }
   };
@@ -118,6 +127,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   const { mutate: doSignUp, isLoading } = useMutation(signup, {
     onSuccess: () => {
       alert('회원가입이 성공적으로 완료되었습니다.');
+      navigate('/signin');
     },
     onError: (error) => {
       alert(`회원가입 실패하였습니다. : ${error.message}`);
@@ -126,16 +136,16 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (termsAgreed && privacyAgreed && checkVerificationCode.isSuccess) {
+    if (termsAgreed && privacyAgreed) {
       const signUpData = {
         email: formData.email,
         password: formData.password,
         nickname: formData.nickname,
-        isAuthentication: checkVerificationCode.isSuccess,
+        isauthentication: authentication,
       };
       doSignUp(signUpData);
     } else {
-      if (!checkVerificationCode.isSuccess) {
+      if (!authentication) {
         alert('이메일 인증을 완료해주세요.');
       } else {
         alert('서비스 이용 약관 및 개인정보 수집에 동의해주세요.');
@@ -177,7 +187,6 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     const errorMessage = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
-
   return (
     <form onSubmit={handleSubmit} className={style.form}>
       <TextField
