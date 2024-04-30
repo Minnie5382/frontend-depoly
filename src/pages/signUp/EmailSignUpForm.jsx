@@ -11,7 +11,13 @@ import style from './SignUp.module.css';
 import useDebounce from '../../utils/useDebounce';
 
 const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    nickname: '',
+    email: '',
+    verificationCode: '',
+    password: '',
+    confirmPassword: '',
+  });
   const [errors, setErrors] = useState({
     nickname: '',
     email: '',

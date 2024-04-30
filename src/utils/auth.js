@@ -11,8 +11,7 @@ export const loginEmail = (userData) =>
   axios.post('/auth/login/email', userData, { withCredentials: false });
 
 /** 이메일 중복검사 */
-export const checkEmailDuplication = (email) =>
-  axios.post('/auth/email', email);
+export const checkEmailDuplication = (email) => axios.get('/auth/email', email);
 
 /** 이메일 인증 코드 발송 */
 export const verifyEmail = (email) =>
