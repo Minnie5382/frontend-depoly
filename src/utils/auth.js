@@ -12,15 +12,11 @@ export const loginEmail = (userData) =>
 
 /** 이메일 중복검사 */
 export const checkEmailDuplication = (email) =>
-  axios.post('/auth/email/check', email);
+  axios.post('/auth/email/check', { email: email }, { withCredentials: false });
 
 /** 이메일 인증 코드 발송 */
 export const verifyEmail = (email) =>
-  axios.post(
-    '/auth/verify/email',
-    { email: email },
-    { withCredentials: false }
-  );
+  axios.post('/auth/verify/email', email, { withCredentials: false });
 
 /** 이메일 인증 코드 확인 */
 export const verifyEmailCheck = (verifyCode) =>
