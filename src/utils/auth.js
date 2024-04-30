@@ -16,7 +16,11 @@ export const checkEmailDuplication = (email) =>
 
 /** 이메일 인증 코드 발송 */
 export const verifyEmail = (email) =>
-  axios.post('/auth/verify/email', email, { withCredentials: false });
+  axios.post(
+    '/auth/verify/email',
+    { email: email },
+    { withCredentials: false }
+  );
 
 /** 이메일 인증 코드 확인 */
 export const verifyEmailCheck = (verifyCode) =>

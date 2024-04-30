@@ -25,6 +25,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     password: '',
     confirmPassword: '',
   });
+  const [emailSent, setEmailSent] = useState(false);
 
   const debouncedEmail = useDebounce(formData.email, 500);
 
@@ -45,7 +46,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     if (debouncedEmail && emailRegex.test(debouncedEmail)) {
       checkEmailDuplication(debouncedEmail)
         .then((response) => {
-          if (response.data.isDuplicate) {
+          if (!response.data.isSuccess) {
             setErrors((prev) => ({
               ...prev,
               email: '이미 사용중인 이메일입니다.',
@@ -65,9 +66,13 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
 
   const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
     onSuccess: () => {
+      setEmailSent(true);
       alert('인증 번호가 발송되었습니다.');
     },
-    onError: (error) => alert(`인증 번호 발송 실패! : ${error.message}`),
+    onError: (error) => {
+      setEmailSent(false);
+      alert(`인증 번호 발송 실패! : ${error.message}`);
+    },
   });
 
   const { mutate: checkVerificationCode, isLoading: isCheckingCode } =
@@ -92,7 +97,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   };
 
   const handleCheckVerificationCode = () => {
-    if (sendVerificationEmail.isSuccess) {
+    if (emailSent) {
       checkVerificationCode({
         email: formData.email,
         code: formData.verificationCode,
@@ -180,6 +185,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         error={!!errors.nickname}
         helperText={errors.nickname || ' '}
         onChange={handleChange}
+        autoComplete='off'
       />
       <Stack direction='row' spacing={1} sx={{ minHeight: '56px' }}>
         <TextField
@@ -195,6 +201,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           error={!!errors.email}
           helperText={errors.email || ' '}
           onChange={handleChange}
+          autoComplete='off'
           InputProps={{
             readOnly: checkVerificationCode.isSuccess,
           }}
@@ -227,6 +234,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           }
           onChange={handleChange}
           readOnly={checkVerificationCode.isSuccess}
+          autoComplete='off'
         />
         <Button
           variant='contained'
@@ -250,6 +258,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         error={!!errors.password}
         helperText={errors.password || ' '}
         onChange={handleChange}
+        autoComplete='off'
       />
       <TextField
         name='confirmPassword'
@@ -264,6 +273,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         error={!!errors.confirmPassword}
         helperText={errors.confirmPassword || ' '}
         onChange={handleChange}
+        autoComplete='off'
       />
       <Button
         type='submit'
