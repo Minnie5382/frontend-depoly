@@ -26,6 +26,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     confirmPassword: '',
   });
   const [emailSent, setEmailSent] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
 
   const debouncedEmail = useDebounce(formData.email, 500);
 
@@ -41,18 +42,20 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     },
   };
 
-  // API가 명확하지 않음. 수정 필요
   useEffect(() => {
     if (debouncedEmail && emailRegex.test(debouncedEmail)) {
       checkEmailDuplication(debouncedEmail)
         .then((response) => {
+          console.log(response.data);
           if (!response.data.isSuccess) {
             setErrors((prev) => ({
               ...prev,
               email: '이미 사용중인 이메일입니다.',
             }));
+            setEmailValid(false);
           } else {
             setErrors((prev) => ({ ...prev, email: '' }));
+            setEmailValid(true);
           }
         })
         .catch((error) => {
@@ -60,7 +63,10 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
             ...prev,
             email: `이메일 중복 검사 실패! (${error.message})`,
           }));
+          setEmailValid(false);
         });
+    } else {
+      setEmailValid(false);
     }
   }, [debouncedEmail]);
 
@@ -91,9 +97,11 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
       },
     });
 
-  // 중복검사가 완료되었다면 인증번호 보낼 수 있게 수정 필요.
   const handleSendVerificationEmail = () => {
-    sendVerificationEmail({ email: formData.email });
+    if (emailValid) sendVerificationEmail({ email: formData.email });
+    else {
+      alert('이메일 중복 검사를 통과해야 합니다!');
+    }
   };
 
   const handleCheckVerificationCode = () => {
