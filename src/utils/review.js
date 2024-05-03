@@ -4,7 +4,7 @@ import axios from './axiosInstance';
 
 /** 별점 남기기 및 수정 */
 export const createOrUpdateScore = (scoreData) =>
-  axios.post('/api/scores/create', scoreData);
+  axios.post('/scores/create', scoreData);
 
 /** 평론 작성 */
 export const createReview = (reviewData) =>
@@ -34,5 +34,4 @@ export const unlikeReview = (reviewId) =>
   axios.delete(`/reviews/${reviewId}/likes`);
 
 /** 인기 평론 리스트 조회 */
-export const getHotReviews = (size) =>
-  axios.get(`/api/reviews/hot?size=${size}`);
+export const getHotReviews = (size) => axios.get(`/reviews/hot?size=${size}`);

@@ -39,5 +39,4 @@ export const reportUser = (reportData) =>
 export const getUserReviews = (userId) => axios.get(`/users/${userId}/reviews`);
 
 /** 특정 유저의 스크랩 목록 조회 */
-export const getUserScraps = (userId) =>
-  axios.get(`/api/users/${userId}/scrap`);
+export const getUserScraps = (userId) => axios.get(`/users/${userId}/scrap`);
