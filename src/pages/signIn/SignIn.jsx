@@ -5,10 +5,13 @@ import { loginEmail, loginKakao } from '../../utils/auth';
 import style from './SignIn.module.css';
 import logo from '../../assets/logo2.png';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../utils/axiosInstance';
+import { useUser } from '../../utils/UserContext';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { user, setUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -16,10 +19,18 @@ const SignIn = () => {
     loginEmail,
     {
       onSuccess: () => {
-        navigate('/');
+        axios
+          .get('/auth/userInfo')
+          .then((response) => {
+            setUser(response.data);
+            navigate('/');
+          })
+          .catch((error) => {
+            alert(`사용자 정보를 불러오는 데 실패했습니다`);
+          });
       },
       onError: (error) => {
-        alert(`로그인에 실패하였습니다. : ${error.message}`);
+        alert(`로그인에 실패하였습니다.`);
       },
     }
   );
