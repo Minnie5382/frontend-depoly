@@ -220,14 +220,14 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           onChange={handleChange}
           autoComplete='off'
           InputProps={{
-            readOnly: checkVerificationCode.isSuccess,
+            readOnly: authentication,
           }}
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleSendVerificationEmail}
-          disabled={isCheckingCode || checkVerificationCode.isSuccess}
+          disabled={isCheckingCode || authentication}
         >
           인증
         </Button>
@@ -245,19 +245,19 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           value={formData.verificationCode}
           error={!!errors.verificationCode}
           helperText={
-            checkVerificationCode.isSuccess
+            authentication
               ? formData.verificationCode
               : errors.verificationCode || ' '
           }
           onChange={handleChange}
-          readOnly={checkVerificationCode.isSuccess}
+          readOnly={authentication}
           autoComplete='off'
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleCheckVerificationCode}
-          disabled={isCheckingCode || checkVerificationCode.isSuccess}
+          disabled={isCheckingCode || authentication}
         >
           확인
         </Button>
