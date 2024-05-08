@@ -21,17 +21,13 @@ export const UserProvider = ({ children }) => {
 
   const { data: authCheck } = useQuery('user', apiAuthCheck, {
     enabled: !!sessionStorage.getItem('user'),
-    refetchOnWindowFocus: true,
     refetchInterval: 60000,
     retry: false,
     onSuccess: (data) => {
       if (!data.data.isSuccess) {
+        alert('로그인이 필요합니다!');
         logout();
       }
-    },
-    onError: () => {
-      alert('로그인이 필요합니다!');
-      logout();
     },
   });
 
@@ -40,9 +36,6 @@ export const UserProvider = ({ children }) => {
       sessionStorage.removeItem('user');
       queryClient.removeQueries('user');
       navigate('/signin', { replace: true });
-    },
-    onError: (error) => {
-      console.error('Logout error:', error);
     },
   });
 
