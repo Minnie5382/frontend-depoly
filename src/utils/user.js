@@ -17,15 +17,25 @@ export const updateUserProfile = (profileData) =>
   axios.post('/users/profile', profileData);
 
 /** 팔로워 목록 조회 */
-export const getUserFollowers = (userID) =>
-  axios.get(`/users/${userID}/followers`);
+export const getUserFollowers = (userID, page, size) =>
+  axios.get(`/users/${userID}/followers`, {
+    params: {
+      page,
+      size,
+    },
+  });
 
 /** 팔로잉 목록 조회 */
-export const getUserFollowings = (userID) =>
-  axios.get(`/users/${userID}/followings`);
+export const getUserFollowings = (userID, page, size) =>
+  axios.get(`/users/${userID}/followings`, {
+    params: {
+      page,
+      size,
+    },
+  });
 
 /** 팔로우 */
-export const followUser = (userId) => axios.post(`/users/follow`, userId);
+export const followUser = (userId) => axios.post(`/users/follow`, { userId });
 
 /** 팔로우 취소 */
 export const unfollowUser = (userId) =>
@@ -39,5 +49,4 @@ export const reportUser = (reportData) =>
 export const getUserReviews = (userId) => axios.get(`/users/${userId}/reviews`);
 
 /** 특정 유저의 스크랩 목록 조회 */
-export const getUserScraps = (userId) =>
-  axios.get(`/api/users/${userId}/scrap`);
+export const getUserScraps = (userId) => axios.get(`/users/${userId}/scrap`);

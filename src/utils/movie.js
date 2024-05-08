@@ -25,10 +25,10 @@ export const unlikeMovie = (movieId) =>
 export const getUserMovies = (nickname) => axios.get(`/movies/${nickname}`);
 
 /** 일간 박스오피스 영화 목록 조회 */
-export const getDailyBoxOffice = () => axios.get('/api/movies/boxOffice');
+export const getDailyBoxOffice = () => axios.get('/movies/boxOffice');
 
 /** 장르별 랜덤 영화 목록 조회 */
-export const getMoviesByGenre = () => axios.get(`/api/movies/genre`);
+export const getMoviesByGenre = () => axios.get(`/movies/genre`);
 
 /** 개봉 예정 영화 목록 조회 */
-export const getUpcomingMovies = () => axios.get('/api/movies/search/upcoming');
+export const getUpcomingMovies = () => axios.get('/movies/search/upcoming');
