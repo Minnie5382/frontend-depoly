@@ -1,13 +1,73 @@
-import React, { createContext, useContext, useState } from 'react';
-
-const UserContext = createContext();
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { authCheck as apiAuthCheck, logout as apiLogout } from './auth';
+const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const value = { user, setUser };
+  const [user, setUser] = useState(() => {
+    const savedUser = sessionStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+  const login = (userData) => {
+    sessionStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const { data: authCheck } = useQuery('user', apiAuthCheck, {
+    enabled: !!sessionStorage.getItem('user'),
+    refetchOnWindowFocus: true,
+    refetchInterval: 60000,
+    retry: false,
+    onSuccess: (data) => {
+      if (!data.data.isSuccess) {
+        logout();
+      }
+    },
+    onError: () => {
+      alert('로그인이 필요합니다!');
+      logout();
+    },
+  });
+
+  const { mutate: logout } = useMutation(apiLogout, {
+    onSuccess: () => {
+      sessionStorage.removeItem('user');
+      queryClient.removeQueries('user');
+      navigate('/signin', { replace: true });
+    },
+    onError: (error) => {
+      console.error('Logout error:', error);
+    },
+  });
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'user') {
+        const newUser = JSON.parse(sessionStorage.getItem('user') || 'null');
+        setUser(newUser);
+        if (!newUser) {
+          queryClient.removeQueries('doLoginEmail');
+          navigate('/signin', { replace: true });
+        }
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [navigate, queryClient]);
+
+  return (
+    <UserContext.Provider value={{ user, login, logout, authCheck }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useUser = () => useContext(UserContext);
