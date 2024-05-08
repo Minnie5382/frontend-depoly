@@ -9,7 +9,7 @@ import { useUser } from '../../utils/UserContext';
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const { user, setUser } = useUser();
+  const { user } = useUser();
 
   const TextFieldTheme = {
     '& .MuiInputBase-root': {
@@ -65,15 +65,15 @@ const Header = () => {
           <div className={style.myInfoBox}>
             <button
               className={style.myInfoBtn}
-              onClick={() => navigate('/userInfo')}
+              onClick={() => navigate(`/userInfo/${user.result.userId}`)}
             >
               <img
                 className={style.profileImage}
-                src={user.profileImage}
+                src={user.result.profileImage}
                 alt='User'
               />
-              <span>{`Lv.${user.level}`}</span>
-              <span className={style.myName}> {user.nickname} </span>
+              <span>{`Lv.${user.result.level}`}</span>
+              <span className={style.myName}> {user.result.nickname} </span>
               {user.isCertified && <span className={style.icon}>왕관</span>}
               {user.isBad && <span className={style.icon}>해골</span>}
             </button>
