@@ -11,7 +11,7 @@ import { useUser } from '../../utils/UserContext';
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { user, setUser } = useUser();
+  const { login } = useUser();
 
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const SignIn = () => {
         axios
           .get('/auth/userInfo')
           .then((response) => {
-            setUser(response.data);
+            login(response.data);
             navigate('/');
           })
           .catch((error) => {
