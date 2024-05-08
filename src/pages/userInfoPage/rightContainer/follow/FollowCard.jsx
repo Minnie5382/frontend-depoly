@@ -10,6 +10,8 @@ const FollowCard = ({
   isCertified,
   isBad,
   isFollowed,
+  followingsRefetch,
+  followerRefetch,
 }) => {
   return (
     <div className={style.followCard}>
@@ -27,7 +29,12 @@ const FollowCard = ({
           {isCertified && <span className={style.icon}>왕관</span>}
           {isBad && <span className={style.icon}>해골</span>}
         </div>
-        <FollowButton isFollowed={isFollowed} userId={userId} />
+        <FollowButton
+          isFollowed={isFollowed}
+          userId={userId}
+          followingsRefetch={followingsRefetch}
+          followerRefetch={followerRefetch}
+        />
       </div>
     </div>
   );
