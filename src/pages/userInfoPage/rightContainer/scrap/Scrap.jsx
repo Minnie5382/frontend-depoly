@@ -7,37 +7,17 @@ import PaginationComponent from '../../../../components/pagination/PaginationCom
 import { getUserScraps } from '../../../../utils/user';
 
 const Scrap = () => {
-  const scrap = [
-    {
-      poster: 'http://via.placeholder.com/170x230',
-      title: '쿵푸팬더4',
-      movieId: '001',
-      releaseDate: '2024',
-    },
-    {
-      poster: 'http://via.placeholder.com/170x230',
-      title: '어벤져스',
-      movieId: '002',
-      releaseDate: '2022',
-    },
-    {
-      poster: 'http://via.placeholder.com/170x230',
-      title: '인셉션',
-      movieId: '003',
-      releaseDate: '2023',
-    },
-  ];
+  const { userId } = useParams();
 
-  const { userID } = useParams();
+  const { data, isLoading, isError, error } = useQuery(
+    ['getUserScraps', userId],
+    () => getUserScraps(userId),
+    {
+      keepPreviousData: true,
+    }
+  );
 
-  const {
-    data: scraps,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(['getUserScraps', userID], () => getUserScraps(userID), {
-    keepPreviousData: true,
-  });
+  const scraps = data?.data?.result.scrapList || [];
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -51,7 +31,7 @@ const Scrap = () => {
   const endIndex = startIndex + itemsPerPage;
   const dataToShow = (scraps || []).slice(startIndex, endIndex);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>에러! : {error.message}</div>;
 
   return (
