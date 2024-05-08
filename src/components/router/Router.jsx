@@ -12,14 +12,29 @@ import UserInfoPage from '../../pages/userInfoPage/UserInfoPage';
 import ChattingRoomPage from '../../pages/chatting/chattingRoom/ChatRoom';
 import Test from '../Test';
 import { UserProvider } from '../../utils/UserContext';
+import PublicRoute from '../../utils/PublicRoute';
 
 const Router = () => {
   return (
     <UserProvider>
       <Routes>
         <Route path='/' element={<Main />} />
-        <Route path='/signin' element={<SignIn />} />
-        <Route path='/signup' element={<SignUp />} />
+        <Route
+          path='/signin'
+          element={
+            <PublicRoute>
+              <SignIn />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <PublicRoute>
+              <SignUp />
+            </PublicRoute>
+          }
+        />
         <Route path='/search' element={<Search />} />
         <Route path='/movies/:movieId' element={<MovieDetail />} />
         <Route path='/movies/:movieId/reviews' element={<MovieReviews />} />

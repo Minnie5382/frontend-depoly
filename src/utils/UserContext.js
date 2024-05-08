@@ -2,7 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { authCheck as apiAuthCheck, logout as apiLogout } from './auth';
-const UserContext = createContext(null);
+
+export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
