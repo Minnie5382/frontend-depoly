@@ -14,9 +14,8 @@ const LeftContainer = ({ tab, setTab, data }) => {
   const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
 
   const { user, logout } = useUser();
-  const { userId: userIdStr } = useParams();
+  const { userId } = useParams();
 
-  const userId = parseInt(userIdStr, 10);
   const open = Boolean(anchorEl);
   const myId = user?.result.userId || null;
 

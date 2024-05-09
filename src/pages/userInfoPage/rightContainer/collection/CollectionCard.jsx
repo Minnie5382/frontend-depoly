@@ -11,6 +11,7 @@ const CollectionCard = ({
   reviewId,
   isLiked,
   isMyReview,
+  collectionRefetch,
 }) => {
   return (
     <div className={style.collection}>
@@ -26,7 +27,11 @@ const CollectionCard = ({
       <div className={style.content}>{content}</div>
       <div className={style.btnBox}>
         <div className={style.likes}>
-          <LikeButton reviewId={reviewId} isLiked={isLiked} />
+          <LikeButton
+            reviewId={reviewId}
+            isLiked={isLiked}
+            collectionRefetch={collectionRefetch}
+          />
           <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
         {isMyReview && (

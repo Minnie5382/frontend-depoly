@@ -9,8 +9,9 @@ import { getUserReviews } from '../../../../utils/user';
 const Collections = () => {
   const { userId } = useParams();
 
-  const { data, isError, isLoading } = useQuery(['userScraps', userId], () =>
-    getUserReviews(userId)
+  const { data, isError, isLoading, refetch } = useQuery(
+    ['userScraps', userId],
+    () => getUserReviews(userId)
   );
 
   const collectionsData = data?.data?.result?.collection || [];
@@ -20,6 +21,10 @@ const Collections = () => {
 
   const handleChange = (event, value) => {
     setPage(value);
+  };
+
+  const collectionRefetch = () => {
+    refetch();
   };
 
   const startIndex = (page - 1) * itemsPerPage;
@@ -39,7 +44,11 @@ const Collections = () => {
       <h2 className={style.title}>컬렉션</h2>
       <div className={style.cardContainer}>
         {dataToShow.map((data) => (
-          <CollectionCard key={data.reviewId} {...data} />
+          <CollectionCard
+            key={data.reviewId}
+            {...data}
+            collectionRefetch={collectionRefetch}
+          />
         ))}
       </div>
       {totalPages > 1 && (
