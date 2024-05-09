@@ -5,7 +5,7 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { useMutation } from 'react-query';
 import { likeReview, unlikeReview } from '../../utils/review';
 
-const LikeButton = ({ reviewId, isLiked: initialLiked }) => {
+const LikeButton = ({ reviewId, isLiked: initialLiked, collectionRefetch }) => {
   const [isLiked, setIsLiked] = useState(initialLiked);
 
   const { mutate, isLoading } = useMutation(
@@ -13,6 +13,7 @@ const LikeButton = ({ reviewId, isLiked: initialLiked }) => {
     {
       onSuccess: () => {
         setIsLiked(!isLiked);
+        collectionRefetch();
       },
     }
   );
