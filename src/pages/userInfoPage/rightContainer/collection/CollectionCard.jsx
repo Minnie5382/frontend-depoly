@@ -10,6 +10,7 @@ const CollectionCard = ({
   movieTitle,
   reviewId,
   isLiked,
+  isMyReview,
 }) => {
   return (
     <div className={style.collection}>
@@ -28,9 +29,11 @@ const CollectionCard = ({
           <LikeButton reviewId={reviewId} isLiked={isLiked} />
           <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
-        <div>
-          <EditDeleteButtons reviewId={reviewId} />
-        </div>
+        {isMyReview && (
+          <div>
+            <EditDeleteButtons reviewId={reviewId} />
+          </div>
+        )}
       </div>
     </div>
   );
