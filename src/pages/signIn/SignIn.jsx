@@ -5,8 +5,8 @@ import { loginEmail, loginKakao } from '../../utils/auth';
 import style from './SignIn.module.css';
 import logo from '../../assets/logo2.png';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../utils/axiosInstance';
 import { useUser } from '../../utils/UserContext';
+import { getUserInfo } from '../../utils/user';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -19,8 +19,7 @@ const SignIn = () => {
     loginEmail,
     {
       onSuccess: () => {
-        axios
-          .get('/auth/userInfo')
+        getUserInfo()
           .then((response) => {
             login(response.data);
             navigate('/');
