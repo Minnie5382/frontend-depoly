@@ -16,6 +16,7 @@ const MovieReview = ({
   isLiked,
   isCertified,
   isBad,
+  collectionRefetch,
 }) => {
   return (
     <div className={style.container}>
@@ -41,7 +42,11 @@ const MovieReview = ({
       <div className={style.content}>{content}</div>
       <div className={style.btnBox}>
         <div className={style.likes}>
-          <LikeButton isLiked={isLiked} />
+          <LikeButton
+            isLiked={isLiked}
+            collectionRefetch={collectionRefetch}
+            reviewId={reviewId}
+          />
           <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
         {isMyReview && (
