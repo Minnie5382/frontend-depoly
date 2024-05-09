@@ -13,6 +13,7 @@ import ChattingRoomPage from '../../pages/chatting/chattingRoom/ChatRoom';
 import Test from '../Test';
 import { UserProvider } from '../../utils/UserContext';
 import PublicRoute from '../../utils/PublicRoute';
+import AuthCheck from '../../pages/authCheck/AuthCheck';
 
 const Router = () => {
   return (
@@ -44,6 +45,7 @@ const Router = () => {
         <Route path='/chattingRoom/*' element={<ChattingRoomPage />}>
           <Route path=':roomId' element={<ChattingRoomPage />} />
         </Route>
+        <Route path='/auth/check' element={<AuthCheck />} />
         <Route path='/test' element={<Test />} />
       </Routes>
     </UserProvider>

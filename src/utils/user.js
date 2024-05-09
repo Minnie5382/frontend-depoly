@@ -6,6 +6,9 @@ import axios from './axiosInstance';
 export const checkNicknameDuplication = (nickname) =>
   axios.post('/auth/nickname/check', nickname);
 
+/** 유저 정보 */
+export const getUserInfo = () => axios.get('auth/userInfo');
+
 /** 유저 마이 페이지 조회 */
 export const getMyPage = (userID) => axios.get(`/users/${userID}`);
 

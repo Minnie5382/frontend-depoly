@@ -25,16 +25,19 @@ export const UserProvider = ({ children }) => {
     retry: false,
     onSuccess: (data) => {
       if (!data.data.isSuccess) {
-        alert('로그인이 필요합니다!');
         logout();
       }
+    },
+    onError: () => {
+      navigate('/signin', { replace: true });
     },
   });
 
   const { mutate: logout } = useMutation(apiLogout, {
     onSuccess: () => {
       sessionStorage.removeItem('user');
-      queryClient.removeQueries('user');
+      queryClient.clear();
+      setUser(null);
       navigate('/signin', { replace: true });
     },
   });
@@ -45,7 +48,8 @@ export const UserProvider = ({ children }) => {
         const newUser = JSON.parse(sessionStorage.getItem('user') || 'null');
         setUser(newUser);
         if (!newUser) {
-          queryClient.removeQueries('doLoginEmail');
+          queryClient.clear();
+          setUser(null);
           navigate('/signin', { replace: true });
         }
       }
