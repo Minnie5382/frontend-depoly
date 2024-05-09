@@ -11,7 +11,7 @@ const UserInfoPage = () => {
   const [tab, setTab] = useState('collection');
   const { userId } = useParams();
 
-  const { data, isLoading } = useQuery(['getMyPage', userId], () =>
+  const { data, isLoading, isError } = useQuery(['getMyPage', userId], () =>
     getMyPage(userId)
   );
 
@@ -21,6 +21,17 @@ const UserInfoPage = () => {
         <Header />
         <div className={style.container}>
           <p>로딩중..</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div>
+        <Header />
+        <div className={style.container}>
+          <p>존재하지 않는 사용자입니다.</p>
         </div>
       </div>
     );
