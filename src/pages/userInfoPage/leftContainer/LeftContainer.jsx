@@ -13,11 +13,13 @@ const LeftContainer = ({ tab, setTab, data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
 
-  const { user } = useUser();
-  const { userId } = useParams();
+  const { user, logout } = useUser();
+  const { userId: userIdStr } = useParams();
 
+  const userId = parseInt(userIdStr, 10);
   const open = Boolean(anchorEl);
-  const myId = user.result.userId;
+  const myId = user?.result.userId || null;
+
   const expPercentage = (data.data.result.exp / data.data.result.expMax) * 100;
 
   const handleClick = (event) => {
@@ -62,8 +64,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
   return (
     <div className={style.leftContainer}>
       <div className={style.topBar}>
-        {userId === myId ? (
-          <FollowButton />
+        {userId !== myId ? (
+          <FollowButton
+            userId={userId}
+            isFollowed={data?.data.result.isFollowed}
+          />
         ) : (
           <button className={style.settingBtn} onClick={handleClick}>
             <SettingsIcon />
@@ -85,7 +90,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
           }}
         >
           <MenuItem onClick={openModal}>회원정보 변경</MenuItem>
-          <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+          <MenuItem onClick={logout}>로그아웃</MenuItem>
         </Menu>
       </div>
       <div className={style.userContainer}>
@@ -102,6 +107,10 @@ const LeftContainer = ({ tab, setTab, data }) => {
           )}
           {data.data.result.isBad && <span className={style.icon}>해골</span>}
         </div>
+        <p title={data?.data.result.genreLabel.label || '데이터 표본 부족!'}>
+          {data.data.result.genreLabel.description ||
+            '데이터 표본이 부족합니다.'}
+        </p>
         <LinearProgress
           variant='determinate'
           value={expPercentage}
