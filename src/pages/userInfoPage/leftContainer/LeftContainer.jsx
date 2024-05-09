@@ -6,13 +6,21 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import FollowButton from '../../../components/button/FollowButton';
 import UserInfoModal from '../UserInfoModal';
+import { useUser } from '../../../utils/UserContext';
+import { useParams } from 'react-router-dom';
 
-const LeftContainer = ({ tab, setTab }) => {
+const LeftContainer = ({ tab, setTab, data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const [userId, setUserId] = useState(false);
-  const myId = true;
   const [userInfoModalOpen, setUserInfoModalOpen] = useState(false);
+
+  const { user, logout } = useUser();
+  const { userId: userIdStr } = useParams();
+
+  const userId = parseInt(userIdStr, 10);
+  const open = Boolean(anchorEl);
+  const myId = user?.result.userId || null;
+
+  const expPercentage = (data.data.result.exp / data.data.result.expMax) * 100;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,26 +54,29 @@ const LeftContainer = ({ tab, setTab }) => {
     color: `${isSelected ? 'var(--point-color)' : 'var(--text-color)'}`,
   });
 
-  const tabNames = {
-    collection: '컬렉션',
-    scrap: '스크랩',
-    following: '팔로잉',
-    followers: '팔로워',
+  const tabInfo = {
+    collection: { label: '컬렉션', count: data?.data?.result?.collectionNum },
+    scrap: { label: '스크랩', count: data?.data?.result?.scrapNum },
+    following: { label: '팔로잉', count: data?.data?.result?.followingNum },
+    followers: { label: '팔로워', count: data?.data?.result?.followerNum },
   };
 
   return (
     <div className={style.leftContainer}>
       <div className={style.topBar}>
-        {userId === myId ? (
-          <FollowButton />
+        {userId !== myId ? (
+          <FollowButton
+            userId={userId}
+            isFollowed={data?.data.result.isFollowed}
+          />
         ) : (
           <button className={style.settingBtn} onClick={handleClick}>
             <SettingsIcon />
           </button>
         )}
         <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
+          id='demo-positioned-menu'
+          aria-labelledby='demo-positioned-button'
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -79,26 +90,30 @@ const LeftContainer = ({ tab, setTab }) => {
           }}
         >
           <MenuItem onClick={openModal}>회원정보 변경</MenuItem>
-          <MenuItem onClick={handleClose}>로그아웃</MenuItem>
+          <MenuItem onClick={logout}>로그아웃</MenuItem>
         </Menu>
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src="http://via.placeholder.com/170x170" alt="" />
-          <p title="애니메이션 영화 선호">
-            다채로운 색상과 독특한 캐릭터, 그 화면 속 영원한 어린이
-          </p>
+          <img src='http://via.placeholder.com/170x170' alt='' />
         </div>
         <div className={style.userInfo}>
           <div>
-            <span>Lv.100</span>
-            <span className={style.userName}>김희석</span>
+            <span>Lv.{data.data.result.level}</span>
+            <span className={style.userName}>{data.data.result.nickname}</span>
           </div>
-          <span>왕관</span>
+          {data.data.result.isCertified && (
+            <span className={style.icon}>왕관</span>
+          )}
+          {data.data.result.isBad && <span className={style.icon}>해골</span>}
         </div>
+        <p title={data?.data.result.genreLabel.label || '데이터 표본 부족!'}>
+          {data.data.result.genreLabel.description ||
+            '데이터 표본이 부족합니다.'}
+        </p>
         <LinearProgress
-          variant="determinate"
-          value={60}
+          variant='determinate'
+          value={expPercentage}
           style={{
             width: '100%',
             height: '20px',
@@ -108,21 +123,21 @@ const LeftContainer = ({ tab, setTab }) => {
         />
       </div>
       <Tabs
-        orientation="vertical"
-        variant="scrollable"
+        orientation='vertical'
+        variant='scrollable'
         value={tab}
         onChange={(event, newValue) => setTab(newValue)}
-        aria-label="profile tabs"
+        aria-label='profile tabs'
       >
-        {Object.entries(tabNames).map(([key, label]) => (
+        {Object.entries(tabInfo).map(([key, { label, count }]) => (
           <Tab
             key={key}
             value={key}
             label={
               <Box sx={tabStyle(tab === key)}>
-                <Typography variant="body1">{label}</Typography>
+                <Typography variant='body1'>{label}</Typography>
                 <Typography
-                  variant="body1"
+                  variant='body1'
                   sx={{
                     backgroundColor: 'var(--point-color)',
                     color: 'white',
@@ -130,7 +145,7 @@ const LeftContainer = ({ tab, setTab }) => {
                     borderRadius: '12px',
                   }}
                 >
-                  100
+                  {count || 0}
                 </Typography>
               </Box>
             }

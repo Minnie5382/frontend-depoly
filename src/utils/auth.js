@@ -8,7 +8,7 @@ export const signup = (userData) =>
 
 /** 이메일 로그인 */
 export const loginEmail = (userData) =>
-  axios.post('/auth/login/email', userData, { withCredentials: false });
+  axios.post('/auth/login/email', userData);
 
 /** 이메일 중복검사 */
 export const checkEmailDuplication = (email) =>
@@ -30,3 +30,9 @@ export const loginKakao = () => {
   const redirectUri = process.env.REACT_APP_REDIRECT_URI;
   return `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 };
+
+/** 로그아웃 */
+export const logout = () => axios.post('/auth/logout');
+
+/** 권한 확인 */
+export const authCheck = () => axios.get('/auth/user/check');

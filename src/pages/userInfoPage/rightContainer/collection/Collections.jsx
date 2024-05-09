@@ -13,24 +13,10 @@ const Collections = () => {
     getUserReviews(userId)
   );
 
-  // const collectionsData = data?.data || [];
-  const collectionsData = [
-    {
-      nickname: 'user1234',
-      name: '김희석',
-      level: 100,
-      profileImage: 'path/to/image1.jpg',
-      content: '나는야 김희석.',
-      star: 5,
-      likeNumber: 120,
-      movieTitle: '곡성',
-      reviewId: 1,
-    },
-  ];
-
+  const collectionsData = data?.data?.result?.collection || [];
+  const totalPages = data?.data?.result?.totalPageNum || 0;
   const itemsPerPage = 9;
   const [page, setPage] = useState(1);
-  const count = Math.ceil(collectionsData.length / itemsPerPage);
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -40,8 +26,13 @@ const Collections = () => {
   const endIndex = startIndex + itemsPerPage;
   const dataToShow = collectionsData.slice(startIndex, endIndex);
 
-  // if (isLoading) return <div>로딩중...</div>;
-  // if (isError) return <div> 에러: {error.message}</div>;
+  if (isLoading) {
+    return <div>로딩중...</div>;
+  }
+
+  if (isError) {
+    return <div>에러 발생!</div>;
+  }
 
   return (
     <div>
@@ -51,9 +42,9 @@ const Collections = () => {
           <CollectionCard key={data.reviewId} {...data} />
         ))}
       </div>
-      {count > 1 && (
+      {totalPages > 1 && (
         <PaginationComponent
-          count={count}
+          count={totalPages}
           page={page}
           onChange={handleChange}
         />

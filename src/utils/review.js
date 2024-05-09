@@ -15,7 +15,8 @@ export const editReview = (reviewId, reviewData) =>
   axios.post(`/reviews/${reviewId}/edit`, reviewData);
 
 /** 평론 삭제 */
-export const deleteReview = (reviewId) => axios.delete(`/reviews/${reviewId}`);
+export const deleteReview = (reviewId) =>
+  axios.delete(`/reviews/${reviewId}/delete`);
 
 /** 해당 영화 평론 목록 조회 */
 export const getReviewsByMovieId = (movieId, page, size) =>

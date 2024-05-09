@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Button, TextField, Stack } from '@mui/material';
 import { useMutation } from 'react-query';
 import {
-  checkEmailDuplication,
   signup,
   verifyEmail,
   verifyEmailCheck,
+  checkEmailDuplication,
 } from '../../utils/auth';
+import { checkNicknameDuplication } from '../../utils/user';
 import style from './SignUp.module.css';
 import useDebounce from '../../utils/useDebounce';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     password: '',
     confirmPassword: '',
   });
+
   const [errors, setErrors] = useState({
     nickname: '',
     email: '',
@@ -33,6 +35,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   const [authentication, setAuthentication] = useState(false);
 
   const debouncedEmail = useDebounce(formData.email, 500);
+  const debouncedNickname = useDebounce(formData.nickname, 500);
 
   const inputTheme = {
     '& .MuiInputLabel-root': { color: 'var(--text-color)' },
@@ -47,10 +50,32 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   };
 
   useEffect(() => {
+    if (debouncedNickname) {
+      checkNicknameDuplication({ nickname: debouncedNickname })
+        .then((response) => {
+          if (!response.data.isSuccess) {
+            setErrors((prev) => ({
+              ...prev,
+              nickname: `${response.data.message}`,
+            }));
+          } else {
+            setErrors((prev) => ({ ...prev, nickname: '' }));
+          }
+        })
+        .catch((error) => {
+          setErrors((prev) => ({
+            ...prev,
+            nickname: `${error.response.data.message}`,
+          }));
+        });
+    } else {
+    }
+  }, [debouncedNickname]);
+
+  useEffect(() => {
     if (debouncedEmail && emailRegex.test(debouncedEmail)) {
       checkEmailDuplication(debouncedEmail)
         .then((response) => {
-          console.log(response);
           if (!response.data.isSuccess) {
             setErrors((prev) => ({
               ...prev,
@@ -63,7 +88,6 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           }
         })
         .catch((error) => {
-          console.log('error', error);
           setErrors((prev) => ({
             ...prev,
             email: `${error.response.data.message}`,
@@ -96,7 +120,6 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         setAuthentication(true);
       },
       onError: (error) => {
-        console.log('인증번호 확인 실패', error);
         setErrors((prev) => ({
           ...prev,
           verificationCode: `인증 번호 확인 실패!`,
@@ -136,6 +159,10 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요!');
+      return;
+    }
     if (termsAgreed && privacyAgreed) {
       const signUpData = {
         email: formData.email,
@@ -220,14 +247,14 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           onChange={handleChange}
           autoComplete='off'
           InputProps={{
-            readOnly: checkVerificationCode.isSuccess,
+            readOnly: authentication,
           }}
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleSendVerificationEmail}
-          disabled={isCheckingCode || checkVerificationCode.isSuccess}
+          disabled={isCheckingCode || authentication}
         >
           인증
         </Button>
@@ -245,19 +272,19 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           value={formData.verificationCode}
           error={!!errors.verificationCode}
           helperText={
-            checkVerificationCode.isSuccess
+            authentication
               ? formData.verificationCode
               : errors.verificationCode || ' '
           }
           onChange={handleChange}
-          readOnly={checkVerificationCode.isSuccess}
+          readOnly={authentication}
           autoComplete='off'
         />
         <Button
           variant='contained'
           sx={{ height: '40px' }}
           onClick={handleCheckVerificationCode}
-          disabled={isCheckingCode || checkVerificationCode.isSuccess}
+          disabled={isCheckingCode || authentication}
         >
           확인
         </Button>

@@ -12,7 +12,7 @@ export const searchMovies = (query, page, size) =>
 
 /** 영화 상세페이지 조회 */
 export const moviesDetail = (movieId) =>
-  axios.post(`/movies/${movieId}/`, { withCredentials: false });
+  axios.get(`/movies/${movieId}/`, { withCredentials: false });
 
 /** 영화 스크랩 */
 export const likeMovie = (movieId) => axios.post(`/movies/${movieId}/likes`);

@@ -9,6 +9,8 @@ const CollectionCard = ({
   likeNumber,
   movieTitle,
   reviewId,
+  isLiked,
+  isMyReview,
 }) => {
   return (
     <div className={style.collection}>
@@ -24,12 +26,14 @@ const CollectionCard = ({
       <div className={style.content}>{content}</div>
       <div className={style.btnBox}>
         <div className={style.likes}>
-          <LikeButton />
+          <LikeButton reviewId={reviewId} isLiked={isLiked} />
           <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
         </div>
-        <div>
-          <EditDeleteButtons reviewId={reviewId} />
-        </div>
+        {isMyReview && (
+          <div>
+            <EditDeleteButtons reviewId={reviewId} />
+          </div>
+        )}
       </div>
     </div>
   );

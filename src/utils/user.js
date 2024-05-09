@@ -6,6 +6,9 @@ import axios from './axiosInstance';
 export const checkNicknameDuplication = (nickname) =>
   axios.post('/auth/nickname/check', nickname);
 
+/** 유저 정보 */
+export const getUserInfo = () => axios.get('auth/userInfo');
+
 /** 유저 마이 페이지 조회 */
 export const getMyPage = (userID) => axios.get(`/users/${userID}`);
 
@@ -17,15 +20,25 @@ export const updateUserProfile = (profileData) =>
   axios.post('/users/profile', profileData);
 
 /** 팔로워 목록 조회 */
-export const getUserFollowers = (userID) =>
-  axios.get(`/users/${userID}/followers`);
+export const getUserFollowers = (userID, page, size) =>
+  axios.get(`/users/${userID}/followers`, {
+    params: {
+      page,
+      size,
+    },
+  });
 
 /** 팔로잉 목록 조회 */
-export const getUserFollowings = (userID) =>
-  axios.get(`/users/${userID}/followings`);
+export const getUserFollowings = (userID, page, size) =>
+  axios.get(`/users/${userID}/followings`, {
+    params: {
+      page,
+      size,
+    },
+  });
 
 /** 팔로우 */
-export const followUser = (userId) => axios.post(`/users/follow`, userId);
+export const followUser = (userId) => axios.post(`/users/follow`, { userId });
 
 /** 팔로우 취소 */
 export const unfollowUser = (userId) =>

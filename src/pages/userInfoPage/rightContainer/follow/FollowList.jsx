@@ -3,7 +3,7 @@ import FollowCard from './FollowCard';
 import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
-const FollowList = ({ data, title }) => {
+const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
   const itemsPerPage = 9;
   const [page, setPage] = useState(1);
   const count = Math.ceil(data.length / itemsPerPage);
@@ -21,7 +21,13 @@ const FollowList = ({ data, title }) => {
       <h2 className={style.title}>{title}</h2>
       <div className={style.cardContainer}>
         {dataToShow.map((item, index) => (
-          <FollowCard key={index} {...item} result={data} />
+          <FollowCard
+            key={index}
+            {...item}
+            data={data}
+            followerRefetch={followerRefetch}
+            followingsRefetch={followingsRefetch}
+          />
         ))}
       </div>
       {count > 1 && (
