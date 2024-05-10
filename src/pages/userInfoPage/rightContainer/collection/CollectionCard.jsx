@@ -2,6 +2,7 @@ import React from 'react';
 import style from '../../UserInfoPage.module.css';
 import EditDeleteButtons from '../../../../components/button/EditDeleteButtons';
 import LikeButton from '../../../../components/button/LikeButton';
+import { Link } from 'react-router-dom';
 
 const CollectionCard = ({
   content,
@@ -12,13 +13,16 @@ const CollectionCard = ({
   isLiked,
   isMyReview,
   collectionRefetch,
+  movieId,
 }) => {
   return (
     <div className={style.collection}>
       <div className={style.topSection}>
         <div className={style.info}>
           <div className={style.infoBox}>
-            <div className={style.time}>{movieTitle}</div>
+            <Link to={`/movies/${movieId}`}>
+              <div className={style.time}>{movieTitle}</div>
+            </Link>
           </div>
         </div>
         <div className={style.stars}>★ {userScore}</div>

@@ -30,4 +30,4 @@ export const getDailyBoxOffice = () => axios.get('/movies/boxOffice');
 export const getMoviesByGenre = () => axios.get(`/movies/genre`);
 
 /** 개봉 예정 영화 목록 조회 */
-export const getUpcomingMovies = () => axios.get('/movies/search/upcoming');
+export const getUpcomingMovies = () => axios.get('/movies/upcoming');

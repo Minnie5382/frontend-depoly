@@ -4,8 +4,9 @@ import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
 
 const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
-  const itemsPerPage = 9;
   const [page, setPage] = useState(1);
+
+  const itemsPerPage = 9;
   const count = Math.ceil(data.length / itemsPerPage);
 
   const handleChange = (event, value) => {
