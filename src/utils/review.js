@@ -4,7 +4,7 @@ import axios from './axiosInstance';
 
 /** 별점 남기기 및 수정 */
 export const createOrUpdateScore = (scoreData) =>
-  axios.post('/scores/create', scoreData);
+  axios.post('/score/movie', scoreData);
 
 /** 평론 작성 */
 export const createReview = (reviewData) =>

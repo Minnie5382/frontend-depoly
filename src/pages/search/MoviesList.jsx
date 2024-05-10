@@ -7,7 +7,7 @@ const MoviesList = ({ movies, query, isLoading, error }) => {
     <div>
       <h2>'{query}'에 대한 검색 결과</h2>
       <div className={style.moviesContainer}>
-        {movies?.results.map((movie) => (
+        {movies?.movieList.map((movie) => (
           <Link
             to={`/movies/${movie.movieId}`}
             key={movie.movieId}
