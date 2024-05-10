@@ -70,7 +70,7 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 10px 20px;
   background-color: var(--sub-color);
   color: var(--text-color);
   box-sizing: border-box;
@@ -234,8 +234,17 @@
   margin-right: 0;
 }
 
+.scrap img {
+  width: 170px;
+  height: 230px;
+}
+
 .movieInfo {
+  width: 170px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 회원정보 모달 */
