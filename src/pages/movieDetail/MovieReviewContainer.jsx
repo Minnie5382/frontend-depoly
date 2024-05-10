@@ -6,7 +6,7 @@ import { getReviewsByMovieId } from '../../utils/review';
 import { Link } from '@mui/material';
 
 const MovieReviewContainer = ({ movieId }) => {
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isError, refetch } = useQuery(
     ['reviews', movieId],
     () => getReviewsByMovieId(movieId),
     {
@@ -15,7 +15,7 @@ const MovieReviewContainer = ({ movieId }) => {
   );
 
   if (isLoading) return <div>로딩중...</div>;
-  if (error) return <div>오류 발생{error.message}</div>;
+  if (isError) return <div>에러 발생!</div>;
 
   const reviews = data?.data.result.reviews ?? [];
   const myReview = data?.data.result.reviews.find(
@@ -31,9 +31,15 @@ const MovieReviewContainer = ({ movieId }) => {
         <div className={style.noReviews}>아직 작성된 평론이 없습니다!</div>
       ) : (
         <>
-          {myReview && <MovieReview {...myReview} />}
+          {myReview && (
+            <MovieReview {...myReview} collectionRefetch={refetch} />
+          )}
           {otherReviews.slice(0, 9).map((review) => (
-            <MovieReview key={review.reviewId} {...review} />
+            <MovieReview
+              key={review.reviewId}
+              {...review}
+              collectionRefetch={refetch}
+            />
           ))}
           {otherReviews.length >= 9 && (
             <div className={style.seeMore}>
