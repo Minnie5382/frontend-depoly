@@ -21,6 +21,11 @@ code {
     monospace;
 }
 
+a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
 :root {
   --background-color: #101418;
   --point-color: #0064c9;
