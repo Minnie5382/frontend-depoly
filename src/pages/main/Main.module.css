@@ -13,6 +13,7 @@
   color: var(--text-color);
 }
 
+/* 리뷰리스트 */
 .reviewContainer {
   padding: 1rem 2rem 1.5rem 2rem;
   display: flex;
@@ -39,6 +40,18 @@
   overflow-y: hidden;
   gap: 2vw;
 }
+.reviewContainerInner div:last-child {
+  position: relative;
+  flex: 1 1;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: grid;
+  grid-auto-columns: 9rem;
+  grid-auto-flow: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 2vw;
+}
 
 .moveLeftBtn {
   padding: 1rem;
@@ -57,6 +70,17 @@
   border: none;
   background: none;
   color: var(--text-color);
+  cursor: pointer;
+}
+
+.moreView {
+  width: 3rem;
+  height: 2rem;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--sub-color);
+  text-align: center;
+  padding: 5rem 3rem;
   cursor: pointer;
 }
 
@@ -94,13 +118,17 @@
 }
 
 .moviePoster > img {
-  width: 13rem;
-  height: 19rem;
-  border: 1px solid var(--text-color);
+  width: 220px;
+  height: 325px;
   object-fit: cover;
 }
 .moviePoster > label {
-  font-size: 1.1rem;
+  font-size: 18px;
+  text-align: center;
+}
+.moviePoster > div {
+  font-size: 12px;
+  text-align: center;
 }
 
 .moviePoster > span {
@@ -111,6 +139,13 @@
   margin: 6px;
   text-align: center;
   border-radius: 2px;
-  color: var(--text-color);
-  background-color: rgba(255, 255, 255, 0.3);
+  color: var(--profile-settings-color);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.moviePoster .stars {
+  top: 282px;
+  left: 176px;
+  width: 35px;
+  font-size: xx-small;
 }
