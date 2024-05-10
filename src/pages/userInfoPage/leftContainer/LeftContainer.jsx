@@ -106,9 +106,12 @@ const LeftContainer = ({ tab, setTab, data }) => {
           )}
           {data.data.result.isBad && <span className={style.icon}>해골</span>}
         </div>
-        <p title={data?.data.result.genreLabel.label || '데이터 표본 부족!'}>
-          {data.data.result.genreLabel.description ||
-            '데이터 표본이 부족합니다.'}
+        <p
+          title={
+            data?.data.result.genreLabel.description || '데이터 표본 부족!'
+          }
+        >
+          {data.data.result.genreLabel.label || '데이터 표본이 부족합니다.'}
         </p>
         <LinearProgress
           variant='determinate'

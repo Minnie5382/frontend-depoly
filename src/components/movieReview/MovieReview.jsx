@@ -2,9 +2,11 @@ import React from 'react';
 import style from './MovieReview.module.css';
 import LikeButton from '../button/LikeButton';
 import EditDeleteButtons from '../button/EditDeleteButtons';
+import { Link } from 'react-router-dom';
 
 const MovieReview = ({
   nickname,
+  userId,
   level,
   userProfileImage,
   content,
@@ -29,7 +31,9 @@ const MovieReview = ({
           />
           <div className={style.infoBox}>
             <div className={style.level}>
-              Lv.{level} {nickname}
+              <Link to={`/userInfo/${userId}`}>
+                Lv.{level} {nickname}
+              </Link>
               {isCertified && { isCertified }}
               {isBad && { isBad }}
             </div>

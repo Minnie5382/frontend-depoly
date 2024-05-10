@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import Rating from '@mui/material/Rating';
 import IconButton from '@mui/material/IconButton';
@@ -9,20 +9,16 @@ import ReviewModal from '../../components/reviewModal/ReviewModal';
 import { likeMovie, unlikeMovie } from '../../utils/movie';
 import { createOrUpdateScore } from '../../utils/review';
 
-const MovieInfo = ({
-  movieTitle,
-  genre,
-  introduction,
-  crewList,
-  movieId,
-  myScore,
-  isScrap,
-  releaseDate,
-  originCountry,
-  runtime,
-}) => {
+const MovieInfo = ({ movie, refetch }) => {
+  const movieId = movie?.movie.movieId;
   const [isModalOpen, setModalOpen] = useState(false);
-  const [score, setScore] = useState(myScore ? myScore : 0);
+  const [score, setScore] = useState(movie?.myScore || 0);
+
+  useEffect(() => {
+    if (movie?.myScore !== undefined) {
+      setScore(movie.myScore);
+    }
+  }, [movie?.myScore]);
 
   const { mutate: sendScore, isLoading: ratingLoading } = useMutation(
     (score) => createOrUpdateScore({ movieId, score }),
@@ -35,12 +31,18 @@ const MovieInfo = ({
 
   const { mutate: toggleScrap } = useMutation(
     () => {
-      if (isScrap) {
+      if (movie?.isScrap) {
         return unlikeMovie(movieId);
       } else {
         return likeMovie(movieId);
       }
     },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+
     {
       onError: (error) => {
         alert(`오류가 발생했습니다! : ${error.message}`);
@@ -49,7 +51,7 @@ const MovieInfo = ({
   );
 
   const handleLikeMovie = () => {
-    if (isScrap) {
+    if (movie?.isScrap) {
       if (window.confirm('정말 스크랩을 취소하실건가요?')) {
         toggleScrap();
       }
@@ -61,7 +63,7 @@ const MovieInfo = ({
   const handleRatingChange = (event, newValue) => {
     setScore(newValue);
     if (newValue > 0) {
-      sendScore({ score: newValue });
+      sendScore(newValue);
     } else {
       alert('0점은 평점에 반영되지 않습니다!');
     }
@@ -75,16 +77,30 @@ const MovieInfo = ({
     setModalOpen(false);
   };
 
+  const formatRuntime = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours > 0 ? `${hours}시간` : ''} ${remainingMinutes}분`.trim();
+  };
+
   return (
     <div className={style.movieInfo}>
       <div className={style.topSection}>
-        <div>
+        <div className={style.titleBox}>
           <span className={style.title}>
-            {movieTitle} ({releaseDate})
+            {movie?.movie.movieTitle} ({movie?.movie.releaseDate})
           </span>
-          <p className={style.genre}>
-            {genre} / {originCountry} / {runtime}
-          </p>
+          <span className={style.genre}>
+            {movie?.movie.genre
+              .map(
+                (genre, index, array) =>
+                  `${genre}${index < array.length - 1 ? ', ' : ''}`
+              )
+              .join('')}
+            &nbsp;/&nbsp;
+            {movie?.movie.originCountry}&nbsp;/&nbsp;
+            {formatRuntime(movie?.runtime)}
+          </span>
         </div>
         <div className={style.actions}>
           <Rating
@@ -101,27 +117,46 @@ const MovieInfo = ({
             }}
           />
           <span onClick={handleOpenModal} className={style.reviewButton}>
-            평론 남기기
+            {movie?.existingReviewId ? '평론 수정하기' : '평론 남기기'}
           </span>
           <IconButton
             onClick={handleLikeMovie}
             color='error'
             sx={{ m: 0, p: 0 }}
           >
-            {isScrap ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+            {movie?.isScrap ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </IconButton>
         </div>
       </div>
-      <p className={style.introduction}>{introduction}</p>
+      <div className={style.introductionBox}>
+        <span className={style.introduction}>{movie?.introduction}</span>
+      </div>
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
         <div className={style.castList}>
-          {crewList.map((person, index) => (
+          {movie?.crewList.map((person, index) => (
             <div key={index} className={style.castItem}>
-              {person.name}
-              {person.profile}
-              {person.job}
-              {person.character}
+              <img
+                src={person.profile}
+                alt={person.name}
+                className={style.castImg}
+              />
+              <div className={style.role}>
+                <span style={{ fontWeight: 800 }} title={person.name}>
+                  {person.name}
+                </span>
+                <span
+                  title={
+                    person.job === 'Actor'
+                      ? person.character || person.job
+                      : person.job
+                  }
+                >
+                  {person.job === 'Actor'
+                    ? person.character || person.job
+                    : person.job}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -130,6 +165,7 @@ const MovieInfo = ({
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         movieId={movieId}
+        existingReviewId={movie?.existingReviewId}
       />
     </div>
   );

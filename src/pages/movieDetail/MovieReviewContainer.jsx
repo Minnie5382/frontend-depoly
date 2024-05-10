@@ -8,7 +8,7 @@ import { Link } from '@mui/material';
 const MovieReviewContainer = ({ movieId }) => {
   const { data, isLoading, error } = useQuery(
     ['reviews', movieId],
-    () => getReviewsByMovieId(movieId, 11),
+    () => getReviewsByMovieId(movieId),
     {
       keepPreviousData: true,
     }
@@ -17,9 +17,13 @@ const MovieReviewContainer = ({ movieId }) => {
   if (isLoading) return <div>로딩중...</div>;
   if (error) return <div>오류 발생{error.message}</div>;
 
-  const reviews = data.result ?? [];
-  const myReview = data.result.find((review) => review.isMyReview === true);
-  const otherReviews = data.result.filter((review) => !review.isMyReview);
+  const reviews = data?.data.result.reviews ?? [];
+  const myReview = data?.data.result.reviews.find(
+    (review) => review.isMyReview === true
+  );
+  const otherReviews = data?.data.result.reviews.filter(
+    (review) => !review.isMyReview
+  );
 
   return (
     <div className={style.reviewContainer}>
@@ -31,10 +35,10 @@ const MovieReviewContainer = ({ movieId }) => {
           {otherReviews.slice(0, 9).map((review) => (
             <MovieReview key={review.reviewId} {...review} />
           ))}
-          {otherReviews.length > 9 && (
+          {otherReviews.length >= 9 && (
             <div className={style.seeMore}>
               <Link href={`/movies/${movieId}/reviews`}>
-                평론 모아보기로 이동하기
+                <span>평론 모아보기</span>
               </Link>
             </div>
           )}

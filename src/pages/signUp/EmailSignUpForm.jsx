@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button, TextField, Stack } from '@mui/material';
 import { useMutation } from 'react-query';
 import {
@@ -49,6 +49,12 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     },
   };
 
+  const emailRegex = useMemo(
+    () =>
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+    []
+  );
+
   useEffect(() => {
     if (debouncedNickname) {
       checkNicknameDuplication({ nickname: debouncedNickname })
@@ -97,7 +103,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     } else {
       setEmailValid(false);
     }
-  }, [debouncedEmail]);
+  }, [debouncedEmail, emailRegex]);
 
   const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
     onSuccess: () => {
@@ -179,9 +185,6 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
       }
     }
   };
-
-  const emailRegex =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
   const validateField = (name, value) => {
     switch (name) {

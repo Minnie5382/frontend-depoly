@@ -9,19 +9,21 @@ import { getUserScraps } from '../../../../utils/user';
 const Scrap = () => {
   const { userId } = useParams();
 
-  const { data, isLoading, isError, error } = useQuery(
-    ['getUserScraps', userId],
+  const { data, isLoading, isError } = useQuery(
+    ['userScraps', userId],
     () => getUserScraps(userId),
     {
       keepPreviousData: true,
     }
   );
 
-  const scraps = data?.data?.result.scrapList || [];
-
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
-  const count = Math.ceil((scraps?.length || 0) / itemsPerPage);
+
+  const totalItems = data?.data?.result.totalScrapNum || 0;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const scraps = data?.data?.result.scrapList || [];
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -29,10 +31,15 @@ const Scrap = () => {
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dataToShow = (scraps || []).slice(startIndex, endIndex);
+  const dataToShow = scraps.slice(startIndex, endIndex);
 
-  if (isLoading) return <div>로딩중...</div>;
-  if (isError) return <div>에러! : {error.message}</div>;
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (isError) {
+    return <div>에러 발생!</div>;
+  }
 
   return (
     <div>
@@ -48,9 +55,9 @@ const Scrap = () => {
           />
         ))}
       </div>
-      {count > 1 && (
+      {totalPages > 1 && (
         <PaginationComponent
-          count={count}
+          count={totalPages}
           page={page}
           onChange={handleChange}
         />

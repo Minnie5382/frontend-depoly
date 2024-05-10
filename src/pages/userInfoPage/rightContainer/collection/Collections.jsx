@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
-import style from '../../UserInfoPage.module.css';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import CollectionCard from './CollectionCard';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import style from '../../UserInfoPage.module.css';
 import { getUserReviews } from '../../../../utils/user';
 
 const Collections = () => {
   const { userId } = useParams();
 
   const { data, isError, isLoading, refetch } = useQuery(
-    ['userScraps', userId],
-    () => getUserReviews(userId)
+    ['userCollections', userId],
+    () => getUserReviews(userId),
+    {
+      keepPreviousData: true,
+    }
   );
 
   const collectionsData = data?.data?.result?.collection || [];
-  const totalPages = data?.data?.result?.totalPageNum || 0;
+  const totalItems = data?.data?.result?.totalCollectionNum || 0;
   const itemsPerPage = 9;
   const [page, setPage] = useState(1);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -32,7 +36,7 @@ const Collections = () => {
   const dataToShow = collectionsData.slice(startIndex, endIndex);
 
   if (isLoading) {
-    return <div>로딩중...</div>;
+    return <div>로딩 중... </div>;
   }
 
   if (isError) {

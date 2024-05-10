@@ -12,28 +12,25 @@ import { moviesDetail } from '../../utils/movie';
 const MovieDetail = () => {
   const { movieId } = useParams();
 
-  const { data } = useQuery(
-    ['movieDetail', movieId],
-    () => moviesDetail(movieId),
-    {
-      keepPreviousData: true,
-    }
-  );
+  const {
+    data: movieData,
+    isLoading,
+    refetch,
+  } = useQuery(['movieDetail', movieId], () => moviesDetail(movieId), {
+    keepPreviousData: true,
+  });
 
-  const movieData = {
-    crewList: [{ name: 'test', profile: '', job: '', character: '' }],
-    poster: 'sf',
-  };
+  if (isLoading) <span>로딩 중..</span>;
 
   return (
     <div className={style.container}>
       <Header />
       <div className={style.mainContainer}>
         <div className={style.movieContent}>
-          <MoviePoster {...movieData} />
+          <MoviePoster movie={movieData?.data.result.movie} />
           <div className={style.rightContainer}>
-            <MovieInfo {...movieData} />
-            <MovieRatings {...movieData} />
+            <MovieInfo movie={movieData?.data.result} refetch={refetch} />
+            <MovieRatings movie={movieData?.data.result} />
           </div>
         </div>
         <MovieReviewContainer movieId={movieId} />

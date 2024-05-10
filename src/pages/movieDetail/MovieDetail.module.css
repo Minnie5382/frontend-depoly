@@ -1,6 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  color: var(--text-color);
 }
 
 .mainContainer {
@@ -15,7 +16,7 @@
   width: 100%;
   max-width: 390px;
   min-height: 460px;
-  background-color: #fff;
+  max-height: 460px;
   border-radius: 5px;
   overflow: hidden;
   margin-right: 20px;
@@ -45,15 +46,27 @@
   justify-content: space-between;
 }
 
+.titleBox {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
 .title {
   font-size: 2rem;
   font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.introductionBox {
+  height: 80px;
+  max-height: 80px;
+  overflow-y: auto;
 }
 
 .introduction {
   overflow-y: auto;
-  max-height: 120px;
-  min-height: 120px;
+  max-height: 80px;
 }
 
 .actions {
@@ -76,17 +89,40 @@
 }
 
 .castAndCrew {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .castList {
   display: flex;
   overflow-x: auto;
   gap: 10px;
+  margin-top: 5px;
 }
 
 .castItem {
+  width: 100px;
+  height: 155px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--text-color);
+  border-radius: 10px;
   white-space: nowrap;
+  color: #333;
+  border: 1px solid var(--text-color);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.castImg {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.role {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
 }
 
 .ratings {
@@ -111,6 +147,20 @@
 
 .reviewContainer::-webkit-scrollbar {
   display: none;
+}
+
+.seeMore {
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seeMore span {
+  background-color: var(--sub-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .cinephile,
