@@ -20,12 +20,13 @@ const ReviewModal = ({
 }) => {
   const [content, setContent] = useState(initialContent || '');
 
-  const apiFunction = reviewId || existingReviewId ? editReview : createReview;
+  const effectiveReviewId = reviewId || existingReviewId;
+  const apiFunction = effectiveReviewId ? editReview : createReview;
 
   const { mutate: submitReview, isLoading } = useMutation(
     (data) => {
-      if (reviewId || existingReviewId) {
-        return apiFunction(reviewId, data);
+      if (effectiveReviewId) {
+        return apiFunction(effectiveReviewId, data);
       }
       return apiFunction(data);
     },

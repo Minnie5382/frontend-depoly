@@ -1,5 +1,5 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { searchMovies } from '../../utils/movie';
 import Header from '../../components/header/Header';
@@ -12,7 +12,15 @@ function useQueryParams() {
 }
 
 const Search = () => {
+  const navigate = useNavigate();
   const query = useQueryParams().get('query');
+
+  useEffect(() => {
+    if (!query) {
+      navigate('/');
+      alert('검색어를 입력해주세요!');
+    }
+  }, [query, navigate]);
 
   const {
     data: moviesData,
