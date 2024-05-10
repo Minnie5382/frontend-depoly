@@ -37,7 +37,9 @@ const MovieReviewContainer = ({ movieId }) => {
           ))}
           {otherReviews.length >= 9 && (
             <div className={style.seeMore}>
-              <Link href={`/movies/${movieId}/reviews`}>이동하기!</Link>
+              <Link href={`/movies/${movieId}/reviews`}>
+                <span>평론 모아보기</span>
+              </Link>
             </div>
           )}
         </>

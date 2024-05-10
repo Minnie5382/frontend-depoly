@@ -12,13 +12,13 @@ import { moviesDetail } from '../../utils/movie';
 const MovieDetail = () => {
   const { movieId } = useParams();
 
-  const { data: movieData, isLoading } = useQuery(
-    ['movieDetail', movieId],
-    () => moviesDetail(movieId),
-    {
-      keepPreviousData: true,
-    }
-  );
+  const {
+    data: movieData,
+    isLoading,
+    refetch,
+  } = useQuery(['movieDetail', movieId], () => moviesDetail(movieId), {
+    keepPreviousData: true,
+  });
 
   if (isLoading) <span>로딩 중..</span>;
 
@@ -29,7 +29,7 @@ const MovieDetail = () => {
         <div className={style.movieContent}>
           <MoviePoster movie={movieData?.data.result.movie} />
           <div className={style.rightContainer}>
-            <MovieInfo movie={movieData?.data.result} />
+            <MovieInfo movie={movieData?.data.result} refetch={refetch} />
             <MovieRatings movie={movieData?.data.result} />
           </div>
         </div>

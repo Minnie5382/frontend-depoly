@@ -16,14 +16,15 @@ const ReviewModal = ({
   movieId,
   reviewId,
   content: initialContent = '',
+  existingReviewId,
 }) => {
   const [content, setContent] = useState(initialContent || '');
 
-  const apiFunction = reviewId ? editReview : createReview;
+  const apiFunction = reviewId || existingReviewId ? editReview : createReview;
 
   const { mutate: submitReview, isLoading } = useMutation(
     (data) => {
-      if (reviewId) {
+      if (reviewId || existingReviewId) {
         return apiFunction(reviewId, data);
       }
       return apiFunction(data);
@@ -43,7 +44,7 @@ const ReviewModal = ({
   const handleReviewSubmit = () => {
     if (content.trim()) {
       const reviewData = { movieId, content };
-      if (reviewId) {
+      if (reviewId || existingReviewId) {
         submitReview({ ...reviewData, reviewId });
       } else {
         submitReview(reviewData);
@@ -68,7 +69,7 @@ const ReviewModal = ({
       }}
     >
       <DialogTitle id='form-dialog-title' sx={{ color: 'var(--text-color)' }}>
-        {reviewId ? '평론 수정하기' : '평론 작성하기'} {reviewId}
+        {reviewId || existingReviewId ? '평론 수정하기' : '평론 작성하기'}
       </DialogTitle>
       <DialogContent>
         <Box sx={{ position: 'relative', width: '100%' }}>
@@ -76,7 +77,11 @@ const ReviewModal = ({
             autoFocus
             margin='dense'
             id={`review-${reviewId || 'new'}`}
-            label={reviewId ? '평론을 수정해보세요!' : '평론을 작성해보세요!'}
+            label={
+              reviewId || existingReviewId
+                ? '평론을 수정해보세요!'
+                : '평론을 작성해보세요!'
+            }
             type='text'
             fullWidth
             multiline

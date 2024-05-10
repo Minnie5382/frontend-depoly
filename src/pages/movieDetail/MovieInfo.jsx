@@ -9,7 +9,7 @@ import ReviewModal from '../../components/reviewModal/ReviewModal';
 import { likeMovie, unlikeMovie } from '../../utils/movie';
 import { createOrUpdateScore } from '../../utils/review';
 
-const MovieInfo = ({ movie }) => {
+const MovieInfo = ({ movie, refetch }) => {
   const movieId = movie?.movie.movieId;
   const [isModalOpen, setModalOpen] = useState(false);
   const [score, setScore] = useState(movie?.myScore || 0);
@@ -37,6 +37,12 @@ const MovieInfo = ({ movie }) => {
         return likeMovie(movieId);
       }
     },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    },
+
     {
       onError: (error) => {
         alert(`오류가 발생했습니다! : ${error.message}`);
@@ -80,11 +86,11 @@ const MovieInfo = ({ movie }) => {
   return (
     <div className={style.movieInfo}>
       <div className={style.topSection}>
-        <div>
+        <div className={style.titleBox}>
           <span className={style.title}>
             {movie?.movie.movieTitle} ({movie?.movie.releaseDate})
           </span>
-          <p className={style.genre}>
+          <span className={style.genre}>
             {movie?.movie.genre
               .map(
                 (genre, index, array) =>
@@ -94,7 +100,7 @@ const MovieInfo = ({ movie }) => {
             &nbsp;/&nbsp;
             {movie?.movie.originCountry}&nbsp;/&nbsp;
             {formatRuntime(movie?.runtime)}
-          </p>
+          </span>
         </div>
         <div className={style.actions}>
           <Rating
@@ -111,7 +117,7 @@ const MovieInfo = ({ movie }) => {
             }}
           />
           <span onClick={handleOpenModal} className={style.reviewButton}>
-            평론 남기기
+            {movie?.existingReviewId ? '평론 수정하기' : '평론 남기기'}
           </span>
           <IconButton
             onClick={handleLikeMovie}
@@ -122,7 +128,9 @@ const MovieInfo = ({ movie }) => {
           </IconButton>
         </div>
       </div>
-      <span className={style.introduction}>{movie?.introduction}</span>
+      <div className={style.introductionBox}>
+        <span className={style.introduction}>{movie?.introduction}</span>
+      </div>
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
         <div className={style.castList}>
@@ -133,9 +141,22 @@ const MovieInfo = ({ movie }) => {
                 alt={person.name}
                 className={style.castImg}
               />
-              <span>{person.name}</span>
-              <span>{person.job}</span>
-              <span>{person.character}</span>
+              <div className={style.role}>
+                <span style={{ fontWeight: 800 }} title={person.name}>
+                  {person.name}
+                </span>
+                <span
+                  title={
+                    person.job === 'Actor'
+                      ? person.character || person.job
+                      : person.job
+                  }
+                >
+                  {person.job === 'Actor'
+                    ? person.character || person.job
+                    : person.job}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -144,6 +165,7 @@ const MovieInfo = ({ movie }) => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         movieId={movieId}
+        existingReviewId={movie?.existingReviewId}
       />
     </div>
   );

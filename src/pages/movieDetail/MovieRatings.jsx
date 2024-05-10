@@ -7,6 +7,7 @@ const MovieRatings = ({ movie }) => {
     '.MuiRating-iconEmpty': {
       color: 'var(--text-color)',
     },
+    fontSize: '36px',
   };
 
   const [cinephileAvgScore, setCinephileAvgScore] = useState(0);
