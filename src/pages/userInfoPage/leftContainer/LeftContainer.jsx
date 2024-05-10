@@ -154,7 +154,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
           />
         ))}
       </Tabs>
-      <UserInfoModal isOpen={userInfoModalOpen} onClose={closeModal} />
+      <UserInfoModal
+        isOpen={userInfoModalOpen}
+        onClose={closeModal}
+        myId={myId}
+      />
     </div>
   );
 };
