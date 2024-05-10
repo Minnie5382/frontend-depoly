@@ -43,6 +43,10 @@ export const UserProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === 'user') {
         const newUser = JSON.parse(sessionStorage.getItem('user') || 'null');
