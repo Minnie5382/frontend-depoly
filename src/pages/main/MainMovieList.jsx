@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import style from './Main.module.css';
-import {
-  getDailyBoxOffice,
-  getUpcomingMovies,
-  getMoviesByGenre,
-} from '../../utils/movie';
 import MainMovie from './MainMovie';
 import { useQuery } from 'react-query';
-import axios from 'axios';
 
 const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
   const {
@@ -21,31 +15,32 @@ const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
   if (setGenre) {
     setGenre(movieData?.data.result.genre);
   }
+  const sliderRef = useRef(null);
 
-  if (isError) {
-    return (
-      <div className={style.movieContainer}>
-        <h2>{title}</h2>
-        <div className={style.movieBox}>
-          <button className={style.moveLeftBtn}>〈</button>
-          <div className={style.movieContainerInner}>
-            {' '}
-            <div>isError...</div>
-          </div>
-          <button className={style.moveRightBtn}>〉</button>
-        </div>
-      </div>
-    );
-  }
+  const scrollLeft = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollLeft -= 400; // 스크롤을 왼쪽으로 200px 이동
+    }
+  };
+
+  const scrollRight = () => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollLeft += 400; // 스크롤을 오른쪽으로 200px 이동
+    }
+  };
 
   return (
     <div className={style.movieContainer}>
       <h2>{title}</h2>
       <div className={style.movieBox}>
-        <button className={style.moveLeftBtn}>〈</button>
-        <div className={style.movieContainerInner}>
+        <button className={style.moveLeftBtn} onClick={scrollLeft}>
+          〈
+        </button>
+        <div className={style.movieContainerInner} ref={sliderRef}>
           {isLoading ? (
             <div>Loading...</div>
+          ) : isError ? (
+            <div>isError...</div>
           ) : querykey !== 'genre' ? (
             movieData?.data.result.map((data, index) => (
               <MainMovie key={index} {...data} type={title} />
@@ -56,7 +51,9 @@ const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
             ))
           )}
         </div>
-        <button className={style.moveRightBtn}>〉</button>
+        <button className={style.moveRightBtn} onClick={scrollRight}>
+          〉
+        </button>
       </div>
     </div>
   );
