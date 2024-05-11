@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const { data: authCheck } = useQuery('user', apiAuthCheck, {
-    enabled: !!sessionStorage.getItem('user'),
+    enabled: !!user,
     refetchInterval: 60000,
     retry: false,
     onSuccess: (data) => {
