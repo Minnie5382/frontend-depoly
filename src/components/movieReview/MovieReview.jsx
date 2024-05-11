@@ -40,7 +40,7 @@ const MovieReview = ({
             <div className={style.time}>{createdAt}</div>
           </div>
         </div>
-        <div className={style.stars}>★ {score}</div>
+        {score && <div className={style.stars}>★ {score}</div>}
       </div>
       <hr />
       <div className={style.content}>{content}</div>
