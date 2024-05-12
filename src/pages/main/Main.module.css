@@ -33,23 +33,15 @@
   flex: 1 1;
   padding: 0.5rem;
   box-sizing: border-box;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+}
+
+.slideWrapper {
   display: grid;
   grid-auto-columns: 23rem;
   grid-auto-flow: column;
-  overflow-x: auto;
-  overflow-y: hidden;
-  gap: 2vw;
-}
-.reviewContainerInner div:last-child {
-  position: relative;
-  flex: 1 1;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  display: grid;
-  grid-auto-columns: 9rem;
-  grid-auto-flow: column;
-  overflow-x: auto;
-  overflow-y: hidden;
   gap: 2vw;
 }
 
@@ -103,12 +95,10 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  /* display: grid;
-  grid-template-columns: auto;
-  grid-auto-flow: column; */
   overflow-x: auto;
   overflow-y: hidden;
   gap: 2vw;
+  scroll-behavior: smooth;
 }
 
 .moviePoster {
