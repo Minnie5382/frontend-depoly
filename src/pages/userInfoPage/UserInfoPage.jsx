@@ -19,8 +19,8 @@ const UserInfoPage = () => {
     {
       onSuccess: (data) => {
         const serverUser = data?.data?.result;
-
         if (
+          user &&
           serverUser &&
           (serverUser.userId !== user?.userId ||
             serverUser.nickname !== user?.nickname ||
