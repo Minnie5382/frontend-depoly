@@ -25,6 +25,16 @@ const MovieReviewContainer = ({ movieId }) => {
     (review) => !review.isMyReview
   );
 
+  document.addEventListener('DOMContentLoaded', function () {
+    const scrollContainer = document.querySelector('.reviewContainer');
+    scrollContainer.addEventListener('wheel', function (e) {
+      if (e.deltaY != 0) {
+        e.preventDefault();
+        scrollContainer.scrollLeft += e.deltaY + e.deltaX;
+      }
+    });
+  });
+
   return (
     <div className={style.reviewContainer}>
       {reviews.length === 0 ? (

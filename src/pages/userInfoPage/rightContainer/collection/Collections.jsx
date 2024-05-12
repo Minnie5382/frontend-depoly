@@ -47,13 +47,17 @@ const Collections = () => {
     <div>
       <h2 className={style.title}>컬렉션</h2>
       <div className={style.cardContainer}>
-        {dataToShow.map((data) => (
-          <CollectionCard
-            key={data.reviewId}
-            {...data}
-            collectionRefetch={collectionRefetch}
-          />
-        ))}
+        {dataToShow.length > 0 ? (
+          dataToShow.map((data) => (
+            <CollectionCard
+              key={data.reviewId}
+              {...data}
+              collectionRefetch={collectionRefetch}
+            />
+          ))
+        ) : (
+          <p>아직 작성된 평론이 존재하지 않습니다! 평론을 작성해보세요!</p>
+        )}
       </div>
       {totalPages > 1 && (
         <PaginationComponent

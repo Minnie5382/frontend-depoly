@@ -129,7 +129,9 @@ const MovieInfo = ({ movie, refetch }) => {
         </div>
       </div>
       <div className={style.introductionBox}>
-        <span className={style.introduction}>{movie?.introduction}</span>
+        <span className={style.introduction}>
+          {movie?.introduction || '아직 작성된 영화 소개글이 없습니다.'}
+        </span>
       </div>
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
