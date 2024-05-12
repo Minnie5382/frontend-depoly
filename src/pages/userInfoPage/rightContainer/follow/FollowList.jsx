@@ -18,7 +18,7 @@ const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
   const dataToShow = data.slice(startIndex, endIndex);
 
   const noDataMessage =
-    title === 'followers'
+    title === '팔로워'
       ? '아직 팔로워가 없습니다!'
       : '아직 팔로잉 중인 사용자가 없습니다!';
 
