@@ -13,7 +13,7 @@ const UserInfoPage = () => {
   const { user, login } = useUser();
   const { userId } = useParams();
 
-  const { data, isLoading, isError } = useQuery(
+  const { data, isLoading, isError, refetch } = useQuery(
     ['getMyPage', userId],
     () => getMyPage(userId),
     {
@@ -31,8 +31,16 @@ const UserInfoPage = () => {
           });
         }
       },
+      keepPreviousData: true,
     }
   );
+
+  const handleSetTab = (newTab) => {
+    if (newTab !== tab) {
+      setTab(newTab);
+      refetch();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -60,7 +68,7 @@ const UserInfoPage = () => {
     <div>
       <Header />
       <div className={style.container}>
-        <LeftContainer tab={tab} setTab={setTab} data={data} />
+        <LeftContainer tab={tab} setTab={handleSetTab} data={data} />
         <RightContainer tab={tab} />
       </div>
     </div>

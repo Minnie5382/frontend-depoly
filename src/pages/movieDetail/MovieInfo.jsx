@@ -8,11 +8,14 @@ import style from './MovieDetail.module.css';
 import ReviewModal from '../../components/reviewModal/ReviewModal';
 import { likeMovie, unlikeMovie } from '../../utils/movie';
 import { createOrUpdateScore } from '../../utils/review';
+import useConfirmLogin from '../../utils/useConfirmLogin';
 
 const MovieInfo = ({ movie, refetch }) => {
-  const movieId = movie?.movie.movieId;
   const [isModalOpen, setModalOpen] = useState(false);
   const [score, setScore] = useState(movie?.myScore || 0);
+
+  const movieId = movie?.movie.movieId;
+  const { confirmLogin } = useConfirmLogin();
 
   useEffect(() => {
     if (movie?.myScore !== undefined) {
@@ -24,7 +27,7 @@ const MovieInfo = ({ movie, refetch }) => {
     (score) => createOrUpdateScore({ movieId, score }),
     {
       onError: (error) => {
-        alert(`별점 업데이트 실패! : ${error.message}`);
+        alert(`별점 업데이트 실패!`);
       },
     }
   );
@@ -45,32 +48,38 @@ const MovieInfo = ({ movie, refetch }) => {
 
     {
       onError: (error) => {
-        alert(`오류가 발생했습니다! : ${error.message}`);
+        alert(`오류가 발생했습니다!`);
       },
     }
   );
 
   const handleLikeMovie = () => {
-    if (movie?.isScrap) {
-      if (window.confirm('정말 스크랩을 취소하실건가요?')) {
+    if (confirmLogin()) {
+      if (movie?.isScrap) {
+        if (window.confirm('정말 스크랩을 취소하실건가요?')) {
+          toggleScrap();
+        }
+      } else {
         toggleScrap();
       }
-    } else {
-      toggleScrap();
     }
   };
 
   const handleRatingChange = (event, newValue) => {
-    setScore(newValue);
-    if (newValue > 0) {
-      sendScore(newValue);
-    } else {
-      alert('0점은 평점에 반영되지 않습니다!');
+    if (confirmLogin()) {
+      setScore(newValue);
+      if (newValue > 0) {
+        sendScore(newValue);
+      } else {
+        alert('0점은 평점에 반영되지 않습니다!');
+      }
     }
   };
 
   const handleOpenModal = () => {
-    setModalOpen(true);
+    if (confirmLogin()) {
+      setModalOpen(true);
+    }
   };
 
   const handleCloseModal = () => {
