@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, TextField, Stack } from '@mui/material';
 import { useMutation } from 'react-query';
 import {
@@ -11,6 +11,11 @@ import { checkNicknameDuplication } from '../../utils/user';
 import style from './SignUp.module.css';
 import useDebounce from '../../utils/useDebounce';
 import { useNavigate } from 'react-router-dom';
+
+const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
+const emailRegex =
+  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W]).{8,}$/;
 
 const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   const navigate = useNavigate();
@@ -30,6 +35,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     password: '',
     confirmPassword: '',
   });
+
   const [emailSent, setEmailSent] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [authentication, setAuthentication] = useState(false);
@@ -49,14 +55,8 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     },
   };
 
-  const emailRegex = useMemo(
-    () =>
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
-    []
-  );
-
   useEffect(() => {
-    if (debouncedNickname) {
+    if (debouncedNickname && nicknameRegex.test(debouncedNickname)) {
       checkNicknameDuplication({ nickname: debouncedNickname })
         .then((response) => {
           if (!response.data.isSuccess) {
@@ -103,16 +103,16 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     } else {
       setEmailValid(false);
     }
-  }, [debouncedEmail, emailRegex]);
+  }, [debouncedEmail]);
 
   const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
     onSuccess: () => {
       setEmailSent(true);
       alert('인증 번호가 발송되었습니다.');
     },
-    onError: (error) => {
+    onError: () => {
       setEmailSent(false);
-      alert(`인증 번호 발송 실패! : ${error.message}`);
+      alert(`인증 번호 발송 실패!`);
     },
   });
 
@@ -125,7 +125,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         }));
         setAuthentication(true);
       },
-      onError: (error) => {
+      onError: () => {
         setErrors((prev) => ({
           ...prev,
           verificationCode: `인증 번호 확인 실패!`,
@@ -133,6 +133,39 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
         setAuthentication(false);
       },
     });
+
+  const { mutate: doSignUp, isLoading } = useMutation(signup, {
+    onSuccess: () => {
+      alert('회원가입이 성공적으로 완료되었습니다.');
+      navigate('/signin');
+    },
+    onError: () => {
+      alert(`회원가입 실패하였습니다.`);
+    },
+  });
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'nickname':
+        return nicknameRegex.test(value)
+          ? ''
+          : '닉네임에는 특수문자를 사용할 수 없습니다.';
+      case 'email':
+        return emailRegex.test(value) ? '' : '올바른 이메일을 입력해주세요.';
+      case 'verificationCode':
+        return value ? '' : '인증번호를 입력해주세요.';
+      case 'password':
+        return passwordRegex.test(value)
+          ? ''
+          : '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!';
+      case 'confirmPassword':
+        return value === formData.password
+          ? ''
+          : '비밀번호가 일치하지 않습니다.';
+      default:
+        return '';
+    }
+  };
 
   const handleSendVerificationEmail = () => {
     if (emailValid) {
@@ -153,70 +186,56 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
     }
   };
 
-  const { mutate: doSignUp, isLoading } = useMutation(signup, {
-    onSuccess: () => {
-      alert('회원가입이 성공적으로 완료되었습니다.');
-      navigate('/signin');
-    },
-    onError: (error) => {
-      alert(`회원가입 실패하였습니다. : ${error.message}`);
-    },
-  });
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요!');
-      return;
-    }
-    if (termsAgreed && privacyAgreed) {
-      const signUpData = {
-        email: formData.email,
-        password: formData.password,
-        nickname: formData.nickname,
-        isauthentication: authentication,
-      };
-      doSignUp(signUpData);
-    } else {
-      if (!authentication) {
-        alert('이메일 인증을 완료해주세요.');
-      } else {
-        alert('서비스 이용 약관 및 개인정보 수집에 동의해주세요.');
-      }
-    }
-  };
-
-  const validateField = (name, value) => {
-    switch (name) {
-      case 'nickname':
-        const nicknameRegex = /^[가-힣a-zA-Z0-9]+$/;
-        return nicknameRegex.test(value)
-          ? ''
-          : '닉네임에는 특수문자를 사용할 수 없습니다.';
-      case 'email':
-        return emailRegex.test(value) ? '' : '올바른 이메일을 입력해주세요.';
-      case 'verificationCode':
-        return value ? '' : '인증번호를 입력해주세요.';
-      case 'password':
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W]).{8,}$/;
-        return passwordRegex.test(value)
-          ? ''
-          : '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!';
-      case 'confirmPassword':
-        return value === formData.password
-          ? ''
-          : '비밀번호가 일치하지 않습니다.';
-      default:
-        return '';
-    }
-  };
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     const errorMessage = validateField(name, value);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!termsAgreed || !privacyAgreed) {
+      alert('서비스 이용 약관 및 개인정보 수집에 동의해주세요.');
+      return;
+    }
+
+    if (errors.nickname) {
+      alert('닉네임 중복 검사를 통과해야 합니다! 닉네임을 확인해주세요!');
+      return;
+    }
+
+    if (!emailValid) {
+      alert('이메일 중복 검사를 통과해야 합니다!');
+      return;
+    }
+
+    if (!authentication) {
+      alert('이메일 인증을 완료해주세요.');
+      return;
+    }
+
+    if (errors.password) {
+      alert(errors.password);
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다. 비밀번호를 확인해주세요!');
+      return;
+    }
+
+    const signUpData = {
+      email: formData.email,
+      password: formData.password,
+      nickname: formData.nickname,
+      isauthentication: authentication,
+    };
+
+    doSignUp(signUpData);
+  };
+
   return (
     <form onSubmit={handleSubmit} className={style.form}>
       <TextField

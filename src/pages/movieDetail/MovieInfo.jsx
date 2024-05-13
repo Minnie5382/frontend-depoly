@@ -26,7 +26,7 @@ const MovieInfo = ({ movie, refetch }) => {
   const { mutate: sendScore, isLoading: ratingLoading } = useMutation(
     (score) => createOrUpdateScore({ movieId, score }),
     {
-      onError: (error) => {
+      onError: () => {
         alert(`별점 업데이트 실패!`);
       },
     }
@@ -47,7 +47,7 @@ const MovieInfo = ({ movie, refetch }) => {
     },
 
     {
-      onError: (error) => {
+      onError: () => {
         alert(`오류가 발생했습니다!`);
       },
     }

@@ -18,8 +18,9 @@ const LeftContainer = ({ tab, setTab, data }) => {
 
   const open = Boolean(anchorEl);
   const myId = user?.result.userId || null;
+  const result = data?.data?.result;
 
-  const expPercentage = (data.data.result.exp / data.data.result.expMax) * 100;
+  const expPercentage = (result.exp / result.expMax) * 100;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,20 +55,17 @@ const LeftContainer = ({ tab, setTab, data }) => {
   });
 
   const tabInfo = {
-    collection: { label: '컬렉션', count: data?.data?.result?.collectionNum },
-    scrap: { label: '스크랩', count: data?.data?.result?.scrapNum },
-    following: { label: '팔로잉', count: data?.data?.result?.followingNum },
-    followers: { label: '팔로워', count: data?.data?.result?.followerNum },
+    collection: { label: '컬렉션', count: result?.collectionNum },
+    scrap: { label: '스크랩', count: result?.scrapNum },
+    following: { label: '팔로잉', count: result?.followingNum },
+    followers: { label: '팔로워', count: result?.followerNum },
   };
 
   return (
     <div className={style.leftContainer}>
       <div className={style.topBar}>
         {userId !== myId ? (
-          <FollowButton
-            userId={userId}
-            isFollowed={data?.data.result.isFollowed}
-          />
+          <FollowButton userId={userId} isFollowed={result.isFollowed} />
         ) : (
           <button className={style.settingBtn} onClick={handleClick}>
             <SettingsIcon />
@@ -98,20 +96,14 @@ const LeftContainer = ({ tab, setTab, data }) => {
         </div>
         <div className={style.userInfo}>
           <div>
-            <span>Lv.{data.data.result.level}</span>
-            <span className={style.userName}>{data.data.result.nickname}</span>
+            <span>Lv.{result.level}</span>
+            <span className={style.userName}>{result.nickname}</span>
           </div>
-          {data.data.result.isCertified && (
-            <span className={style.icon}>왕관</span>
-          )}
-          {data.data.result.isBad && <span className={style.icon}>해골</span>}
+          {result.isCertified && <span className={style.icon}>왕관</span>}
+          {result.isBad && <span className={style.icon}>해골</span>}
         </div>
-        <p
-          title={
-            data?.data.result.genreLabel.description || '데이터 표본 부족!'
-          }
-        >
-          {data.data.result.genreLabel.label || '데이터 표본이 부족합니다.'}
+        <p title={result.genreLabel.description || '데이터 표본 부족!'}>
+          {result.genreLabel.label || '데이터 표본이 부족합니다.'}
         </p>
         <LinearProgress
           variant='determinate'

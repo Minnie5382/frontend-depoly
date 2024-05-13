@@ -19,16 +19,18 @@ const MovieDetail = () => {
     keepPreviousData: true,
   });
 
+  const movie = movieData?.data.result;
+
   if (isLoading) <span>로딩 중..</span>;
 
   return (
     <div className={style.container}>
       <div className={style.mainContainer}>
         <div className={style.movieContent}>
-          <MoviePoster movie={movieData?.data.result.movie} />
+          <MoviePoster movie={movie?.movie} />
           <div className={style.rightContainer}>
-            <MovieInfo movie={movieData?.data.result} refetch={refetch} />
-            <MovieRatings movie={movieData?.data.result} />
+            <MovieInfo movie={movie} refetch={refetch} />
+            <MovieRatings movie={movie} />
           </div>
         </div>
         <MovieReviewContainer movieId={movieId} />

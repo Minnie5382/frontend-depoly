@@ -13,7 +13,7 @@ const AuthCheck = () => {
         login(response.data);
         navigate('/');
       })
-      .catch((error) => {
+      .catch(() => {
         navigate('/');
       });
   }, [navigate, login]);

@@ -24,11 +24,11 @@ const SignIn = () => {
             login(response.data);
             navigate('/');
           })
-          .catch((error) => {
+          .catch(() => {
             alert(`사용자 정보를 불러오는 데 실패했습니다`);
           });
       },
-      onError: (error) => {
+      onError: () => {
         alert(`로그인에 실패하였습니다.`);
       },
     }
