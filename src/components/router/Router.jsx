@@ -14,12 +14,20 @@ import Test from '../Test';
 import { UserProvider } from '../../utils/UserContext';
 import PublicRoute from '../../utils/PublicRoute';
 import AuthCheck from '../../pages/authCheck/AuthCheck';
+import Layout from '../layout/Layout';
 
 const Router = () => {
   return (
     <UserProvider>
       <Routes>
-        <Route path='/' element={<Main />} />
+        <Route
+          path='/'
+          element={
+            <Layout>
+              <Main />
+            </Layout>
+          }
+        />
         <Route
           path='/signin'
           element={
@@ -36,13 +44,62 @@ const Router = () => {
             </PublicRoute>
           }
         />
-        <Route path='/search' element={<Search />} />
-        <Route path='/movies/:movieId' element={<MovieDetail />} />
-        <Route path='/movies/:movieId/reviews' element={<MovieReviews />} />
-        <Route path='/hotReviews' element={<HotReviewsPage />} />
-        <Route path='/chattingList' element={<ChattingListPage />} />
-        <Route path='/userInfo/:userId' element={<UserInfoPage />} />
-        <Route path='/chattingRoom/*' element={<ChattingRoomPage />}>
+        <Route
+          path='/search'
+          element={
+            <Layout>
+              <Search />
+            </Layout>
+          }
+        />
+        <Route
+          path='/movies/:movieId'
+          element={
+            <Layout>
+              <MovieDetail />
+            </Layout>
+          }
+        />
+        <Route
+          path='/movies/:movieId/reviews'
+          element={
+            <Layout>
+              <MovieReviews />
+            </Layout>
+          }
+        />
+        <Route
+          path='/hotReviews'
+          element={
+            <Layout>
+              <HotReviewsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path='/chattingList'
+          element={
+            <Layout>
+              <ChattingListPage />
+            </Layout>
+          }
+        />
+        <Route
+          path='/userInfo/:userId'
+          element={
+            <Layout>
+              <UserInfoPage />
+            </Layout>
+          }
+        />
+        <Route
+          path='/chattingRoom/*'
+          element={
+            <Layout>
+              <ChattingRoomPage />
+            </Layout>
+          }
+        >
           <Route path=':roomId' element={<ChattingRoomPage />} />
         </Route>
         <Route path='/auth/check' element={<AuthCheck />} />

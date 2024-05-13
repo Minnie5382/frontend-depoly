@@ -32,7 +32,9 @@ const Footer = () => {
             backgroundColor: 'var(--sub-color)',
           }}
         >
-          <span>영화 데이터 제공 👉🏻</span>
+          <span style={{ color: 'var(--text-color)' }}>
+            영화 데이터 제공 👉🏻
+          </span>
           <img src={TMDBLogo} alt='TMDBLogo' style={{ width: 260 }} />
           <img src={koficLogo} alt='koficLogo' />
         </Box>

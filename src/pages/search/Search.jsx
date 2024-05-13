@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { searchMovies } from '../../utils/movie';
-import Header from '../../components/header/Header';
 import style from './Search.module.css';
 import MoviesList from './MoviesList';
 import ChatroomsList from './ChatroomsList';
@@ -40,7 +39,6 @@ const Search = () => {
 
   return (
     <div>
-      <Header />
       <div className={style.container}>
         <MoviesList
           movies={moviesData.data.result}

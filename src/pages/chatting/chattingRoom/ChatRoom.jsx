@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import style from './ChatRoom.module.css';
-import Header from '../../../components/header/Header';
 import ChatReportModal from './ChatReportModal';
 import ChatParticipantList from '../ChatParticipantList';
 import Popper from '@mui/material/Popper';
@@ -35,7 +34,6 @@ const ChattingRoomPage = () => {
 
   return (
     <div className={style.container}>
-      <Header />
       <div className={style.chatContainer}>
         <div className={style.chatTitleBox}>
           <div className={style.chatTitle}>
@@ -109,12 +107,12 @@ const ChattingRoomPage = () => {
           </div>
           <div className={style.chatInputBox}>
             <input
-              type="text"
+              type='text'
               className={style.chatInput}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <button className={style.sandBtn} type="submit">
+            <button className={style.sandBtn} type='submit'>
               ➤
             </button>
           </div>
@@ -129,7 +127,7 @@ const ChattingRoomPage = () => {
         <Popper
           open={listOpen}
           anchorEl={anchorEl}
-          placement="bottom-start"
+          placement='bottom-start'
           sx={{
             overflow: 'auto',
             height: 240,

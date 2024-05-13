@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import style from './ChattingListPage.module.css';
-import Header from '../../components/header/Header';
 import ChatCreateModal from './ChatCreateModal';
 
 const ChattingListPage = () => {
@@ -15,7 +14,6 @@ const ChattingListPage = () => {
   };
   return (
     <div className={style.container}>
-      <Header />
       <div className={style.chatContainer}>
         <div className={style.chatBox}>
           <div className={style.tableList}>

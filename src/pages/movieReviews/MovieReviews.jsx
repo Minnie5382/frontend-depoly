@@ -1,7 +1,6 @@
 import React from 'react';
 import MovieReview from '../../components/movieReview/MovieReview';
 import style from './MovieReviews.module.css';
-import Header from '../../components/header/Header';
 import { useParams } from 'react-router-dom';
 import { getReviewsByMovieId } from '../../utils/review';
 import useInfiniteScroll from '../../utils/useInfiniteScroll';
@@ -31,7 +30,6 @@ const MovieReviews = () => {
 
   return (
     <div className={style.container}>
-      <Header />
       <div className={style.reviewContainer}>
         <div className={style.topSection}>
           <span>평론 모아보기</span>
