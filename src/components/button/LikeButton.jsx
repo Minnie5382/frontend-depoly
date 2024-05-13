@@ -4,9 +4,12 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { useMutation } from 'react-query';
 import { likeReview, unlikeReview } from '../../utils/review';
+import useConfirmLogin from '../../utils/useConfirmLogin';
 
 const LikeButton = ({ reviewId, isLiked: initialLiked, collectionRefetch }) => {
   const [isLiked, setIsLiked] = useState(initialLiked);
+
+  const { confirmLogin } = useConfirmLogin();
 
   const { mutate, isLoading } = useMutation(
     () => (isLiked ? unlikeReview(reviewId) : likeReview(reviewId)),
@@ -19,7 +22,9 @@ const LikeButton = ({ reviewId, isLiked: initialLiked, collectionRefetch }) => {
   );
 
   const handleToggleLike = () => {
-    mutate();
+    if (confirmLogin()) {
+      mutate();
+    }
   };
 
   return (

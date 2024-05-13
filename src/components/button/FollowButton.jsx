@@ -3,6 +3,7 @@ import style from './FollowButton.module.css';
 import { useMutation } from 'react-query';
 import { followUser, unfollowUser } from '../../utils/user';
 import { useUser } from '../../utils/UserContext';
+import useConfirmLogin from '../../utils/useConfirmLogin';
 
 const FollowButton = ({
   userId,
@@ -12,6 +13,7 @@ const FollowButton = ({
 }) => {
   const [isFollowed, setIsFollowed] = useState(initialFollowed);
   const { user } = useUser();
+  const { confirmLogin } = useConfirmLogin();
 
   const { mutate, isLoading } = useMutation(
     () => (isFollowed ? unfollowUser(userId) : followUser(userId)),
@@ -25,10 +27,12 @@ const FollowButton = ({
   );
 
   const handleToggleFollow = () => {
-    if (userId !== user.result.userId) {
-      mutate();
-    } else {
-      alert('나 자신은 영원한 인생의 친구입니다.');
+    if (confirmLogin()) {
+      if (userId !== user.result.userId) {
+        mutate();
+      } else {
+        alert('나 자신은 영원한 인생의 친구입니다.');
+      }
     }
   };
 
