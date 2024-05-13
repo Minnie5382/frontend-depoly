@@ -17,13 +17,10 @@ const MovieReviewContainer = ({ movieId }) => {
   if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>에러 발생!</div>;
 
-  const reviews = data?.data.result.reviews ?? [];
-  const myReview = data?.data.result.reviews.find(
-    (review) => review.isMyReview === true
-  );
-  const otherReviews = data?.data.result.reviews.filter(
-    (review) => !review.isMyReview
-  );
+  const result = data?.data.result;
+  const reviews = result.reviews ?? [];
+  const myReview = result.reviews.find((review) => review.isMyReview === true);
+  const otherReviews = result.reviews.filter((review) => !review.isMyReview);
 
   document.addEventListener('DOMContentLoaded', function () {
     const scrollContainer = document.querySelector('.reviewContainer');

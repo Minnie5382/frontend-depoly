@@ -9,6 +9,8 @@ import { getUserReviews } from '../../../../utils/user';
 const Collections = () => {
   const { userId } = useParams();
 
+  const [page, setPage] = useState(1);
+
   const { data, isError, isLoading, refetch } = useQuery(
     ['userCollections', userId],
     () => getUserReviews(userId),
@@ -17,13 +19,14 @@ const Collections = () => {
     }
   );
 
-  const collectionsData = data?.data?.result?.collection || [];
-  const totalItems = data?.data?.result?.totalCollectionNum || 0;
+  const result = data?.data?.result;
+  const collectionsData = result?.collection || [];
+  const totalItems = result?.totalCollectionNum || 0;
+
   const itemsPerPage = 9;
-  const [page, setPage] = useState(1);
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const handleChange = (event, value) => {
+  const handleChange = (value) => {
     setPage(value);
   };
 

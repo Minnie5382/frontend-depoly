@@ -9,6 +9,8 @@ import { getUserScraps } from '../../../../utils/user';
 const Scrap = () => {
   const { userId } = useParams();
 
+  const [page, setPage] = useState(1);
+
   const { data, isLoading, isError } = useQuery(
     ['userScraps', userId],
     () => getUserScraps(userId),
@@ -18,12 +20,11 @@ const Scrap = () => {
   );
 
   const itemsPerPage = 10;
-  const [page, setPage] = useState(1);
 
-  const totalItems = data?.data?.result.totalScrapNum || 0;
+  const result = data?.data?.result;
+  const scraps = result.scrapList || [];
+  const totalItems = result.totalScrapNum || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  const scraps = data?.data?.result.scrapList || [];
 
   const handleChange = (event, value) => {
     setPage(value);
