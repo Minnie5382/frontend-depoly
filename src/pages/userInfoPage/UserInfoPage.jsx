@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Header from '../../components/header/Header';
 import LeftContainer from './leftContainer/LeftContainer';
 import RightContainer from './rightContainer/RightContainer';
 import style from './UserInfoPage.module.css';
@@ -45,7 +44,6 @@ const UserInfoPage = () => {
   if (isLoading) {
     return (
       <div>
-        <Header />
         <div className={style.container}>
           <p>로딩중..</p>
         </div>
@@ -56,7 +54,6 @@ const UserInfoPage = () => {
   if (isError) {
     return (
       <div>
-        <Header />
         <div className={style.container}>
           <p>존재하지 않는 사용자입니다.</p>
         </div>
@@ -66,7 +63,6 @@ const UserInfoPage = () => {
 
   return (
     <div>
-      <Header />
       <div className={style.container}>
         <LeftContainer tab={tab} setTab={handleSetTab} data={data} />
         <RightContainer tab={tab} />

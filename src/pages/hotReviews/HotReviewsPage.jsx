@@ -1,6 +1,5 @@
 import React from 'react';
 import style from './HotReviewsPage.module.css';
-import Header from '../../components/header/Header';
 import Review from '../../components/review/review';
 import { useQuery } from 'react-query';
 import { getHotReviews } from '../../utils/review';
@@ -50,7 +49,6 @@ const HotReviewsPage = () => {
   ];
   return (
     <div className={style.container}>
-      <Header />
       <div className={style.contentsContainer}>
         <div className={style.reviewsContainer}>
           <div className={style.title}>

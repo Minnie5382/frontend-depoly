@@ -1,7 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import style from './MovieDetail.module.css';
-import Header from '../../components/header/Header';
 import MoviePoster from './MoviePoster';
 import MovieInfo from './MovieInfo';
 import MovieRatings from './MovieRatings';
@@ -24,7 +23,6 @@ const MovieDetail = () => {
 
   return (
     <div className={style.container}>
-      <Header />
       <div className={style.mainContainer}>
         <div className={style.movieContent}>
           <MoviePoster movie={movieData?.data.result.movie} />
