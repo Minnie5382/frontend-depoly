@@ -46,3 +46,10 @@ a {
 ::-webkit-scrollbar-track {
   background: var(--border-color2);
 }
+
+.inner {
+  max-width: 1480px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+}
