@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import style from './Search.module.css';
+import { useHorizontalScroll } from '../../utils/useSideScroll';
 
 const MoviesList = ({ movies, query, isLoading, error }) => {
+  const scrollRef = useHorizontalScroll();
+
   return (
     <div>
       <h2>'{query}'에 대한 검색 결과</h2>
-      <div className={style.moviesContainer}>
+      <div className={style.moviesContainer} ref={scrollRef}>
         {movies?.movieList?.length > 0 ? (
           movies.movieList.map((movie) => (
             <Link

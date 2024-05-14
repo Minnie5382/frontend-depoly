@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import style from './Main.module.css';
 import MainMovie from './MainMovie';
 import { useQuery } from 'react-query';
+import { useHorizontalScroll } from '../../utils/useSideScroll';
 
 const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
   const {
@@ -11,21 +12,27 @@ const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
   } = useQuery(querykey, apiName, {
     refetchOnWindowFocus: false,
   });
-  console.log('dda', movieData);
+
   if (setGenre) {
     setGenre(movieData?.data.result.genre);
   }
-  const sliderRef = useRef(null);
+  const sliderRef = useHorizontalScroll();
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollLeft -= 400; // 스크롤을 왼쪽으로 200px 이동
+      sliderRef.current.scrollTo({
+        left: sliderRef.current.scrollLeft - 400,
+        behavior: 'smooth',
+      });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollLeft += 400; // 스크롤을 오른쪽으로 200px 이동
+      sliderRef.current.scrollTo({
+        left: sliderRef.current.scrollLeft + 400,
+        behavior: 'smooth',
+      });
     }
   };
 

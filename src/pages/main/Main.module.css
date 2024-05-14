@@ -35,7 +35,6 @@
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: smooth;
 }
 
 .slideWrapper {
@@ -98,7 +97,6 @@
   overflow-x: auto;
   overflow-y: hidden;
   gap: 2vw;
-  scroll-behavior: smooth;
 }
 
 .moviePoster {
