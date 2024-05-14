@@ -4,6 +4,7 @@ import HotReview from '../../components/hotReview/HotReview';
 import { useQuery } from 'react-query';
 import { getHotReviews } from '../../utils/review';
 import { useNavigate } from 'react-router-dom';
+import { useHorizontalScroll } from '../../utils/useSideScroll';
 
 const MainHotReviewList = () => {
   const navigate = useNavigate();
@@ -16,21 +17,25 @@ const MainHotReviewList = () => {
     withCredentials: false,
   });
 
-  const sliderRef = useRef(null);
+  const sliderRef = useHorizontalScroll();
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollLeft -= 200; // 스크롤을 왼쪽으로 200px 이동
+      sliderRef.current.scrollTo({
+        left: sliderRef.current.scrollLeft - 200,
+        behavior: 'smooth',
+      });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollLeft += 200; // 스크롤을 오른쪽으로 200px 이동
+      sliderRef.current.scrollTo({
+        left: sliderRef.current.scrollLeft + 200,
+        behavior: 'smooth',
+      });
     }
   };
-
-  console.log(reveiwData?.data.result.reviews);
 
   return (
     <div className={style.reviewContainer}>
