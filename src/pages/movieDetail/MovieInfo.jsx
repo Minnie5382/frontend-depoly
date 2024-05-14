@@ -65,7 +65,7 @@ const MovieInfo = ({ movie, refetch }) => {
     }
   };
 
-  const handleRatingChange = (event, newValue) => {
+  const handleRatingChange = (newValue) => {
     if (confirmLogin()) {
       setScore(newValue);
       if (newValue > 0) {
@@ -90,6 +90,14 @@ const MovieInfo = ({ movie, refetch }) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
     return `${hours > 0 ? `${hours}시간` : ''} ${remainingMinutes}분`.trim();
+  };
+
+  const getFilteredCrewList = (crewList = []) => {
+    const director = crewList.find((person) => person.job === 'Director');
+    const actors = crewList
+      .filter((person) => person.job === 'Actor')
+      .slice(0, 8);
+    return [director, ...actors].filter(Boolean);
   };
 
   return (
@@ -145,7 +153,7 @@ const MovieInfo = ({ movie, refetch }) => {
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
         <div className={style.castList}>
-          {movie?.crewList.map((person, index) => (
+          {getFilteredCrewList(movie?.crewList).map((person, index) => (
             <div key={index} className={style.castItem}>
               <img
                 src={person.profile}
