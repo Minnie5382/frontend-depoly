@@ -22,8 +22,8 @@ const Scrap = () => {
   const itemsPerPage = 10;
 
   const result = data?.data?.result;
-  const scraps = result.scrapList || [];
-  const totalItems = result.totalScrapNum || 0;
+  const scraps = result?.scrapList || [];
+  const totalItems = result?.totalScrapNum || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleChange = (event, value) => {
