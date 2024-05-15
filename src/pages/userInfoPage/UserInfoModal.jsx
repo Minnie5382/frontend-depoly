@@ -220,7 +220,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
   const kakaoDialogStyle = {
     '& .MuiDialog-paper': {
       width: '400px',
-      height: '501px',
+      height: '505px',
       bgcolor: 'var(--background-color)',
       padding: '20px',
     },
