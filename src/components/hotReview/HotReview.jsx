@@ -48,19 +48,21 @@ const HotReview = ({
               </span>
             </Link>
             <div className={style.reviewContent}>{reviewContent}</div>
-            <div className={style.likes}>
-              <LikeButton
-                isLiked={isLiked}
-                collectionRefetch={collectionRefetch}
-                reviewId={reviewId}
-              />
-              <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
+            <div className={style.btnBox}>
+              <div className={style.likes}>
+                <LikeButton
+                  isLiked={isLiked}
+                  collectionRefetch={collectionRefetch}
+                  reviewId={reviewId}
+                />
+                <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
+              </div>
+              {isMyReview && (
+                <span className={style.editControls}>
+                  <EditDeleteButtons reviewId={reviewId} />
+                </span>
+              )}
             </div>
-            {isMyReview && (
-              <span className={style.editControls}>
-                <EditDeleteButtons reviewId={reviewId} />
-              </span>
-            )}
           </div>
         </div>
       </div>

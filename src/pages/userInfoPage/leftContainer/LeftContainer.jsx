@@ -19,16 +19,17 @@ const LeftContainer = ({ tab, setTab, data }) => {
   const open = Boolean(anchorEl);
   const myId = user?.result.userId || null;
   const result = data?.data?.result;
-  const profileImg = user?.result.profileImage;
 
   const expPercentage = (result.exp / result.expMax) * 100;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const openModal = () => {
     if (userId !== myId) {
       alert('본인이 아닙니다.');
@@ -36,9 +37,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
       setUserInfoModalOpen(true);
     }
   };
+
   const closeModal = () => {
     setUserInfoModalOpen(false);
   };
+
   // const confirmAndUserDelete = () => {
   //   if (window.confirm('정말 탈퇴하시겠습니까?')) {
   //     // UserDelete();
@@ -77,8 +80,8 @@ const LeftContainer = ({ tab, setTab, data }) => {
           </button>
         )}
         <Menu
-          id="demo-positioned-menu"
-          aria-labelledby="demo-positioned-button"
+          id='demo-positioned-menu'
+          aria-labelledby='demo-positioned-button'
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -97,21 +100,21 @@ const LeftContainer = ({ tab, setTab, data }) => {
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src={`data:image/png;base64,${profileImg}`} alt="" />
+          <img src={result.userProfileImage} alt='' />
         </div>
         <div className={style.userInfo}>
           <div>
             <span>Lv.{result.level}</span>
             <span className={style.userName}>{result.nickname}</span>
           </div>
-          {result.isCertified && <span className={style.icon}>왕관</span>}
-          {result.isBad && <span className={style.icon}>해골</span>}
+          {result.isCertified && <span className={style.icon}>👑</span>}
+          {result.isBad && <span className={style.icon}>💀</span>}
         </div>
         <p title={result.genreLabel.description || '데이터 표본 부족!'}>
           {result.genreLabel.label || '데이터 표본이 부족합니다.'}
         </p>
         <LinearProgress
-          variant="determinate"
+          variant='determinate'
           value={expPercentage}
           style={{
             width: '100%',
@@ -122,11 +125,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
         />
       </div>
       <Tabs
-        orientation="vertical"
-        variant="scrollable"
+        orientation='vertical'
+        variant='scrollable'
         value={tab}
         onChange={(event, newValue) => setTab(newValue)}
-        aria-label="profile tabs"
+        aria-label='profile tabs'
       >
         {Object.entries(tabInfo).map(([key, { label, count }]) => (
           <Tab
@@ -134,9 +137,9 @@ const LeftContainer = ({ tab, setTab, data }) => {
             value={key}
             label={
               <Box sx={tabStyle(tab === key)}>
-                <Typography variant="body1">{label}</Typography>
+                <Typography variant='body1'>{label}</Typography>
                 <Typography
-                  variant="body1"
+                  variant='body1'
                   sx={{
                     backgroundColor: 'var(--point-color)',
                     color: 'white',

@@ -83,3 +83,8 @@
 .movieName::-webkit-scrollbar {
   height: 1px;
 }
+
+.btnBox {
+  display: flex;
+  justify-content: space-between;
+}
