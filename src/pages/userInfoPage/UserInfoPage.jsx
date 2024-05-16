@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LeftContainer from './leftContainer/LeftContainer';
 import RightContainer from './rightContainer/RightContainer';
 import style from './UserInfoPage.module.css';
 import { useQuery } from 'react-query';
 import { getMyPage, getUserInfo } from '../../utils/user';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
 
 const UserInfoPage = () => {
   const [tab, setTab] = useState('collection');
   const { user, login } = useUser();
   const { userId } = useParams();
+  const navigate = useNavigate();
 
   //유저인포가 달라지면 다시 호출해서 세션스토리지에 저장된 정보 갱신
   const { data, isLoading, isError, refetch } = useQuery(
@@ -34,6 +35,13 @@ const UserInfoPage = () => {
       keepPreviousData: true,
     }
   );
+
+  useEffect(() => {
+    if (data?.data?.result?.nickname === null) {
+      alert('탈퇴한 회원입니다!');
+      navigate('/');
+    }
+  }, [data, navigate]);
 
   const handleSetTab = (newTab) => {
     if (newTab !== tab) {

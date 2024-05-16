@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import style from './Search.module.css';
 import { useHorizontalScroll } from '../../utils/useSideScroll';
 
-const MoviesList = ({ movies, query, isLoading, error }) => {
+const MoviesList = ({ movies, query, isLoading }) => {
   const scrollRef = useHorizontalScroll();
 
   return (
     <div>
       <h2>'{query}'에 대한 검색 결과</h2>
       <div className={style.moviesContainer} ref={scrollRef}>
-        {movies?.length > 0 ? (
+        {isLoading ? (
+          <div className={style.statusMessage}>로딩중...</div>
+        ) : movies?.length > 0 ? (
           movies.map((movie) => (
             <Link
               to={`/movies/${movie.movieId}`}
@@ -31,12 +33,6 @@ const MoviesList = ({ movies, query, isLoading, error }) => {
           <div>'{query}'로 검색한 영화가 존재하지 않습니다!</div>
         )}
       </div>
-      {isLoading && <div className={style.statusMessage}>로딩중...</div>}
-      {error && (
-        <div className={style.statusMessage}>
-          오류가 발생했습니다!: {error.message}
-        </div>
-      )}
     </div>
   );
 };
