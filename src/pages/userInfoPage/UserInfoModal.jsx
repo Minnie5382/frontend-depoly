@@ -13,12 +13,14 @@ import {
   updateUserProfile,
 } from '../../utils/user';
 import { useMutation, useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
+import { deleteAccount } from '../../utils/auth';
 
 const UserInfoModal = ({ isOpen, onClose, myId }) => {
+  const navigte = useNavigate();
   const { userId } = useParams();
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const [file, setFile] = useState('첨부파일');
   const [realFile, setRealFile] = useState(null);
   const [preview, setPreview] = useState('');
@@ -60,6 +62,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
       }
     },
     enabled: id,
+    refetchOnWindowFocus: false,
   });
 
   const clickNicknameCheck = () => {
@@ -71,7 +74,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
           setNicknameValid(true);
         })
         .catch((error) => {
-          // console.log(error);
+          console.log(error);
           alert('중복된 닉네임이 존재합니다.');
         });
     }
@@ -140,6 +143,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     console.log(name, value);
     if (name === 'nickname') {
       setNicknameValid(false);
+      console.log(name, value);
     }
     setInfoData((prev) => ({ ...prev, [name]: value }));
     const errorMessage = validate(name, value);
@@ -189,7 +193,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
       } else {
         formData.append('userProfileImage', realFile);
       }
-      if (infoData.password === undefined) {
+      if (infoData.password === undefined || isKakaoLogin) {
         formData.append('password', '');
       } else {
         formData.append('password', infoData.password);
@@ -208,7 +212,14 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
       alert(errors.nicknameError || errors.passwordError);
     }
   };
-
+  const confirmAndUserDelete = () => {
+    if (window.confirm('정말 탈퇴하시겠습니까?')) {
+      deleteAccount();
+      alert('탈퇴가 완료되었습니다.');
+      logout();
+      navigte('/');
+    }
+  };
   const dialogStyle = {
     '& .MuiDialog-paper': {
       width: '400px',
@@ -248,7 +259,6 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
       bgcolor: 'var(--background-color)',
       m: 0,
       p: '1px 10px',
-      color: 'var(--text-color)',
     },
   };
 
@@ -256,7 +266,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     <Dialog
       open={isOpen}
       //   onClose={onClose}
-      aria-labelledby='form-dialog-title'
+      aria-labelledby="form-dialog-title"
       sx={isKakaoLogin ? kakaoDialogStyle : dialogStyle}
     >
       {isLoading ? (
@@ -266,15 +276,26 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
       ) : (
         <form
           onSubmit={myProfileSubmit}
-          method='post'
-          encType='multipart/form-data'
+          method="post"
+          encType="multipart/form-data"
         >
           <DialogTitle
-            id='form-dialog-title'
+            id="form-dialog-title"
             sx={{ color: 'var(--text-color)', padding: '8px 24px' }}
           >
             회원정보 변경
           </DialogTitle>
+          <Button
+            sx={{
+              position: 'absolute',
+              color: 'var(--border-color)',
+              right: '40px',
+              top: '30px',
+            }}
+            onClick={confirmAndUserDelete}
+          >
+            회원탈퇴
+          </Button>
           <DialogContent sx={{ p: '0px 24px' }}>
             <Box
               sx={{
@@ -290,15 +311,15 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
                 <img
                   className={style.userInfoImg}
                   src={preview ? preview : infoData.userProfileImage}
-                  alt=''
+                  alt=""
                 />
               </div>
               <div className={style.imgFileInput}>
                 <input
                   className={style.imgInput}
-                  type='file'
-                  id='file'
-                  accept='image/*'
+                  type="file"
+                  id="file"
+                  accept="image/*"
                   onChange={handleFileChange}
                   ref={imgRef}
                   hidden
@@ -316,23 +337,23 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
                 </button>
               </div>
             </Box>
-            <Stack direction='row' spacing={2} sx={{ margin: '5px 0px' }}>
+            <Stack direction="row" spacing={2} sx={{ margin: '5px 0px' }}>
               <TextField
-                name='nickname'
-                label='닉네임'
-                type='text'
-                variant='outlined'
+                name="nickname"
+                label="닉네임"
+                type="text"
+                variant="outlined"
                 helperText={errors.nickname || ' '}
                 error={!!errors.nickname}
                 defaultValue={infoData.nickname}
                 onChange={handleChange}
                 fullWidth
-                size='small'
+                size="small"
                 sx={textFieldStyle}
-                autoComplete='off'
+                autoComplete="off"
               />
               <Button
-                variant='contained'
+                variant="contained"
                 onClick={clickNicknameCheck}
                 sx={{ height: '40px', width: '103px', padding: '6px 12px' }}
               >
@@ -340,12 +361,12 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
               </Button>
             </Stack>
             <TextField
-              name='email'
-              label='이메일'
-              type='text'
-              variant='outlined'
+              name="email"
+              label="이메일"
+              type="text"
+              variant="outlined"
               fullWidth
-              size='small'
+              size="small"
               sx={textFieldStyle}
               helperText={' '}
               value={infoData.email}
@@ -358,32 +379,32 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
             ) : (
               <Stack>
                 <TextField
-                  name='password'
-                  label='비밀번호'
-                  type='password'
-                  variant='outlined'
+                  name="password"
+                  label="비밀번호"
+                  type="password"
+                  variant="outlined"
                   fullWidth
-                  size='small'
+                  size="small"
                   helperText={errors.password || ' '}
                   error={!!errors.password}
                   defaultValue={infoData.password}
                   onChange={handleChange}
                   sx={textFieldStyle}
-                  autoComplete='off'
+                  autoComplete="off"
                 />
                 <TextField
-                  name='confirmPassword'
-                  label='비밀번호 확인'
-                  type='password'
-                  variant='outlined'
+                  name="confirmPassword"
+                  label="비밀번호 확인"
+                  type="password"
+                  variant="outlined"
                   fullWidth
-                  size='small'
+                  size="small"
                   helperText={errors.confirmPassword || ' '}
                   error={!!errors.confirmPassword}
                   defaultValue={infoData.confirmPassword}
                   onChange={handleChange}
                   sx={textFieldStyle}
-                  autoComplete='off'
+                  autoComplete="off"
                 />
               </Stack>
             )}
@@ -397,7 +418,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
           >
             <Button
               onClick={onClose}
-              color='primary'
+              color="primary"
               sx={{
                 // right: '290px',
                 bgcolor: 'var(--sub-color)',
@@ -409,8 +430,8 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
               취소
             </Button>
             <Button
-              type='submit'
-              color='primary'
+              type="submit"
+              color="primary"
               sx={{
                 bgcolor: 'primary.main',
                 color: 'var(--text-color)',
