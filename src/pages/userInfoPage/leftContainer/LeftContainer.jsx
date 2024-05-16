@@ -42,13 +42,6 @@ const LeftContainer = ({ tab, setTab, data }) => {
     setUserInfoModalOpen(false);
   };
 
-  // const confirmAndUserDelete = () => {
-  //   if (window.confirm('정말 탈퇴하시겠습니까?')) {
-  //     // UserDelete();
-  //     handleClose();
-  //   }
-  // };
-
   const tabStyle = (isSelected) => ({
     display: 'flex',
     justifyContent: 'space-between',
@@ -80,8 +73,8 @@ const LeftContainer = ({ tab, setTab, data }) => {
           </button>
         )}
         <Menu
-          id='demo-positioned-menu'
-          aria-labelledby='demo-positioned-button'
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -100,7 +93,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src={result.userProfileImage} alt='' />
+          <img src={result.userProfileImage} alt="" />
         </div>
         <div className={style.userInfo}>
           <div>
@@ -114,7 +107,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
           {result.genreLabel.label || '데이터 표본이 부족합니다.'}
         </p>
         <LinearProgress
-          variant='determinate'
+          variant="determinate"
           value={expPercentage}
           style={{
             width: '100%',
@@ -125,11 +118,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
         />
       </div>
       <Tabs
-        orientation='vertical'
-        variant='scrollable'
+        orientation="vertical"
+        variant="scrollable"
         value={tab}
         onChange={(event, newValue) => setTab(newValue)}
-        aria-label='profile tabs'
+        aria-label="profile tabs"
       >
         {Object.entries(tabInfo).map(([key, { label, count }]) => (
           <Tab
@@ -137,9 +130,9 @@ const LeftContainer = ({ tab, setTab, data }) => {
             value={key}
             label={
               <Box sx={tabStyle(tab === key)}>
-                <Typography variant='body1'>{label}</Typography>
+                <Typography variant="body1">{label}</Typography>
                 <Typography
-                  variant='body1'
+                  variant="body1"
                   sx={{
                     backgroundColor: 'var(--point-color)',
                     color: 'white',

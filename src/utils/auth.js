@@ -36,3 +36,6 @@ export const logout = () => axios.post('/auth/logout');
 
 /** 권한 확인 */
 export const authCheck = () => axios.get('/auth/user/check');
+
+/** 회원 탈퇴 */
+export const deleteAccount = () => axios.post('/user/delete');
