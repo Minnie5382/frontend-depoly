@@ -65,7 +65,8 @@
 .title {
   font-size: 2rem;
   display: block;
-  width: 480px;
+  max-width: 490px;
+  margin-right: 10px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
