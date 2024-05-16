@@ -12,6 +12,7 @@ const UserInfoPage = () => {
   const { user, login } = useUser();
   const { userId } = useParams();
 
+  //유저인포가 달라지면 다시 호출해서 세션스토리지에 저장된 정보 갱신
   const { data, isLoading, isError, refetch } = useQuery(
     ['getMyPage', userId],
     () => getMyPage(userId),

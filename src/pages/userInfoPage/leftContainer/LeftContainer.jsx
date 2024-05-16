@@ -19,6 +19,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
   const open = Boolean(anchorEl);
   const myId = user?.result.userId || null;
   const result = data?.data?.result;
+  const profileImg = user?.result.profileImage;
 
   const expPercentage = (result.exp / result.expMax) * 100;
 
@@ -29,7 +30,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
     setAnchorEl(null);
   };
   const openModal = () => {
-    setUserInfoModalOpen(true);
+    if (userId !== myId) {
+      alert('본인이 아닙니다.');
+    } else {
+      setUserInfoModalOpen(true);
+    }
   };
   const closeModal = () => {
     setUserInfoModalOpen(false);
@@ -72,8 +77,8 @@ const LeftContainer = ({ tab, setTab, data }) => {
           </button>
         )}
         <Menu
-          id='demo-positioned-menu'
-          aria-labelledby='demo-positioned-button'
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
@@ -92,7 +97,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src='http://via.placeholder.com/170x170' alt='' />
+          <img src={`data:image/png;base64,${profileImg}`} alt="" />
         </div>
         <div className={style.userInfo}>
           <div>
@@ -106,7 +111,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
           {result.genreLabel.label || '데이터 표본이 부족합니다.'}
         </p>
         <LinearProgress
-          variant='determinate'
+          variant="determinate"
           value={expPercentage}
           style={{
             width: '100%',
@@ -117,11 +122,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
         />
       </div>
       <Tabs
-        orientation='vertical'
-        variant='scrollable'
+        orientation="vertical"
+        variant="scrollable"
         value={tab}
         onChange={(event, newValue) => setTab(newValue)}
-        aria-label='profile tabs'
+        aria-label="profile tabs"
       >
         {Object.entries(tabInfo).map(([key, { label, count }]) => (
           <Tab
@@ -129,9 +134,9 @@ const LeftContainer = ({ tab, setTab, data }) => {
             value={key}
             label={
               <Box sx={tabStyle(tab === key)}>
-                <Typography variant='body1'>{label}</Typography>
+                <Typography variant="body1">{label}</Typography>
                 <Typography
-                  variant='body1'
+                  variant="body1"
                   sx={{
                     backgroundColor: 'var(--point-color)',
                     color: 'white',
