@@ -19,16 +19,17 @@ const LeftContainer = ({ tab, setTab, data }) => {
   const open = Boolean(anchorEl);
   const myId = user?.result.userId || null;
   const result = data?.data?.result;
-  const profileImg = user?.result.profileImage;
 
   const expPercentage = (result.exp / result.expMax) * 100;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const openModal = () => {
     if (userId !== myId) {
       alert('본인이 아닙니다.');
@@ -36,9 +37,11 @@ const LeftContainer = ({ tab, setTab, data }) => {
       setUserInfoModalOpen(true);
     }
   };
+
   const closeModal = () => {
     setUserInfoModalOpen(false);
   };
+
   // const confirmAndUserDelete = () => {
   //   if (window.confirm('정말 탈퇴하시겠습니까?')) {
   //     // UserDelete();
@@ -97,7 +100,7 @@ const LeftContainer = ({ tab, setTab, data }) => {
       </div>
       <div className={style.userContainer}>
         <div className={style.userImg}>
-          <img src={`data:image/png;base64,${profileImg}`} alt='' />
+          <img src={result.userProfileImage} alt='' />
         </div>
         <div className={style.userInfo}>
           <div>
