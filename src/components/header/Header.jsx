@@ -74,8 +74,8 @@ const Header = () => {
               />
               <span>{`Lv.${user.result.level}`}</span>
               <span className={style.myName}> {user.result.nickname} </span>
-              {user.isCertified && <span className={style.icon}>왕관</span>}
-              {user.isBad && <span className={style.icon}>해골</span>}
+              {user.isCertified && <span className={style.icon}>👑</span>}
+              {user.isBad && <span className={style.icon}>💀</span>}
             </button>
           </div>
         ) : (

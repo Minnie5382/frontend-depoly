@@ -5,8 +5,8 @@
   flex-direction: row;
   color: var(--text-color);
 }
+
 .reviewBox {
-  min-width: 10rem;
   width: 23rem;
   min-height: 11rem;
   border: 1px solid var(--border-color);
@@ -16,7 +16,7 @@
 }
 
 .moviePoster {
-  width: 120px;
+  width: 130px;
   height: 100%;
   object-fit: cover;
   border-radius: 10px 0px 0px 10px;
@@ -24,9 +24,8 @@
 }
 
 .movieReview {
-  margin: 15px;
+  padding: 10px;
   width: 222px;
-  height: 7rem;
 }
 
 .divisionLine {
@@ -38,19 +37,26 @@
 .nameSpan {
   display: flex;
   justify-content: space-between;
-}
-
-.contentBox {
-  position: relative;
-  padding: 3px;
+  align-items: center;
+  font-size: 20px;
 }
 
 .reviewContent {
   word-wrap: break-word;
   white-space: normal;
-  height: 67px;
+  height: 92px;
   overflow-y: auto;
   font-size: small;
+  margin-top: 4px;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+}
+
+.stars {
+  font-size: 20px;
 }
 
 ::-webkit-scrollbar {
@@ -76,15 +82,4 @@
 
 .movieName::-webkit-scrollbar {
   height: 1px;
-}
-
-.likeCount {
-  /* white-space: nowrap; */
-  /* float: inline-end; */
-  position: absolute;
-  /* bottom: 0; */
-  bottom: -1.7rem;
-  right: 0.1rem;
-  /* top: 3px; */
-  /* font-size: small; */
 }

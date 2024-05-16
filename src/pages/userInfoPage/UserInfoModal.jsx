@@ -38,7 +38,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
   useEffect(() => {
     getUserProfile()
       .then((res) => {
-        console.log(res.data?.result);
+        // console.log(res.data?.result);
         setInfoData({
           userProfileImage: res.data?.result.userProfileImage,
           nickname: res.data?.result.nickname,
@@ -48,7 +48,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
         setOriginalImg(res.data?.result.userProfileImage);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         alert('프로필 정보를 가져올 수 없습니다.');
       });
     // reviewImg();
@@ -58,12 +58,12 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     if (nicknameRegex.test) {
       checkNicknameDuplication({ nickname: infoData.nickname })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           alert('중복 확인 완료!');
           setNicknameValid(true);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           alert('중복된 닉네임이 존재합니다.');
         });
     }
@@ -131,7 +131,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
+    // console.log(name, value);
     setInfoData((prev) => ({ ...prev, [name]: value }));
     const errorMessage = validate(name, value);
     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
@@ -141,11 +141,11 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     onSuccess: () => {
       alert('정보 변경이 성공적으로 완료되었습니다.');
       navigate('/userInfo');
-      console.log(doEdit);
+      // console.log(doEdit);
     },
     onError: (error) => {
       alert(`정보변경이 실패하였습니다. : ${error.message}`);
-      console.log(doEdit.value);
+      // console.log(doEdit.value);
     },
   });
 
@@ -169,7 +169,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
         nickname: infoData.nickname,
       };
       doEdit(data);
-      console.log(doEdit);
+      // console.log(doEdit);
     }
   };
 
@@ -214,16 +214,16 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     <Dialog
       open={isOpen}
       //   onClose={onClose}
-      aria-labelledby="form-dialog-title"
+      aria-labelledby='form-dialog-title'
       sx={dialogStyle}
     >
       <form
         onSubmit={myProfileSubmit}
-        method="post"
-        encType="multipart/form-data"
+        method='post'
+        encType='multipart/form-data'
       >
         <DialogTitle
-          id="form-dialog-title"
+          id='form-dialog-title'
           sx={{ color: 'var(--text-color)', padding: '8px 24px' }}
         >
           회원정보 변경
@@ -242,14 +242,14 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
             <img
               className={style.userInfoImg}
               src={preview ? preview : infoData.userProfileImage}
-              alt=""
+              alt=''
             />
             <div className={style.imgFileInput}>
               <input
                 className={style.imgInput}
-                type="file"
-                id="file"
-                accept="image/*"
+                type='file'
+                id='file'
+                accept='image/*'
                 onChange={handleFileChange}
                 ref={imgRef}
                 hidden
@@ -267,23 +267,23 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
               </button>
             </div>
           </Box>
-          <Stack direction="row" spacing={2} sx={{ margin: '5px 0px' }}>
+          <Stack direction='row' spacing={2} sx={{ margin: '5px 0px' }}>
             <TextField
-              name="nickname"
-              label="닉네임"
-              type="text"
-              variant="outlined"
+              name='nickname'
+              label='닉네임'
+              type='text'
+              variant='outlined'
               helperText={errors.nickname || ' '}
               error={!!errors.nickname}
               defaultValue={infoData.nickname}
               onChange={handleChange}
               fullWidth
-              size="small"
+              size='small'
               sx={textFieldStyle}
-              autoComplete="off"
+              autoComplete='off'
             />
             <Button
-              variant="contained"
+              variant='contained'
               onClick={clickNicknameCheck}
               sx={{ height: '40px', width: '103px', padding: '6px 12px' }}
             >
@@ -291,12 +291,12 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
             </Button>
           </Stack>
           <TextField
-            name="email"
-            label="이메일"
-            type="text"
-            variant="outlined"
+            name='email'
+            label='이메일'
+            type='text'
+            variant='outlined'
             fullWidth
-            size="small"
+            size='small'
             sx={textFieldStyle}
             helperText={' '}
             value={infoData.email}
@@ -305,32 +305,32 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
             }}
           />
           <TextField
-            name="password"
-            label="비밀번호"
-            type="password"
-            variant="outlined"
+            name='password'
+            label='비밀번호'
+            type='password'
+            variant='outlined'
             fullWidth
-            size="small"
+            size='small'
             helperText={errors.password || ' '}
             error={!!errors.password}
             defaultValue={infoData.password}
             onChange={handleChange}
             sx={textFieldStyle}
-            autoComplete="off"
+            autoComplete='off'
           />
           <TextField
-            name="confirmPassword"
-            label="비밀번호 확인"
-            type="password"
-            variant="outlined"
+            name='confirmPassword'
+            label='비밀번호 확인'
+            type='password'
+            variant='outlined'
             fullWidth
-            size="small"
+            size='small'
             helperText={errors.confirmPassword || ' '}
             error={!!errors.confirmPassword}
             defaultValue={infoData.confirmPassword}
             onChange={handleChange}
             sx={textFieldStyle}
-            autoComplete="off"
+            autoComplete='off'
           />
         </DialogContent>
         <DialogActions
@@ -342,7 +342,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
         >
           <Button
             onClick={onClose}
-            color="primary"
+            color='primary'
             sx={{
               // right: '290px',
               bgcolor: 'var(--sub-color)',
@@ -354,8 +354,8 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
             취소
           </Button>
           <Button
-            type="submit"
-            color="primary"
+            type='submit'
+            color='primary'
             sx={{
               bgcolor: 'primary.main',
               color: 'var(--text-color)',

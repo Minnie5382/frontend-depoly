@@ -33,8 +33,8 @@ const FollowCard = ({
         <span className={style.level}>Lv.{level}</span>
         <div className={style.nameAndIcon} onClick={handleUserClick}>
           <span className={style.name}>{nickname}</span>
-          {isCertified && <span className={style.icon}>왕관</span>}
-          {isBad && <span className={style.icon}>해골</span>}
+          {isCertified && <span className={style.icon}>👑</span>}
+          {isBad && <span className={style.icon}>💀</span>}
         </div>
         <FollowButton
           isFollowed={isFollowed}

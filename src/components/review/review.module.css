@@ -2,32 +2,31 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: row;
+
   color: var(--text-color);
 }
+
 .reviewBox {
   width: 100%;
-  min-width: 40rem;
-  min-height: 18rem;
+  height: 290px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
   display: flex;
   background-color: var(--sub-color);
   margin: 10px;
+  box-sizing: border-box;
 }
 
 .moviePoster {
-  width: auto;
-  max-width: 20%;
+  width: 196px;
   height: 100%;
   object-fit: cover;
   border-radius: 10px 0px 0px 10px;
 }
 
 .movieReview {
-  margin: 15px;
+  padding: 20px;
   width: 100%;
-  height: 15rem;
 }
 
 .divisionLine {
@@ -54,23 +53,25 @@
   font-size: larger;
 }
 .movieStar {
+  font-size: 20px;
 }
 .contentBox {
   position: relative;
-  /* padding: 3px; */
 }
-.contentBox > span {
-  padding: 10px;
+
+.contentBox > a > span {
+  margin-top: 10px;
   font-size: large;
+  font-weight: 800;
 }
 
 .reviewContent {
   word-wrap: break-word;
   white-space: normal;
-  height: 155px;
+  height: 150px;
   overflow-y: auto;
   font-size: medium;
-  margin: 10px;
+  margin-top: 10px;
 }
 
 ::-webkit-scrollbar {

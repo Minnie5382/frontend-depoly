@@ -36,9 +36,14 @@
   gap: 5px;
 }
 
+.level {
+  font-weight: 800;
+}
+
 .stars {
   font-size: 20px;
 }
+
 .content {
   flex-grow: 1;
   overflow-y: auto;
