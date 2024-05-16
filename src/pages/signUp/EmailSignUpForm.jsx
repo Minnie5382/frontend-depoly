@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, TextField, Stack } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Stack,
+  Backdrop,
+  CircularProgress,
+  Modal,
+  Box,
+} from '@mui/material';
 import { useMutation } from 'react-query';
 import {
   signup,
@@ -39,6 +47,8 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   const [emailSent, setEmailSent] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [authentication, setAuthentication] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const debouncedEmail = useDebounce(formData.email, 500);
   const debouncedNickname = useDebounce(formData.nickname, 500);
@@ -106,12 +116,17 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   }, [debouncedEmail]);
 
   const { mutate: sendVerificationEmail } = useMutation(verifyEmail, {
+    onMutate: () => {
+      setIsSendingEmail(true);
+    },
     onSuccess: () => {
       setEmailSent(true);
-      alert('인증 번호가 발송되었습니다.');
+      setIsSendingEmail(false);
+      setShowSuccessModal(true);
     },
     onError: () => {
       setEmailSent(false);
+      setIsSendingEmail(false);
       alert(`인증 번호 발송 실패!`);
     },
   });
@@ -237,120 +252,137 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={style.form}>
-      <TextField
-        name='nickname'
-        label='닉네임'
-        type='text'
-        variant='outlined'
-        fullWidth
-        size='small'
-        required
-        sx={inputTheme}
-        value={formData.nickname}
-        error={!!errors.nickname}
-        helperText={errors.nickname || ' '}
-        onChange={handleChange}
-        autoComplete='off'
-      />
-      <Stack direction='row' spacing={1} sx={{ minHeight: '56px' }}>
+    <>
+      <form onSubmit={handleSubmit} className={style.form}>
         <TextField
-          name='email'
-          label='이메일'
-          type='email'
-          variant='outlined'
-          fullWidth
-          required
-          size='small'
-          sx={inputTheme}
-          value={formData.email}
-          error={!!errors.email}
-          helperText={errors.email || ' '}
-          onChange={handleChange}
-          autoComplete='off'
-          InputProps={{
-            readOnly: authentication,
-          }}
-        />
-        <Button
-          variant='contained'
-          sx={{ height: '40px' }}
-          onClick={handleSendVerificationEmail}
-          disabled={isCheckingCode || authentication}
-        >
-          인증
-        </Button>
-      </Stack>
-      <Stack direction='row' spacing={1} sx={{ minHeight: '56px' }}>
-        <TextField
-          name='verificationCode'
-          label='인증번호 입력'
+          name='nickname'
+          label='닉네임'
           type='text'
           variant='outlined'
           fullWidth
           size='small'
           required
           sx={inputTheme}
-          value={formData.verificationCode}
-          error={!!errors.verificationCode}
-          helperText={
-            authentication
-              ? formData.verificationCode
-              : errors.verificationCode || ' '
-          }
+          value={formData.nickname}
+          error={!!errors.nickname}
+          helperText={errors.nickname || ' '}
           onChange={handleChange}
-          readOnly={authentication}
+          autoComplete='off'
+        />
+        <Stack direction='row' spacing={1} sx={{ minHeight: '56px' }}>
+          <TextField
+            name='email'
+            label='이메일'
+            type='email'
+            variant='outlined'
+            fullWidth
+            required
+            size='small'
+            sx={inputTheme}
+            value={formData.email}
+            error={!!errors.email}
+            helperText={errors.email || ' '}
+            onChange={handleChange}
+            autoComplete='off'
+            InputProps={{
+              readOnly: authentication,
+            }}
+          />
+          <Button
+            variant='contained'
+            sx={{ height: '40px' }}
+            onClick={handleSendVerificationEmail}
+            disabled={isCheckingCode || authentication || isSendingEmail}
+          >
+            인증
+          </Button>
+        </Stack>
+        <Stack direction='row' spacing={1} sx={{ minHeight: '56px' }}>
+          <TextField
+            name='verificationCode'
+            label='인증번호 입력'
+            type='text'
+            variant='outlined'
+            fullWidth
+            size='small'
+            required
+            sx={inputTheme}
+            value={formData.verificationCode}
+            error={!!errors.verificationCode}
+            helperText={
+              authentication
+                ? formData.verificationCode
+                : errors.verificationCode || ' '
+            }
+            onChange={handleChange}
+            readOnly={authentication}
+            autoComplete='off'
+          />
+          <Button
+            variant='contained'
+            sx={{ height: '40px' }}
+            onClick={handleCheckVerificationCode}
+            disabled={isCheckingCode || authentication}
+          >
+            확인
+          </Button>
+        </Stack>
+        <TextField
+          name='password'
+          label='비밀번호'
+          type='password'
+          variant='outlined'
+          fullWidth
+          size='small'
+          required
+          sx={inputTheme}
+          value={formData.password}
+          error={!!errors.password}
+          helperText={errors.password || ' '}
+          onChange={handleChange}
+          autoComplete='off'
+        />
+        <TextField
+          name='confirmPassword'
+          label='비밀번호 확인'
+          type='password'
+          variant='outlined'
+          fullWidth
+          size='small'
+          required
+          sx={inputTheme}
+          value={formData.confirmPassword}
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword || ' '}
+          onChange={handleChange}
           autoComplete='off'
         />
         <Button
+          type='submit'
           variant='contained'
+          fullWidth
           sx={{ height: '40px' }}
-          onClick={handleCheckVerificationCode}
-          disabled={isCheckingCode || authentication}
+          disabled={isLoading}
         >
-          확인
+          {isLoading ? '처리 중...' : '회원가입'}
         </Button>
-      </Stack>
-      <TextField
-        name='password'
-        label='비밀번호'
-        type='password'
-        variant='outlined'
-        fullWidth
-        size='small'
-        required
-        sx={inputTheme}
-        value={formData.password}
-        error={!!errors.password}
-        helperText={errors.password || ' '}
-        onChange={handleChange}
-        autoComplete='off'
-      />
-      <TextField
-        name='confirmPassword'
-        label='비밀번호 확인'
-        type='password'
-        variant='outlined'
-        fullWidth
-        size='small'
-        required
-        sx={inputTheme}
-        value={formData.confirmPassword}
-        error={!!errors.confirmPassword}
-        helperText={errors.confirmPassword || ' '}
-        onChange={handleChange}
-        autoComplete='off'
-      />
-      <Button
-        type='submit'
-        variant='contained'
-        fullWidth
-        sx={{ height: '40px' }}
-        disabled={isLoading}
-      >
-        {isLoading ? '처리 중...' : '회원가입'}
-      </Button>
-    </form>
+      </form>
+      <Backdrop open={isSendingEmail} style={{ zIndex: 1200 }}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+      <Modal open={showSuccessModal} onClose={() => setShowSuccessModal(false)}>
+        <Box className={style.modal}>
+          <h2>인증 메일 발송 완료</h2>
+          <p>인증 번호가 발송되었습니다!</p>
+          <Button
+            onClick={() => setShowSuccessModal(false)}
+            variant='contained'
+          >
+            확인
+          </Button>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

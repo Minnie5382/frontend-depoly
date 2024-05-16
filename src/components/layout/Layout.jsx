@@ -5,10 +5,12 @@ import '../../index.css';
 
 const Layout = ({ children }) => {
   return (
-    <div className='inner'>
+    <div>
       <Header />
-      <>{children}</>
-      <Footer />
+      <div className='inner'>
+        <>{children}</>
+        <Footer />
+      </div>
     </div>
   );
 };
