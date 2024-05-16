@@ -10,8 +10,8 @@ const MoviesList = ({ movies, query, isLoading, error }) => {
     <div>
       <h2>'{query}'에 대한 검색 결과</h2>
       <div className={style.moviesContainer} ref={scrollRef}>
-        {movies?.movieList?.length > 0 ? (
-          movies.movieList.map((movie) => (
+        {movies?.length > 0 ? (
+          movies.map((movie) => (
             <Link
               to={`/movies/${movie.movieId}`}
               key={movie.movieId}

@@ -1,28 +1,68 @@
 import React from 'react';
 import style from './review.module.css';
-import logo from '../../assets/logo.png';
+import LikeButton from '../button/LikeButton';
+import { Link } from 'react-router-dom';
+import { useUser } from '../../utils/UserContext';
+import EditDeleteButtons from '../button/EditDeleteButtons';
 
-const Review = ({ moviePoster, movieName, reviewer, star, content, like }) => {
+const Review = ({
+  moviePoster,
+  movieTitle,
+  level,
+  reviewWriterNickname,
+  reviewScore,
+  reviewContent,
+  isLiked,
+  collectionRefetch,
+  reviewId,
+  likeNumber,
+  movieId,
+  reviewWriterId,
+}) => {
+  const { user } = useUser();
+  const isMyReview = user?.result?.userId === reviewWriterId ? true : false;
+
   return (
     <div className={style.container}>
       <div className={style.reviewBox}>
-        <img className={style.moviePoster} src={logo} />
+        <Link to={`/movies/${movieId}`}>
+          <img
+            className={style.moviePoster}
+            src={moviePoster}
+            alt={moviePoster}
+          />
+        </Link>
         <div className={style.movieReview}>
           <div className={style.nameSpan}>
-            <span className={style.movieName}>
-              {movieName}
-              어바웃타임
-            </span>
-            <span className={style.movieStar}>{star}⭐️⭐️⭐️⭐️⭐️</span>
+            <Link to={`/movies/${movieId}`}>
+              <span className={style.movieName}>{movieTitle}</span>
+            </Link>
+            <span className={style.movieStar}>★&nbsp;{reviewScore}</span>
           </div>
           <div className={style.divisionLine} />
           <div className={style.contentBox}>
-            <span>{reviewer}글쓴이</span>
-            <div className={style.reviewContent}>{content}</div>
-            <div className={style.likeCount}>👍100{like}</div>
+            <Link to={`/userinfo/${reviewWriterId}`}>
+              <span>
+                Lv.{level}&nbsp;
+                {reviewWriterNickname}
+              </span>
+            </Link>
+            <div className={style.reviewContent}>{reviewContent}</div>
+            <div className={style.likes}>
+              <LikeButton
+                isLiked={isLiked}
+                collectionRefetch={collectionRefetch}
+                reviewId={reviewId}
+              />
+              <span style={{ marginLeft: '5px' }}>{likeNumber}</span>
+            </div>
+            {isMyReview && (
+              <span className={style.editControls}>
+                <EditDeleteButtons reviewId={reviewId} />
+              </span>
+            )}
           </div>
         </div>
-        {/* <div className={style.likeCount}>굿100</div> */}
       </div>
     </div>
   );

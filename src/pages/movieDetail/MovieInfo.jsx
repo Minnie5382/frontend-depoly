@@ -45,7 +45,6 @@ const MovieInfo = ({ movie, refetch }) => {
         refetch();
       },
     },
-
     {
       onError: () => {
         alert(`오류가 발생했습니다!`);
@@ -65,7 +64,7 @@ const MovieInfo = ({ movie, refetch }) => {
     }
   };
 
-  const handleRatingChange = (newValue) => {
+  const handleRatingChange = (event, newValue) => {
     if (confirmLogin()) {
       setScore(newValue);
       if (newValue > 0) {

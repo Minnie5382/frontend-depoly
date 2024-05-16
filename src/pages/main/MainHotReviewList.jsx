@@ -1,20 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import style from './Main.module.css';
 import HotReview from '../../components/hotReview/HotReview';
 import { useQuery } from 'react-query';
 import { getHotReviews } from '../../utils/review';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useHorizontalScroll } from '../../utils/useSideScroll';
 
 const MainHotReviewList = () => {
-  const navigate = useNavigate();
   const {
-    data: reveiwData,
+    data: reviewData,
     isLoading,
     isError,
-  } = useQuery('mainHotReview', () => getHotReviews(5), {
+    refetch,
+  } = useQuery('mainHotReview', () => getHotReviews(), {
     refetchOnWindowFocus: false,
-    withCredentials: false,
   });
 
   const sliderRef = useHorizontalScroll();
@@ -37,9 +36,11 @@ const MainHotReviewList = () => {
     }
   };
 
+  const hasReviews = reviewData?.data?.result?.reviews?.length > 0;
+
   return (
     <div className={style.reviewContainer}>
-      <h2>최신 인기 평론</h2>
+      <h2>인기 평론</h2>
       <div className={style.reviewBox}>
         <button className={style.moveLeftBtn} onClick={scrollLeft}>
           〈
@@ -47,20 +48,25 @@ const MainHotReviewList = () => {
         <div className={style.reviewContainerInner} ref={sliderRef}>
           <div className={style.slideWrapper}>
             {isLoading ? (
-              <div>isLoading...</div>
+              <div>로딩 중...</div>
             ) : isError ? (
-              <div>isError...</div>
-            ) : (
-              reveiwData?.data.result.reviews.map((inData, index) => (
-                <HotReview key={index} {...inData} />
+              <div> 인기 평론이 존재하지 않아요!</div>
+            ) : hasReviews ? (
+              reviewData.data.result.reviews.map((inData, index) => (
+                <HotReview
+                  key={index}
+                  {...inData}
+                  collectionRefetch={refetch}
+                />
               ))
+            ) : (
+              <div>인기 평론이 존재하지 않아요!</div>
             )}
-            <div
-              className={style.moreView}
-              onClick={() => navigate('/hotReviews')}
-            >
-              더보기
-            </div>
+            {hasReviews && (
+              <Link to={'/hotReviews'} className={style.moreView}>
+                더보기
+              </Link>
+            )}
           </div>
         </div>
         <button className={style.moveRightBtn} onClick={scrollRight}>
@@ -70,4 +76,5 @@ const MainHotReviewList = () => {
     </div>
   );
 };
+
 export default MainHotReviewList;

@@ -1,13 +1,19 @@
 import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
-const useInfiniteScroll = (api, movieId) => {
+const useInfiniteScroll = (api, movieId = null) => {
   const loader = useRef(null);
 
   const { data, fetchNextPage, hasNextPage, isLoading, isError, refetch } =
     useInfiniteQuery(
       ['infinityQuery', movieId],
-      ({ pageParam = 0 }) => api(movieId, pageParam, 9),
+      ({ pageParam = 0 }) => {
+        if (movieId) {
+          return api(movieId, pageParam, 9);
+        } else {
+          return api(pageParam, 9);
+        }
+      },
       {
         getNextPageParam: (page, pages) => {
           const nextPage = pages.length;

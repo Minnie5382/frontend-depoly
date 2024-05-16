@@ -29,19 +29,11 @@ const Search = () => {
     enabled: !!query,
   });
 
-  if (isLoadingMovies || !moviesData) {
-    return <span>로딩 중... </span>;
-  }
-
-  if (errorMovies) {
-    return <span>에러.. </span>;
-  }
-
   return (
     <div>
       <div className={style.container}>
         <MoviesList
-          movies={moviesData.data.result}
+          movies={moviesData?.data.result}
           query={query}
           isLoading={isLoadingMovies}
           error={errorMovies}

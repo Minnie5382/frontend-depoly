@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import style from './Main.module.css';
-import logo from '../../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 const MainMovie = ({
   type,
@@ -10,19 +10,25 @@ const MainMovie = ({
   poster,
   levelAvgScore,
   cinephileAvgScore,
+  movieId,
 }) => {
   return (
     <div className={style.moviePoster}>
-      <img src={`${poster}`} />
+      <Link to={`/movies/${movieId}`}>
+        <img src={poster} alt={title} />
+      </Link>
       <span>{rank}</span>
-      <label>{title}</label>
+      <Link to={`/movies/${movieId}`}>
+        <label title={title} className={style.movieTitle}>
+          {title}
+        </label>
+      </Link>
       {type === '출시 예정작' ? (
         <></>
       ) : (
         <span className={style.stars}>
-          ⭐️ {levelAvgScore}
-          <br />
-          ⭐️ {cinephileAvgScore}
+          {levelAvgScore && <div>★ {levelAvgScore}</div>}
+          {cinephileAvgScore && <div>★ {cinephileAvgScore}</div>}
         </span>
       )}
       <div>{releaseDate}</div>

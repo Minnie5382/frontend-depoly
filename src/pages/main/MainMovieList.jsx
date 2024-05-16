@@ -1,21 +1,28 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import style from './Main.module.css';
 import MainMovie from './MainMovie';
 import { useQuery } from 'react-query';
 import { useHorizontalScroll } from '../../utils/useSideScroll';
 
-const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
+const MainMovieList = ({ title, queryKey, apiName, setGenre }) => {
   const {
     data: movieData,
     isLoading,
     isError,
-  } = useQuery(querykey, apiName, {
+  } = useQuery(queryKey, apiName, {
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 30,
   });
 
-  if (setGenre) {
-    setGenre(movieData?.data.result.genre);
-  }
+  const result = movieData?.data?.result;
+
+  useEffect(() => {
+    if (setGenre && result?.genre) {
+      setGenre(result.genre);
+    }
+  }, [result, setGenre]);
+
   const sliderRef = useHorizontalScroll();
 
   const scrollLeft = () => {
@@ -36,6 +43,12 @@ const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
     }
   };
 
+  const movies = Array.isArray(result) ? result : result?.movieList;
+
+  if (!movies || movies.length === 0) {
+    return null;
+  }
+
   return (
     <div className={style.movieContainer}>
       <h2>{title}</h2>
@@ -48,12 +61,8 @@ const MainMovieList = ({ title, querykey, apiName, setGenre }) => {
             <div>Loading...</div>
           ) : isError ? (
             <div>isError...</div>
-          ) : querykey !== 'genre' ? (
-            movieData?.data.result.map((data, index) => (
-              <MainMovie key={index} {...data} type={title} />
-            ))
           ) : (
-            movieData?.data.result.movieList.map((data, index) => (
+            movies?.map((data, index) => (
               <MainMovie key={index} {...data} type={title} />
             ))
           )}

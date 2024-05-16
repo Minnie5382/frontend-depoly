@@ -35,4 +35,9 @@ export const unlikeReview = (reviewId) =>
   axios.delete(`/reviews/${reviewId}/likes`);
 
 /** 인기 평론 리스트 조회 */
-export const getHotReviews = (size) => axios.get(`/reviews/hot?size=${size}`);
+export const getHotReviews = (page = 0, size = 10) =>
+  axios.get(
+    `/reviews/hot`,
+    { params: { page, size } },
+    { withCredentials: false }
+  );

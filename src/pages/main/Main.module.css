@@ -105,15 +105,17 @@
   justify-items: center;
 }
 
-.moviePoster > img {
+.moviePoster > a > img {
   width: 220px;
   height: 325px;
   object-fit: cover;
 }
+
 .moviePoster > label {
   font-size: 18px;
   text-align: center;
 }
+
 .moviePoster > div {
   font-size: 12px;
   text-align: center;
@@ -136,4 +138,12 @@
   left: 176px;
   width: 35px;
   font-size: xx-small;
+}
+
+.movieTitle {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
