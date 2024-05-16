@@ -60,7 +60,7 @@ const Main = () => {
         queryKey='upComing'
         apiName={getUpcomingMovies}
       />
-      {/* {genreMovies.map((movies, index) => (
+      {genreMovies.map((movies, index) => (
         <MainMovieList
           key={index}
           title={movies.data.result.genre}
@@ -68,7 +68,7 @@ const Main = () => {
           apiName={() => Promise.resolve(movies)}
         />
       ))}
-      {hasNextPage && <div ref={ref} style={{ height: '20px' }} />} */}
+      {hasNextPage && <div ref={ref} style={{ height: '20px' }} />}
     </div>
   );
 };
