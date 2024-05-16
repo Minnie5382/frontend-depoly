@@ -17,7 +17,11 @@ export const getUserProfile = () => axios.get('/users/profile');
 
 /** 내 프로필 수정 */
 export const updateUserProfile = (profileData) =>
-  axios.post('/users/profile/edit', profileData);
+  axios.post('/users/profile/edit', profileData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 
 /** 팔로워 목록 조회 */
 export const getUserFollowers = (userID, page, size) =>
