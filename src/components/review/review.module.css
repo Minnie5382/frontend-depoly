@@ -38,6 +38,7 @@
 .nameSpan {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .movieName {
@@ -101,4 +102,9 @@
   right: 0.1rem;
   /* top: 3px; */
   /* font-size: small; */
+}
+
+.btnBox {
+  display: flex;
+  justify-content: space-between;
 }

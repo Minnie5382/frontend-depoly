@@ -103,9 +103,12 @@ const MovieInfo = ({ movie, refetch }) => {
     <div className={style.movieInfo}>
       <div className={style.topSection}>
         <div className={style.titleBox}>
-          <span className={style.title}>
-            {movie?.movie.movieTitle} ({movie?.movie.releaseDate})
-          </span>
+          <div className={style.titleContent}>
+            <span className={style.title} title={movie?.movie.movieTitle}>
+              {movie?.movie.movieTitle}
+            </span>
+            <span title='개봉일'> ({movie?.movie.releaseDate})</span>
+          </div>
           <span className={style.genre}>
             {movie?.movie.genre
               .map(
@@ -152,31 +155,35 @@ const MovieInfo = ({ movie, refetch }) => {
       <div className={style.castAndCrew}>
         <span>출연/제작</span>
         <div className={style.castList}>
-          {getFilteredCrewList(movie?.crewList).map((person, index) => (
-            <div key={index} className={style.castItem}>
-              <img
-                src={person.profile}
-                alt={person.name}
-                className={style.castImg}
-              />
-              <div className={style.role}>
-                <span style={{ fontWeight: 800 }} title={person.name}>
-                  {person.name}
-                </span>
-                <span
-                  title={
-                    person.job === 'Actor'
+          {movie?.crewList && movie.crewList.length > 0 ? (
+            getFilteredCrewList(movie.crewList).map((person, index) => (
+              <div key={index} className={style.castItem}>
+                <img
+                  src={person.profile}
+                  alt={person.name}
+                  className={style.castImg}
+                />
+                <div className={style.role}>
+                  <span style={{ fontWeight: 800 }} title={person.name}>
+                    {person.name}
+                  </span>
+                  <span
+                    title={
+                      person.job === 'Actor'
+                        ? person.character || person.job
+                        : person.job
+                    }
+                  >
+                    {person.job === 'Actor'
                       ? person.character || person.job
-                      : person.job
-                  }
-                >
-                  {person.job === 'Actor'
-                    ? person.character || person.job
-                    : person.job}
-                </span>
+                      : person.job}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <span className={style.noInfo}>아직 등록된 정보가 없습니다!</span>
+          )}
         </div>
       </div>
       <ReviewModal

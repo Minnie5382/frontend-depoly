@@ -1,10 +1,21 @@
+.headerBorder {
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.7vh;
+  padding: 10px 20px;
   background-color: var(--background-color);
-  border-bottom: 1px solid var(--border-color);
+  max-width: 1480px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -37,6 +48,7 @@
   cursor: pointer;
   font-size: large;
 }
+
 .signBtn {
   color: var(--text-color);
   margin: 10px 20px;
@@ -101,7 +113,7 @@ input:autofill:active {
   cursor: pointer;
 }
 
-.infoImg {
+.profileImage {
   width: 33px;
   height: 33px;
   border-radius: 18px;
@@ -112,6 +124,7 @@ input:autofill:active {
   font-size: larger;
   margin-left: 6px;
 }
+
 .mybadge {
   font-size: medium;
   margin: 8px;

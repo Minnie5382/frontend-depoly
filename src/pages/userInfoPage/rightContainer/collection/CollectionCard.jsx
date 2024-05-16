@@ -21,7 +21,9 @@ const CollectionCard = ({
         <div className={style.info}>
           <div className={style.infoBox}>
             <Link to={`/movies/${movieId}`}>
-              <div className={style.time}>{movieTitle}</div>
+              <div className={style.time} title={movieTitle}>
+                {movieTitle}
+              </div>
             </Link>
           </div>
         </div>

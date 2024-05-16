@@ -35,7 +35,9 @@ const HotReview = ({
         <div className={style.movieReview}>
           <div className={style.nameSpan}>
             <Link to={`/movies/${movieId}`}>
-              <span className={style.movieName}>{movieTitle}</span>
+              <span className={style.movieName} title={movieTitle}>
+                {movieTitle}
+              </span>
             </Link>
             {reviewScore && <div className={style.stars}>★ {reviewScore}</div>}
           </div>

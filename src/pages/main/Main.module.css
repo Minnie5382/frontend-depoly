@@ -142,7 +142,8 @@
 
 .movieTitle {
   display: block;
-  width: 100%;
+  text-align: center;
+  width: 220px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
