@@ -72,13 +72,13 @@ const Header = () => {
               >
                 <img
                   className={style.profileImage}
-                  src={user.result.profileImage}
+                  src={user?.result?.profileImage}
                   alt='User'
                 />
-                <span>{`Lv.${user.result.level}`}</span>
-                <span className={style.myName}> {user.result.nickname} </span>
-                {user.isCertified && <span className={style.icon}>👑</span>}
-                {user.isBad && <span className={style.icon}>💀</span>}
+                <span>{`Lv.${user?.result?.level}`}</span>
+                <span className={style.myName}> {user?.result?.nickname} </span>
+                {user?.isCertified && <span className={style.icon}>👑</span>}
+                {user?.isBad && <span className={style.icon}>💀</span>}
               </button>
             </div>
           ) : (

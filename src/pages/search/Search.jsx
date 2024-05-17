@@ -26,6 +26,8 @@ const Search = () => {
     () => searchMovies(query),
     {
       enabled: !!query,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 
