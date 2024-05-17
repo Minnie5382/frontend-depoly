@@ -266,6 +266,7 @@ const EmailSignUpForm = ({ termsAgreed, privacyAgreed }) => {
           value={formData.nickname}
           error={!!errors.nickname}
           helperText={errors.nickname || ' '}
+          inputProps={{ maxLength: 8 }}
           onChange={handleChange}
           autoComplete='off'
         />

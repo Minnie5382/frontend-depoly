@@ -16,6 +16,7 @@ const MovieInfo = ({ movie, refetch }) => {
 
   const movieId = movie?.movie.movieId;
   const { confirmLogin } = useConfirmLogin();
+  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     if (movie?.myScore !== undefined) {
@@ -122,22 +123,26 @@ const MovieInfo = ({ movie, refetch }) => {
           </span>
         </div>
         <div className={style.actions}>
-          <Rating
-            name='simple-controlled'
-            value={score}
-            onChange={handleRatingChange}
-            size='large'
-            precision={0.5}
-            disabled={ratingLoading}
-            sx={{
-              '.MuiRating-iconEmpty': {
-                color: 'var(--text-color)',
-              },
-            }}
-          />
-          <span onClick={handleOpenModal} className={style.reviewButton}>
-            {movie?.existingReviewId ? '평론 수정하기' : '평론 남기기'}
-          </span>
+          {movie?.movie.releaseDate <= today && (
+            <>
+              <Rating
+                name='simple-controlled'
+                value={score}
+                onChange={handleRatingChange}
+                size='large'
+                precision={0.5}
+                disabled={ratingLoading}
+                sx={{
+                  '.MuiRating-iconEmpty': {
+                    color: 'var(--text-color)',
+                  },
+                }}
+              />
+              <span onClick={handleOpenModal} className={style.reviewButton}>
+                {movie?.existingReviewId ? '평론 수정하기' : '평론 남기기'}
+              </span>
+            </>
+          )}
           <IconButton
             onClick={handleLikeMovie}
             color='error'

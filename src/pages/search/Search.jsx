@@ -21,13 +21,15 @@ const Search = () => {
     }
   }, [query, navigate]);
 
-  const {
-    data: moviesData,
-    isLoading: isLoadingMovies,
-    error: errorMovies,
-  } = useQuery(['searchMovies', query], () => searchMovies(query), {
-    enabled: !!query,
-  });
+  const { data: moviesData, isLoading: isLoadingMovies } = useQuery(
+    ['searchMovies', query],
+    () => searchMovies(query),
+    {
+      enabled: !!query,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+    }
+  );
 
   return (
     <div>
@@ -36,7 +38,6 @@ const Search = () => {
           movies={moviesData?.data.result}
           query={query}
           isLoading={isLoadingMovies}
-          error={errorMovies}
         />
         {/* <ChatroomsList
           chatrooms={chatroomsData}

@@ -14,10 +14,10 @@ const Header = () => {
   const TextFieldTheme = {
     '& .MuiInputBase-root': {
       borderBottom: '1px solid var(--point-color)',
-      backgroundColor: '#101418',
+      backgroundColor: 'var(--sub-color)',
       paddingRight: '3px',
       '& input': {
-        color: '#fff',
+        color: 'var(--text-color)',
         width: '20vw',
       },
     },
@@ -55,6 +55,7 @@ const Header = () => {
               className={style.searchField}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder='제목, 사람, 장르'
               InputProps={{
                 endAdornment: (
                   <button type='submit' className={style.searchBtn}>
@@ -72,13 +73,13 @@ const Header = () => {
               >
                 <img
                   className={style.profileImage}
-                  src={user.result.profileImage}
+                  src={user?.result?.profileImage}
                   alt='User'
                 />
-                <span>{`Lv.${user.result.level}`}</span>
-                <span className={style.myName}> {user.result.nickname} </span>
-                {user.isCertified && <span className={style.icon}>👑</span>}
-                {user.isBad && <span className={style.icon}>💀</span>}
+                <span>{`Lv.${user?.result?.level}`}</span>
+                <span className={style.myName}> {user?.result?.nickname} </span>
+                {user?.isCertified && <span className={style.icon}>👑</span>}
+                {user?.isBad && <span className={style.icon}>💀</span>}
               </button>
             </div>
           ) : (
