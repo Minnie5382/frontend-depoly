@@ -21,7 +21,7 @@ const MainMovieList = ({ title, queryKey, apiName, setGenre }) => {
     if (setGenre && result?.genre) {
       setGenre(result.genre);
     }
-  }, [result, setGenre]);
+  }, [result?.genre, setGenre]);
 
   const sliderRef = useHorizontalScroll();
 

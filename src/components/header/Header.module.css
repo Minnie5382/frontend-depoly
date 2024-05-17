@@ -99,8 +99,9 @@ input:autofill:active {
 
 .myInfoBox {
   display: flex;
-  justify-content: center;
-  width: 11.8rem;
+  justify-content: flex-end;
+  width: auto;
+  box-sizing: border-box;
 }
 
 .myInfoBtn {
