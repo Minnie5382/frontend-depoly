@@ -51,7 +51,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
         nickname: inData.nickname,
         email: inData.email,
       });
-      console.log(inData);
+
       setOriginalNickname(inData.nickname);
       setOriginalImg(inData.userProfileImage);
       if (
@@ -69,12 +69,10 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     if (nicknameRegex.test) {
       checkNicknameDuplication({ nickname: infoData.nickname })
         .then((res) => {
-          // console.log(res);
           alert('중복 확인 완료!');
           setNicknameValid(true);
         })
         .catch((error) => {
-          console.log(error);
           alert('중복된 닉네임이 존재합니다.');
         });
     }
@@ -140,10 +138,9 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
+
     if (name === 'nickname') {
       setNicknameValid(false);
-      console.log(name, value);
     }
     setInfoData((prev) => ({ ...prev, [name]: value }));
     const errorMessage = validate(name, value);
@@ -153,7 +150,7 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
   const { mutate: doEdit } = useMutation(updateUserProfile, {
     onSuccess: () => {
       alert('정보 변경이 성공적으로 완료되었습니다.');
-      console.log(doEdit);
+
       window.location.reload(true);
     },
     onError: (error) => {
@@ -185,7 +182,6 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
     ) {
       errors.passwordError =
         '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!';
-      console.log(infoData.password);
     }
     if (Object.keys(errors).length === 0) {
       if (file === originalImg) {
@@ -204,10 +200,6 @@ const UserInfoModal = ({ isOpen, onClose, myId }) => {
         formData.append('nickname', infoData.nickname);
       }
       doEdit(formData);
-      for (let key of formData.keys()) {
-        console.log(key, ':', formData.get(key));
-      }
-      console.log(formData);
     } else {
       alert(errors.nicknameError || errors.passwordError);
     }
