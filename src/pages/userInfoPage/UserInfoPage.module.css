@@ -154,7 +154,7 @@
   flex-wrap: wrap;
 }
 
-@media (min-height: 830px) {
+/* @media (min-height: 830px) {
   .leftContainer {
     display: grid;
     gap: 0.5rem;
@@ -178,7 +178,7 @@
   .collection {
     width: 410px;
   }
-}
+} */
 
 .btnBox {
   display: flex;
