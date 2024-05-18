@@ -16,6 +16,20 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
+  const setSessionCookie = (name, value) => {
+    document.cookie = `${name}=${value}; path=/; secure; SameSite=None; `;
+  };
+
+  const setSessionCookies = () => {
+    const cookies = document.cookie.split('; ');
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.split('=');
+      if (name === 'Cineffiaccess' || name === 'Cineffirefresh') {
+        setSessionCookie(name, value);
+      }
+    });
+  };
+
   const { mutate: doLoginEmail, isLoading: isEmailLoading } = useMutation(
     loginEmail,
     {
@@ -23,6 +37,7 @@ const SignIn = () => {
         getUserInfo()
           .then((response) => {
             login(response.data);
+            setSessionCookies();
             navigate('/');
           })
           .catch(() => {
