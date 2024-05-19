@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from '@mui/material';
 import style from './SignUp.module.css';
 import logo from '../../assets/logo2.png';
 import TermsDialog from './TermsDialog';
 import EmailSignUpForm from './EmailSignUpForm';
+import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -11,7 +11,9 @@ const SignUp = () => {
 
   return (
     <div className={style.pageContainer}>
-      <img src={logo} alt='로고' className={style.logo} />
+      <Link to='/'>
+        <img src={logo} alt='로고' className={style.logo} />
+      </Link>
       <div className={style.signUpContainer}>
         <span className={style.title}>회원가입</span>
         <EmailSignUpForm
