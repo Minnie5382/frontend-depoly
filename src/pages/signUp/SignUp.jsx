@@ -3,7 +3,7 @@ import style from './SignUp.module.css';
 import logo from '../../assets/logo2.png';
 import TermsDialog from './TermsDialog';
 import EmailSignUpForm from './EmailSignUpForm';
-import { Link } from 'react-router-dom';
+import { Link } from '@mui/material';
 
 const SignUp = () => {
   const [termsAgreed, setTermsAgreed] = useState(false);
@@ -11,7 +11,7 @@ const SignUp = () => {
 
   return (
     <div className={style.pageContainer}>
-      <Link to='/'>
+      <Link href='/'>
         <img src={logo} alt='로고' className={style.logo} />
       </Link>
       <div className={style.signUpContainer}>

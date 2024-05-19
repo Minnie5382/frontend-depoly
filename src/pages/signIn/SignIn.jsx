@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Link } from '@mui/material';
 import { useMutation } from 'react-query';
 import { loginEmail, loginKakao } from '../../utils/auth';
 import style from './SignIn.module.css';
 import logo from '../../assets/logo2.png';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
 import { getUserInfo } from '../../utils/user';
 import axios from 'axios';
@@ -98,7 +98,7 @@ const SignIn = () => {
 
   return (
     <div className={style.pageContainer}>
-      <Link to='/'>
+      <Link href='/'>
         <img src={logo} alt='로고' className={style.logo} />
       </Link>
       <div className={style.signInContainer}>
