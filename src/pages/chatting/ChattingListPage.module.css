@@ -31,12 +31,22 @@ button {
   display: inline;
 }
 
-.tableList > button {
+.selectBtn {
   padding-right: 2rem;
   background-color: var(--background-color);
   border: none;
   font-size: larger;
   cursor: pointer;
+  color: var(--text-color);
+}
+
+.noneSelectBtn {
+  padding-right: 2rem;
+  background-color: var(--background-color);
+  border: none;
+  font-size: larger;
+  cursor: pointer;
+  color: #525252;
 }
 
 .creatBtn {
@@ -50,32 +60,36 @@ button {
 }
 
 .roomBox {
+  list-style: none;
   padding: 1rem;
   margin: 1rem;
   position: relative;
-
   background-color: var(--sub-color);
   border: 1px solid var(--border-color2);
   border-radius: 5px;
 }
 
-.roomBox > button {
+.roomTitle {
   padding: 0;
   border: none;
   font-size: medium;
   text-align: start;
+  font-size: large;
+  cursor: pointer;
 }
 
-.roomBox > h6 {
+.roomTime {
   display: table-row-group;
   gap: 1rem;
-  font-weight: 200;
+  font-weight: 100;
+  font-size: small;
 }
 
-.roomBox > h5 {
+.roomTag {
   margin: 0;
   padding-top: 0.5rem;
-  font-weight: 200;
+  font-weight: 100;
+  font-size: small;
 }
 
 .participants {
@@ -90,11 +104,7 @@ button {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  min-height: 50px;
-  margin: 10px;
-  padding: 0 10px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
+  min-height: 0px;
 }
 
 .tagBox:focus-within {
@@ -107,10 +117,11 @@ button {
   justify-content: space-between;
   margin: 5px;
   padding: 5px;
-  background-color: tomato;
+  background-color: #073263;
   border-radius: 5px;
   color: white;
   font-size: 13px;
+  -webkit-font-smoothing: antialiased;
 }
 
 .tagDeleteBtn {
@@ -120,9 +131,10 @@ button {
   width: 15px;
   height: 15px;
   margin-left: 5px;
-  background-color: white;
-  border-radius: 50%;
-  color: tomato;
+  background-color: unset;
+  border-color: rgb(0 0 0 / 0%);
+  color: rgb(141 190 252);
+  cursor: pointer;
 }
 
 .tagInput {
@@ -132,4 +144,8 @@ button {
   border: none;
   outline: none;
   cursor: text;
+}
+
+.none {
+  padding: 55px;
 }
