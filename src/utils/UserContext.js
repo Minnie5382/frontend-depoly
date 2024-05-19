@@ -11,6 +11,11 @@ export const UserProvider = ({ children }) => {
 
   const [user, setUser] = useState(() => {
     const savedUser = sessionStorage.getItem('user');
+    const flush = sessionStorage.getItem('flush');
+    if (flush) {
+      sessionStorage.removeItem('flush');
+      return null;
+    }
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
@@ -18,6 +23,15 @@ export const UserProvider = ({ children }) => {
     sessionStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
   };
+
+  const { mutate: logout } = useMutation(apiLogout, {
+    onSuccess: () => {
+      sessionStorage.removeItem('user');
+      sessionStorage.setItem('flush', 'true');
+      queryClient.clear();
+      navigate('/signin', { replace: true });
+    },
+  });
 
   const { data: authCheck } = useQuery('user', apiAuthCheck, {
     enabled: !!user,
@@ -33,17 +47,20 @@ export const UserProvider = ({ children }) => {
     },
   });
 
-  const { mutate: logout } = useMutation(apiLogout, {
-    onSuccess: () => {
-      sessionStorage.removeItem('user');
-      queryClient.clear();
-      setUser(null);
-      navigate('/signin', { replace: true });
-    },
-  });
+  useEffect(() => {
+    const savedUser = sessionStorage.getItem('user');
+    const flush = sessionStorage.getItem('flush');
+    if (!flush && !savedUser) {
+      logout();
+    }
+  }, [logout]);
 
   useEffect(() => {
-    sessionStorage.setItem('user', JSON.stringify(user));
+    if (user) {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem('user');
+    }
   }, [user]);
 
   useEffect(() => {
