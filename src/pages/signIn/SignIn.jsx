@@ -7,7 +7,6 @@ import logo from '../../assets/logo2.png';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
 import { getUserInfo } from '../../utils/user';
-import axios from 'axios';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -41,19 +40,7 @@ const SignIn = () => {
   };
 
   const handleKakaoLoginClick = async () => {
-    // try {
-    //   const response = await axios.get(loginKakao(), { validateStatus: false });
-    //   if (
-    //     response.data.isSuccess === false &&
-    //     response.data.message === '없는 사용자입니다.'
-    //   ) {
-    //     alert('탈퇴한 회원입니다!');
-    //   } else {
     window.location.href = loginKakao();
-    //   }
-    // } catch (error) {
-    //   alert('로그인 중 오류가 발생했습니다!');
-    // }
   };
 
   const textFieldTheme = {
