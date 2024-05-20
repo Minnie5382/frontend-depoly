@@ -28,6 +28,7 @@ export const UserProvider = ({ children }) => {
     onSuccess: () => {
       sessionStorage.removeItem('user');
       sessionStorage.setItem('flush', 'true');
+      setUser(null);
       queryClient.clear();
       navigate('/signin', { replace: true });
     },
