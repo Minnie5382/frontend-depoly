@@ -5,6 +5,8 @@ import { authCheck as apiAuthCheck, logout as apiLogout } from './auth';
 
 export const UserContext = createContext(null);
 
+const authPaths = ['/auth/check', '/signin', '/signup'];
+
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,20 +41,23 @@ export const UserProvider = ({ children }) => {
     enabled: !!user,
     refetchInterval: 60000,
     retry: false,
-    onSuccess: (data) => {
-      if (!data.data.isSuccess) {
-        logout();
+    onError: (data) => {
+      sessionStorage.removeItem('user');
+      setUser(null);
+      if (data.response.data.isSuccess === false) {
+        const flush = sessionStorage.getItem('flush');
+        if (!flush) {
+          sessionStorage.setItem('flush', 'true');
+          navigate('/signin', { replace: true });
+        }
       }
-    },
-    onError: () => {
-      navigate('/signin', { replace: true });
     },
   });
 
   useEffect(() => {
     const savedUser = sessionStorage.getItem('user');
     const flush = sessionStorage.getItem('flush');
-    if (!flush && !savedUser && location.pathname !== '/auth/check') {
+    if (!flush && !savedUser && !authPaths.includes(location.pathname)) {
       logout();
     }
   }, [logout, location.pathname]);
@@ -62,6 +67,7 @@ export const UserProvider = ({ children }) => {
       sessionStorage.setItem('user', JSON.stringify(user));
     } else {
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('flush');
     }
   }, [user]);
 
@@ -70,7 +76,7 @@ export const UserProvider = ({ children }) => {
       if (event.key === 'user') {
         const newUser = JSON.parse(sessionStorage.getItem('user') || 'null');
         setUser(newUser);
-        if (!newUser && location.pathname !== '/auth/check') {
+        if (!newUser && !authPaths.includes(location.pathname)) {
           queryClient.clear();
           setUser(null);
           navigate('/signin', { replace: true });
