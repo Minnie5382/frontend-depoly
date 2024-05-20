@@ -15,6 +15,7 @@ import { UserProvider } from '../../utils/UserContext';
 import PublicRoute from '../../utils/PublicRoute';
 import AuthCheck from '../../pages/authCheck/AuthCheck';
 import Layout from '../layout/Layout';
+import DeletedAccount from '../../pages/deletedAccount/DeletedAccount';
 
 const Router = () => {
   return (
@@ -103,6 +104,7 @@ const Router = () => {
           <Route path=':roomId' element={<ChattingRoomPage />} />
         </Route>
         <Route path='/auth/check' element={<AuthCheck />} />
+        <Route path='/auth/deletedaccount' element={<DeletedAccount />} />
         <Route path='/test' element={<Test />} />
       </Routes>
     </UserProvider>

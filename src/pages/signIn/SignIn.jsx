@@ -7,7 +7,6 @@ import logo from '../../assets/logo2.png';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../utils/UserContext';
 import { getUserInfo } from '../../utils/user';
-import axios from 'axios';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -16,20 +15,6 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const setSessionCookie = (name, value) => {
-    document.cookie = `${name}=${value}; path=/; secure; SameSite=None; `;
-  };
-
-  const setSessionCookies = () => {
-    const cookies = document.cookie.split('; ');
-    cookies.forEach((cookie) => {
-      const [name, value] = cookie.split('=');
-      if (name === 'Cineffiaccess' || name === 'Cineffirefresh') {
-        setSessionCookie(name, value);
-      }
-    });
-  };
-
   const { mutate: doLoginEmail, isLoading: isEmailLoading } = useMutation(
     loginEmail,
     {
@@ -37,7 +22,6 @@ const SignIn = () => {
         getUserInfo()
           .then((response) => {
             login(response.data);
-            setSessionCookies();
             navigate('/');
           })
           .catch(() => {
@@ -56,18 +40,7 @@ const SignIn = () => {
   };
 
   const handleKakaoLoginClick = async () => {
-    try {
-      const response = await axios.get(loginKakao(), { validateStatus: false });
-      if (response.status === 400) {
-        alert('탈퇴한 회원입니다!');
-        navigate('/');
-      } else {
-        window.location.href = loginKakao();
-      }
-    } catch (error) {
-      alert('탈퇴한 회원입니다!');
-      navigate('/');
-    }
+    window.location.href = loginKakao();
   };
 
   const textFieldTheme = {
