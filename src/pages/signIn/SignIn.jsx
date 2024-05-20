@@ -16,20 +16,6 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const setSessionCookie = (name, value) => {
-    document.cookie = `${name}=${value}; path=/; secure; SameSite=None; `;
-  };
-
-  const setSessionCookies = () => {
-    const cookies = document.cookie.split('; ');
-    cookies.forEach((cookie) => {
-      const [name, value] = cookie.split('=');
-      if (name === 'Cineffiaccess' || name === 'Cineffirefresh') {
-        setSessionCookie(name, value);
-      }
-    });
-  };
-
   const { mutate: doLoginEmail, isLoading: isEmailLoading } = useMutation(
     loginEmail,
     {
@@ -37,7 +23,6 @@ const SignIn = () => {
         getUserInfo()
           .then((response) => {
             login(response.data);
-            setSessionCookies();
             navigate('/');
           })
           .catch(() => {
@@ -56,18 +41,19 @@ const SignIn = () => {
   };
 
   const handleKakaoLoginClick = async () => {
-    try {
-      const response = await axios.get(loginKakao(), { validateStatus: false });
-      if (response.status === 400) {
-        alert('탈퇴한 회원입니다!');
-        navigate('/');
-      } else {
-        window.location.href = loginKakao();
-      }
-    } catch (error) {
-      alert('탈퇴한 회원입니다!');
-      navigate('/');
-    }
+    // try {
+    //   const response = await axios.get(loginKakao(), { validateStatus: false });
+    //   if (
+    //     response.data.isSuccess === false &&
+    //     response.data.message === '없는 사용자입니다.'
+    //   ) {
+    //     alert('탈퇴한 회원입니다!');
+    //   } else {
+    window.location.href = loginKakao();
+    //   }
+    // } catch (error) {
+    //   alert('로그인 중 오류가 발생했습니다!');
+    // }
   };
 
   const textFieldTheme = {
