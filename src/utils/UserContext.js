@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { authCheck as apiAuthCheck, logout as apiLogout } from './auth';
 
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
 
   const [user, setUser] = useState(() => {
@@ -51,10 +52,10 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const savedUser = sessionStorage.getItem('user');
     const flush = sessionStorage.getItem('flush');
-    if (!flush && !savedUser) {
+    if (!flush && !savedUser && location.pathname !== '/auth/check') {
       logout();
     }
-  }, [logout]);
+  }, [logout, location.pathname]);
 
   useEffect(() => {
     if (user) {
@@ -69,7 +70,7 @@ export const UserProvider = ({ children }) => {
       if (event.key === 'user') {
         const newUser = JSON.parse(sessionStorage.getItem('user') || 'null');
         setUser(newUser);
-        if (!newUser) {
+        if (!newUser && location.pathname !== '/auth/check') {
           queryClient.clear();
           setUser(null);
           navigate('/signin', { replace: true });
@@ -81,7 +82,7 @@ export const UserProvider = ({ children }) => {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [navigate, queryClient]);
+  }, [navigate, queryClient, location.pathname]);
 
   return (
     <UserContext.Provider value={{ user, login, logout, authCheck }}>
