@@ -23,7 +23,7 @@ const Header = () => {
     },
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     e.preventDefault();
     navigate(`/search?query=${searchTerm}`);
   };
@@ -31,14 +31,14 @@ const Header = () => {
   return (
     <div className={style.headerBorder}>
       <div className={style.header}>
-        <Link to='/'>
-          <img src={logo} alt='logo' className={style.logo} />
+        <Link to="/">
+          <img src={logo} alt="logo" className={style.logo} />
         </Link>
         <div className={style.menu}>
-          <Link to='/' className={style.menuLink}>
+          <Link to="/" className={style.menuLink}>
             메인
           </Link>
-          <Link to='/chattingList' className={style.menuLink}>
+          <Link to="/chat" className={style.menuLink}>
             채팅방
           </Link>
           {/* <Link to='/' className={style.menuLink}>
@@ -49,16 +49,16 @@ const Header = () => {
           <form onSubmit={handleSearch}>
             <TextField
               hiddenLabel
-              variant='filled'
-              size='small'
+              variant="filled"
+              size="small"
               sx={TextFieldTheme}
               className={style.searchField}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder='제목, 사람, 장르'
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="제목, 사람, 장르"
               InputProps={{
                 endAdornment: (
-                  <button type='submit' className={style.searchBtn}>
+                  <button type="submit" className={style.searchBtn}>
                     <SearchIcon className={style.searchIcon} />
                   </button>
                 ),
@@ -74,7 +74,7 @@ const Header = () => {
                 <img
                   className={style.profileImage}
                   src={user?.result?.profileImage}
-                  alt='User'
+                  alt="User"
                 />
                 <span>{`Lv.${user?.result?.level}`}</span>
                 <span className={style.myName}> {user?.result?.nickname} </span>
@@ -84,10 +84,10 @@ const Header = () => {
             </div>
           ) : (
             <div className={style.signBox}>
-              <Link to='/signin' className={style.signBtn}>
+              <Link to="/signin" className={style.signBtn}>
                 로그인
               </Link>
-              <Link to='/signup' className={style.signBtn}>
+              <Link to="/signup" className={style.signBtn}>
                 회원가입
               </Link>
             </div>

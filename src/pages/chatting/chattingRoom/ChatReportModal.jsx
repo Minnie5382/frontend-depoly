@@ -28,7 +28,7 @@ const ChatReportModal = ({ isOpen, onClose }) => {
   //   const [anchorEl, setAnchorEl] = useState(null);
   //   const open = Boolean(anchorEl);
 
-  console.log(reportImg);
+  // console.log(reportImg);
 
   const handleFileChange = () => {
     if (imgRef.current.value !== '') {
@@ -42,7 +42,7 @@ const ChatReportModal = ({ isOpen, onClose }) => {
   //     setAnchorEl(event.target.value);
   //   };
 
-  const clickFileInput = (e) => {
+  const clickFileInput = e => {
     e.preventDefault();
     imgRef.current?.click();
   };
@@ -59,7 +59,7 @@ const ChatReportModal = ({ isOpen, onClose }) => {
       padding: '20px',
     },
   };
-  const deleteClick = (e) => {
+  const deleteClick = e => {
     e.preventDefault();
     if (imgRef.current.value !== '') {
       setReportImg('첨부파일');
@@ -125,9 +125,9 @@ const ChatReportModal = ({ isOpen, onClose }) => {
             sx={textFieldStyle}
             variant="outlined"
             value={reportUser}
-            onChange={(e) => setReportUser(e.target.value)}
+            onChange={e => setReportUser(e.target.value)}
           >
-            {userList.map((option) => (
+            {userList.map(option => (
               <MenuItem
                 key={option.value}
                 // onClick={handleClick}
@@ -149,7 +149,7 @@ const ChatReportModal = ({ isOpen, onClose }) => {
             rows={6}
             multiline
             value={reportContent}
-            onChange={(e) => setReportContent(e.target.value)}
+            onChange={e => setReportContent(e.target.value)}
             sx={textFieldStyle}
             variant="outlined"
             InputProps={{

@@ -18,14 +18,20 @@
   /* align-items: center; */
   justify-content: space-between;
 }
-
-.chatTitle > label {
+.chatBoxInner::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.chatBoxInner::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.title {
   /* margin: 1rem; */
   font-size: x-large;
 }
 
-.chatTitle > h5 {
-  margin: 0.5rem;
+.tags {
+  margin: 5px;
   font-size: small;
 }
 
@@ -33,11 +39,21 @@
   display: flex;
   align-items: baseline;
   width: auto;
+  flex-direction: column;
+  max-width: 70%;
 }
-
+.close {
+  position: absolute;
+  left: 40%;
+  font-size: x-large;
+  top: 1%;
+}
 .btnBox {
   position: relative;
+  display: flex;
+  align-items: flex-end;
 }
+
 .participantListBtn {
   position: relative;
   top: 0.3rem;
@@ -74,16 +90,23 @@
 }
 .chatBoxInner {
   height: 65vh;
-  /* margin: 0rem 0.5rem; */
   padding: 0.5rem;
   display: block;
-  /* flex-direction: column; */
-  /* display: grid; */
-  /* grid-template-columns: minmax(50px, max-content); */
-  /* background-color: var(--my-comment-color); */
-  /* width: 97%; */
   overflow-x: hidden;
   overflow-y: auto;
+  width: 99%;
+}
+/* 서버 메시지 */
+.serverMessageBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.serverMessage {
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 10px;
+  width: fit-content;
 }
 /* 다른 사람 메시지 */
 .othersChatBox {
