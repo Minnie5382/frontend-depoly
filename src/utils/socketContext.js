@@ -35,18 +35,18 @@ export const SocketProvider = ({ children }) => {
       } // userId가 없으면 알럿으로 로그인이나 메인이동
       const connectWebSocket = () => {
         const ws = new WebSocket(
-          `ws://localhost:4000/api/chat?userId=${userId}`
+          `${process.env.REACT_APP_API_WEBSOCKET_URL}${userId}`
         );
 
         ws.onopen = () => {
           console.log('Connected to WebSocket');
         };
 
-        ws.onmessage = event => {
+        ws.onmessage = (event) => {
           console.log('Message from WebSocket:', event.data);
         };
 
-        ws.onerror = error => {
+        ws.onerror = (error) => {
           console.error('WebSocket error:', error);
         };
 
