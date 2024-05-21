@@ -27,7 +27,8 @@ export const getUserMovies = (nickname) => axios.get(`/movies/${nickname}`);
 export const getDailyBoxOffice = () => axios.get('/movies/boxOffice');
 
 /** 장르별 랜덤 영화 목록 조회 */
-export const getMoviesByGenre = () => axios.get(`/movies/genre`);
+export const getMoviesByGenre = (genre) =>
+  axios.get(`/movies/genre`, { params: { genre } });
 
 /** 개봉 예정 영화 목록 조회 */
 export const getUpcomingMovies = () => axios.get('/movies/upcoming');
