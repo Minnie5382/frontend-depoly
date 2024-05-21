@@ -42,11 +42,17 @@ export const SocketProvider = ({ children }) => {
           console.log('Connected to WebSocket');
         };
 
-        ws.onmessage = (event) => {
+        ws.onmessage = event => {
           console.log('Message from WebSocket:', event.data);
+          const response = JSON.parse(event.data);
+          if (response.type === 'QUIT') {
+            window.location.reload();
+            // ws.onopen();
+            console.log('리로드!');
+          }
         };
 
-        ws.onerror = (error) => {
+        ws.onerror = error => {
           console.error('WebSocket error:', error);
         };
 

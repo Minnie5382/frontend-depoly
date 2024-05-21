@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -11,15 +11,15 @@ import style from './ChattingListPage.module.css';
 import { useSocket } from '../../utils/socketContext';
 import { useNavigate } from 'react-router-dom';
 
-const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
+const ChatCreateModal = ({ isOpen, setOpen }) => {
   const [title, setTitle] = useState('');
   const [tagText, setTagText] = useState('');
   const [tagList, setTagList] = useState([]);
   const firstRef = useRef(null);
   const secondRef = useRef(null);
   const socket = useSocket();
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const [roomData, setRoomData] = useState(0);
 
   const onClose = e => {
     e.preventDefault();
@@ -27,29 +27,36 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
     setTitle('');
     setTagText('');
     setTagList([]);
-    fetchRooms(); // 모달이 닫힐 때 방 목록 갱신
+    setErrorMessage('');
   };
+  console.log(tagText);
 
   const onKeyTag = e => {
     if (
-      (e.target.value.length !== 0 && e.key === 'Enter') ||
-      e.key === ' ' ||
-      e.key === 'Spacebar' ||
-      e.key === 32
-    ) {
-      if (e.nativeEvent.isComposing === false) {
-        submittagText(e);
-      }
-    }
-    if (
       e.target.value.length !== 0 &&
-      e.target.value === ' ' &&
-      (e.key === ' ' || e.key === 'Spacebar' || e.key === 32)
+      (e.key === 'Enter' ||
+        e.code === 'Enter' ||
+        e.key === ' ' ||
+        e.code === 'Space')
     ) {
-      if (e.nativeEvent.isComposing === false) {
-        submittagText(e);
+      if (!e.nativeEvent.isComposing) {
+        const tagAddRegex = /^[가-힣a-zA-Z0-9]+$/; // 한글, 영문, 숫자만 허용
+        const trimmedTag = e.target.value.trim().replace(tagRegex, '');
+        if (tagList.length < 30 && tagAddRegex.test(trimmedTag)) {
+          submittagText(trimmedTag);
+        } else if (tagList.length >= 30) {
+          alert('태그는 30개까지만 등록 가능합니다.');
+        } else if (!tagAddRegex.test(trimmedTag)) {
+          alert('태그에 특수문자를 포함할 수 없습니다.');
+          setTagText('');
+        }
       }
     }
+  };
+
+  const handleTagTextChange = e => {
+    const value = e.target.value.replace(tagRegex, '');
+    setTagText(value);
   };
 
   const onKeyEnter = e => {
@@ -86,6 +93,10 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
 
   const textFieldStyle = {
     bgcolor: 'var(--sub-color)',
+    margin: '10px 0px',
+    '& .Mui-focused.MuiAutocomplete-input': {
+      color: 'blue',
+    },
     '& .MuiInputLabel-root': {
       color: 'var(--text-color)',
     },
@@ -100,12 +111,22 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
     '& .MuiInputBase-root': {
       color: 'var(--text-color)',
     },
-    '& .MuiInputBase-input': { width: '82%' },
+    '& .MuiInputBase-input': {
+      width: '82%',
+      borderColor: 'var(--border-color)',
+    },
+    '& .MuiFormHelperText-root': {
+      bgcolor: 'var(--background-color)',
+      m: 0,
+      p: '1px 10px',
+      position: 'absolute',
+      top: '56px',
+    },
   };
 
   const typographyTitleStyle = {
     position: 'absolute',
-    top: 23,
+    top: 24,
     right: 5,
     color: 'var(--text-color)',
     padding: '4px',
@@ -114,7 +135,7 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
 
   const typographyTagStyle = {
     position: 'absolute',
-    top: 90,
+    top: 100,
     right: 5,
     color: 'var(--text-color)',
     padding: '4px',
@@ -129,23 +150,42 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
           data: { title, tags: tagList },
         })
       );
+    }
+  };
+  const tagRegex = /[\s!@#$%^&*()_+\-={}\[\]|\\:;"'<>,.?/]/gi;
+
+  const handleError = event => {
+    const response = JSON.parse(event.data);
+    if (response.type === 'ERROR') {
+      console.log(response);
+      setErrorMessage(
+        '같은 이름의 채팅방이 존재 합니다. 다른 이름을 사용해주세요'
+      );
+      setTitle('');
+    } else {
       setOpen(false);
       setTitle('');
       setTagText('');
       setTagList([]);
-      fetchRooms(); // 방을 생성할 때도 방 목록 갱신
+      // fetchRooms(); // 방을 생성할 때도 방 목록 갱신
     }
   };
 
-  const handleRoomList = event => {
-    try {
-      const response = JSON.parse(event.data);
-      const roomId = response?.data?.result;
-      console.log(roomId);
-      setRoomData(roomId);
-    } catch (error) {
-      setRoomData(0);
-      console.log('response data is none.');
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.addEventListener('message', handleError);
+
+    return () => {
+      socket.removeEventListener('message', handleError);
+    };
+  }, [socket]);
+
+  const handleMessageChange = e => {
+    setTitle(e.target.value);
+    console.log(e.target.value);
+    if (errorMessage) {
+      setErrorMessage('');
     }
   };
 
@@ -165,8 +205,10 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
             fullWidth
             rows={6}
             value={title}
-            onChange={e => setTitle(e.target.value)}
+            onChange={handleMessageChange}
             sx={textFieldStyle}
+            error={errorMessage ? true : false}
+            helperText={errorMessage}
             variant="outlined"
             InputProps={{
               inputProps: {
@@ -186,8 +228,8 @@ const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
             type="text"
             fullWidth
             rows={6}
-            value={tagText.replace(/\s/gi, '')}
-            onChange={e => setTagText(e.target.value)}
+            value={tagText}
+            onChange={handleTagTextChange}
             sx={textFieldStyle}
             variant="outlined"
             InputProps={{
