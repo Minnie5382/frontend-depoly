@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FollowCard from './FollowCard';
 import style from '../../UserInfoPage.module.css';
 import PaginationComponent from '../../../../components/pagination/PaginationComponent';
@@ -7,11 +7,16 @@ const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
   const [page, setPage] = useState(1);
 
   const itemsPerPage = 9;
-  const count = Math.ceil(data.length / itemsPerPage);
+  const totalItems = data.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const handleChange = (event, value) => {
+  const handleChange = (value) => {
     setPage(value);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [data]);
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -31,7 +36,6 @@ const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
             <FollowCard
               key={index}
               {...item}
-              data={data}
               followerRefetch={followerRefetch}
               followingsRefetch={followingsRefetch}
             />
@@ -40,9 +44,9 @@ const FollowList = ({ data, title, followerRefetch, followingsRefetch }) => {
           <p>{noDataMessage}</p>
         )}
       </div>
-      {count > 1 && (
+      {totalPages > 1 && (
         <PaginationComponent
-          count={count}
+          count={totalPages}
           page={page}
           onChange={handleChange}
         />
