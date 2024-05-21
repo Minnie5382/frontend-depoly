@@ -4,8 +4,11 @@ import MovieReview from '../../components/movieReview/MovieReview';
 import style from './MovieDetail.module.css';
 import { getReviewsByMovieId } from '../../utils/review';
 import { Link } from '@mui/material';
+import { useHorizontalScroll } from '../../utils/useSideScroll';
 
 const MovieReviewContainer = ({ movieId }) => {
+  const sliderRef = useHorizontalScroll();
+
   const { data, isLoading, isError, refetch } = useQuery(
     ['reviews', movieId],
     () => getReviewsByMovieId(movieId),
@@ -22,18 +25,8 @@ const MovieReviewContainer = ({ movieId }) => {
   const myReview = result.reviews.find((review) => review.isMyReview === true);
   const otherReviews = result.reviews.filter((review) => !review.isMyReview);
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const scrollContainer = document.querySelector('.reviewContainer');
-    scrollContainer.addEventListener('wheel', function (e) {
-      if (e.deltaY !== 0) {
-        e.preventDefault();
-        scrollContainer.scrollLeft += e.deltaY + e.deltaX;
-      }
-    });
-  });
-
   return (
-    <div className={style.reviewContainer}>
+    <div className={style.reviewContainer} ref={sliderRef}>
       {reviews.length === 0 ? (
         <div className={style.noReviews}>아직 작성된 평론이 없습니다!</div>
       ) : (
