@@ -8,54 +8,70 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import style from './ChattingListPage.module.css';
+import { useSocket } from '../../utils/socketContext';
+import { useNavigate } from 'react-router-dom';
 
-const ChatCreateModal = ({ isOpen, onClose }) => {
-  const [title, setTitle] = useState();
+const ChatCreateModal = ({ isOpen, setOpen, fetchRooms }) => {
+  const [title, setTitle] = useState('');
   const [tagText, setTagText] = useState('');
   const [tagList, setTagList] = useState([]);
   const firstRef = useRef(null);
   const secondRef = useRef(null);
+  const socket = useSocket();
+  const navigate = useNavigate();
+  const [roomData, setRoomData] = useState(0);
 
-  console.log(tagList);
+  const onClose = e => {
+    e.preventDefault();
+    setOpen(false);
+    setTitle('');
+    setTagText('');
+    setTagList([]);
+    fetchRooms(); // 모달이 닫힐 때 방 목록 갱신
+  };
 
-  const onKeyTag = (e) => {
-    if (e.target.value.length !== 0 && e.key === 'Enter') {
+  const onKeyTag = e => {
+    if (
+      (e.target.value.length !== 0 && e.key === 'Enter') ||
+      e.key === ' ' ||
+      e.key === 'Spacebar' ||
+      e.key === 32
+    ) {
       if (e.nativeEvent.isComposing === false) {
-        submittagText();
+        submittagText(e);
       }
     }
     if (
       e.target.value.length !== 0 &&
-      e.target.value !== ' ' &&
+      e.target.value === ' ' &&
       (e.key === ' ' || e.key === 'Spacebar' || e.key === 32)
     ) {
-      e.preventDefault();
       if (e.nativeEvent.isComposing === false) {
-        submittagText();
+        submittagText(e);
       }
     }
   };
 
-  const onKeyEnter = (e) => {
-    if (e.target.value.length !== 0 && e.key === 'Enter') {
-      if (e.target === firstRef.current) {
-        // 첫 번째 input에서 엔터를 눌렀을 때
-        secondRef.current.focus(); // 두 번째 input으로 focus
+  const onKeyEnter = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 동작 방지
+      if (e.target.value.length !== 0 && e.target === firstRef.current) {
+        e.preventDefault(); // 기본 동작 방지
+        secondRef.current.focus();
       }
     }
   };
+
   const submittagText = () => {
-    let updatedTagList = [...tagList];
-    updatedTagList.push(tagText);
-    setTagList(updatedTagList);
-    setTagText('');
+    if (tagText.trim() !== '') {
+      setTagList([...tagList, tagText.trim()]);
+      setTagText('');
+    }
   };
 
-  const deleteTagItem = (e) => {
+  const deleteTagItem = e => {
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
-    const filteredTagList = tagList.filter(
-      (tagText) => tagText !== deleteTagItem
-    );
+    const filteredTagList = tagList.filter(tag => tag !== deleteTagItem);
     setTagList(filteredTagList);
   };
 
@@ -105,19 +121,40 @@ const ChatCreateModal = ({ isOpen, onClose }) => {
     borderRadius: '4px',
   };
 
-  console.log(title);
-  console.log(tagText);
+  const createRoom = () => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          type: 'CREATE',
+          data: { title, tags: tagList },
+        })
+      );
+      setOpen(false);
+      setTitle('');
+      setTagText('');
+      setTagList([]);
+      fetchRooms(); // 방을 생성할 때도 방 목록 갱신
+    }
+  };
+
+  const handleRoomList = event => {
+    try {
+      const response = JSON.parse(event.data);
+      const roomId = response?.data?.result;
+      console.log(roomId);
+      setRoomData(roomId);
+    } catch (error) {
+      setRoomData(0);
+      console.log('response data is none.');
+    }
+  };
+
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      aria-labelledby="form-dialog-title"
-      sx={dialogStyle}
-    >
+    <Dialog open={isOpen} aria-labelledby="form-dialog-title" sx={dialogStyle}>
       <DialogTitle id="form-dialog-title" sx={{ color: 'var(--text-color)' }}>
         채팅방 생성하기
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: '0px 24px' }}>
         <Box sx={{ position: 'relative', width: '100%' }}>
           <TextField
             autoFocus
@@ -128,74 +165,59 @@ const ChatCreateModal = ({ isOpen, onClose }) => {
             fullWidth
             rows={6}
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             sx={textFieldStyle}
             variant="outlined"
             InputProps={{
               inputProps: {
                 maxLength: 50,
-                onKeyDown: onKeyEnter,
+                onKeyPress: onKeyEnter,
                 ref: firstRef,
               },
             }}
           />
-          {/* > */}
           <Typography variant="caption" sx={typographyTitleStyle}>
-            {/* {title.length} / 50 */}/ 50
+            {title.length} / 50
           </Typography>
-          {/* </TextField> */}
-          {/* =============================== 태 그 ===================================== */}
           <TextField
             margin="dense"
-            id="name"
+            id="tagText"
             label="태그"
             type="text"
             fullWidth
             rows={6}
             value={tagText.replace(/\s/gi, '')}
-            onChange={(e) => setTagText(e.target.value)}
+            onChange={e => setTagText(e.target.value)}
             sx={textFieldStyle}
             variant="outlined"
             InputProps={{
               inputProps: {
                 maxLength: 300,
-                onKeyDown: (e) => onKeyTag(e),
+                onKeyDown: onKeyTag,
                 ref: secondRef,
               },
             }}
-          >
-            <div className={style.tagBox}>
-              {tagList.map((tagText, index) => {
-                return (
-                  <div className={style.tagItem} key={index}>
-                    <span>가나다라{tagText}</span>
-                    <button
-                      className={style.tagDeleteBtn}
-                      onClick={deleteTagItem}
-                    >
-                      X
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </TextField>
+            placeholder="Enter를 치면 태그가 생성됩니다."
+          />
+          <div className={style.tagBox}>
+            {tagList.map((tag, index) => (
+              <div className={style.tagItem} key={index}>
+                <span>{tag}</span>
+                <button className={style.tagDeleteBtn} onClick={deleteTagItem}>
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
 
           <Typography variant="caption" sx={typographyTagStyle}>
-            {/* {tagList.length} / 30 */}/ 30
+            {tagList.length} / 30
           </Typography>
-          <div
-            className={style.tagInput}
-            type="text"
-            placeholder="Press enter to add tags"
-            onChange={(e) => setTagText(e.target.value)}
-            // value={tagText}
-            // onKeyDown={onKeyTag}
-          />
         </Box>
       </DialogContent>
       <DialogActions>
         <Button
+          type="button"
           onClick={onClose}
           color="primary"
           sx={{
@@ -209,7 +231,8 @@ const ChatCreateModal = ({ isOpen, onClose }) => {
           취소
         </Button>
         <Button
-          //   onClick={handleReviewSubmit}
+          type="button"
+          onClick={createRoom}
           color="primary"
           sx={{
             right: '18px',
@@ -224,4 +247,5 @@ const ChatCreateModal = ({ isOpen, onClose }) => {
     </Dialog>
   );
 };
+
 export default ChatCreateModal;
