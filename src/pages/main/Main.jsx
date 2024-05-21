@@ -40,9 +40,10 @@ const shuffleArray = (array) => {
   return array;
 };
 
+const shuffledGenres = shuffleArray([...genres]);
+
 const Main = () => {
   const [genreMovies, setGenreMovies] = useState([]);
-  const shuffledGenres = shuffleArray([...genres]);
 
   const fetchMoviesByGenre = async ({ pageParam = 0 }) => {
     const genre = shuffledGenres[pageParam];
