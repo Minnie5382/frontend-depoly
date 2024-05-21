@@ -27,8 +27,12 @@ const MainMovie = ({
         <></>
       ) : (
         <span className={style.stars}>
-          {levelAvgScore && <div>⭐️ {levelAvgScore}</div>}
-          {cinephileAvgScore && <div>⭐️ {cinephileAvgScore}</div>}
+          {levelAvgScore && levelAvgScore !== 0.0 && (
+            <div>⭐️ {levelAvgScore}</div>
+          )}
+          {cinephileAvgScore && cinephileAvgScore !== 0.0 && (
+            <div>⭐️ {cinephileAvgScore}</div>
+          )}
         </span>
       )}
       <div>{releaseDate}</div>
