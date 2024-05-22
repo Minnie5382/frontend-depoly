@@ -10,7 +10,6 @@ import HotReviewsPage from '../../pages/hotReviews/HotReviewsPage';
 import ChattingListPage from '../../pages/chatting/ChattingListPage';
 import UserInfoPage from '../../pages/userInfoPage/UserInfoPage';
 import ChattingRoomPage from '../../pages/chatting/chattingRoom/ChatRoom';
-import Test from '../Test';
 import { UserProvider } from '../../utils/UserContext';
 import PublicRoute from '../../utils/PublicRoute';
 import AuthCheck from '../../pages/authCheck/AuthCheck';
@@ -24,7 +23,7 @@ const Router = () => {
       <SocketProvider>
         <Routes>
           <Route
-            path="/"
+            path='/'
             element={
               <Layout>
                 <Main />
@@ -32,7 +31,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/signin"
+            path='/signin'
             element={
               <PublicRoute>
                 <SignIn />
@@ -40,7 +39,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/signup"
+            path='/signup'
             element={
               <PublicRoute>
                 <SignUp />
@@ -48,7 +47,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/search"
+            path='/search'
             element={
               <Layout>
                 <Search />
@@ -56,7 +55,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/movies/:movieId"
+            path='/movies/:movieId'
             element={
               <Layout>
                 <MovieDetail />
@@ -64,7 +63,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/movies/:movieId/reviews"
+            path='/movies/:movieId/reviews'
             element={
               <Layout>
                 <MovieReviews />
@@ -72,7 +71,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/hotReviews"
+            path='/hotReviews'
             element={
               <Layout>
                 <HotReviewsPage />
@@ -81,7 +80,7 @@ const Router = () => {
           />
 
           <Route
-            path="/userInfo/:userId"
+            path='/userInfo/:userId'
             element={
               <Layout>
                 <UserInfoPage />
@@ -89,7 +88,7 @@ const Router = () => {
             }
           />
           <Route
-            path="/chat"
+            path='/chat'
             element={
               <Layout>
                 <ChattingListPage />
@@ -97,16 +96,15 @@ const Router = () => {
             }
           />
           <Route
-            path="/chat/chatRoom/:roomId"
+            path='/chat/chatRoom/:roomId'
             element={
               <Layout>
                 <ChattingRoomPage />
               </Layout>
             }
           />
-          <Route path="/auth/check" element={<AuthCheck />} />
-          <Route path="/auth/deletedaccount" element={<DeletedAccount />} />
-          <Route path="/test" element={<Test />} />
+          <Route path='/auth/check' element={<AuthCheck />} />
+          <Route path='/auth/deletedaccount' element={<DeletedAccount />} />
         </Routes>
       </SocketProvider>
     </UserProvider>
