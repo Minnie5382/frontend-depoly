@@ -1,3 +1,12 @@
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active {
+  -webkit-text-fill-color: #fff;
+  box-shadow: 0 0 0px 1000px #33333300 inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 button {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -68,7 +77,9 @@ button {
   border: 1px solid var(--border-color2);
   border-radius: 5px;
 }
-
+.roomInerBox {
+  width: 93%;
+}
 .roomTitle {
   padding: 0;
   border: none;

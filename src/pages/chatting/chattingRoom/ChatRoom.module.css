@@ -12,7 +12,7 @@
 }
 .chatTitleBox {
   margin: 0.5rem 0rem;
-  width: 99%;
+  width: 98%;
   padding: 0rem 0.5rem;
   display: flex;
   /* align-items: center; */
@@ -42,6 +42,7 @@
   flex-direction: column;
   max-width: 70%;
 }
+
 .close {
   position: absolute;
   left: 40%;
@@ -90,12 +91,13 @@
 }
 .chatBoxInner {
   height: 65vh;
-  padding: 0.5rem;
+  padding: 8px 0px;
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
-  width: 99%;
+  width: 101%;
 }
+
 /* 서버 메시지 */
 .serverMessageBox {
   width: 100%;
@@ -111,40 +113,51 @@
 /* 다른 사람 메시지 */
 .othersChatBox {
   width: 100%;
-  float: left;
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0px;
 }
-.othersChatBox > label {
-  margin: 0.2rem 0.5rem;
+.othersChatNickname {
+  margin: 3px;
   font-size: small;
 }
-
+.othersChatInerBox {
+  display: flex;
+  align-items: flex-end;
+}
 .othersChat {
   padding: 0.5rem;
+  margin-right: 5px;
   border: 1px solid var(--border-color2);
   border-radius: 10px;
   width: fit-content;
   background-color: var(--other-user-chat-color);
 }
+.othersChatTimeStamp {
+  font-size: small;
+}
 
 /* 내 메시지 */
 .myChatBox {
   width: 100%;
-  float: right;
-}
-.myChatBox > label {
-  margin: 0.2rem 0.5rem;
-  font-size: small;
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 10px 0px;
 }
 
 .myChat {
-  margin: 0.5rem 0rem;
-  float: right;
-  right: 0;
+  margin: 0px 5px;
   padding: 0.5rem;
   border: 1px solid var(--border-color2);
   width: fit-content;
   border-radius: 10px;
   background-color: var(--border-color2);
+}
+
+.myChatTimeStamp {
+  font-size: small;
+  display: flex;
+  align-items: flex-end;
 }
 
 /* 채팅 치는 input */

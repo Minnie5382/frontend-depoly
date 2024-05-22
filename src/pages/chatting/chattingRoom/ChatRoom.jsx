@@ -29,111 +29,43 @@ const ChattingRoomPage = () => {
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
   const chatBoxRef = useRef(null);
-
-  console.log('location.state', location.state);
-  const onClose = location.state;
-  //location.state === 'close'
+  const [userReportId, setUserReportId] = useState('');
+  const isOpenClose = location.state;
 
   useEffect(() => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      const messageType = isOpenClose ? 'JOIN' : 'READ';
+      socket.send(JSON.stringify({ type: messageType, data: params.roomId }));
+    } else {
+      alert('WebSocket is not connected.');
+    }
+
     const handleMessage = event => {
       const response = JSON.parse(event.data);
-      //response.type === "READ" 종료된 채팅방입니다 글씨 띄워줌 인풋없애기
-      if (response.type === 'JOIN' || response.type === 'READ') {
-        const chatLogs = response?.data?.chatLogDTOList || [];
-        const newMessages = chatLogs.map(log => ({
-          nickname: log.nickname,
-          content: log.content,
-          timeStamp: log.timestamp?.slice(11, 16),
-        }));
-        setMessages(newMessages);
-        console.log('채팅이 연결되고 이전 채팅 데이터 출력', chatLogs);
-
-        const roomInfo = response.data?.chatroomBriefDTO || [];
-        setChatRoomInfo({
-          title: roomInfo.title,
-          tags: roomInfo.tags,
-          closed: `${roomInfo.closedAt?.slice(
-            0,
-            10
-          )} ${roomInfo.closedAt?.slice(11, 16)}`,
-        });
-        console.log('방 이름, 태그, ', roomInfo);
-
-        const userList = response?.data?.joinedChatUserDTOList || [];
-        const newUsers = userList.map(user => ({
-          nickname: user.nickname,
-          level: user.level,
-          userId: user.userId,
-          isBad: user.isBad,
-          isCertified: user.isCertified,
-        }));
-        setUserListData(newUsers);
-        console.log('유저 리스트', userList);
-        if (response.type === 'READ') {
-        }
-      }
-      // else if (response.type === 'READ') {
-      //   console.log('종료된 채팅방 ',response?.data);
-      // }
-      else if (response.type === 'SEND') {
-        console.log('채팅이 실시간으로 오는 영역', response.data);
-        const newMessage = {
-          nickname: response.data.nickname,
-          content: response.data.content,
-          timeStamp: response.data.timestamp.slice(11, 16),
-        };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-        scrollToBottom();
-      } else if (response.type === 'COME') {
-        console.log('서버 알림 입장', response.data);
-        const newData = response.data;
-        const newMessage = {
-          nickname: '[SERVER]',
-          content: `[notice] : ${newData.nickname} 님이 입장하셨습니다.`,
-          timeStamp: new Date().toTimeString().slice(0, 5),
-        };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-        //유저가 새로들어오면 리스트에 추가
-        const newUsers = {
-          nickname: newData.nickname,
-          level: newData.level,
-          userId: newData.userId,
-          isBad: newData.isBad,
-          isCertified: newData.isCertified,
-        };
-        setUserListData(prev => [...prev, newUsers]);
-
-        scrollToBottom();
-      } else if (response.type === 'LEAVE') {
-        console.log('서버 알림 퇴장', response.data);
-        const newMessage = {
-          nickname: '[SERVER]',
-          content: `[notice] : ${response.data} 님이 퇴장하셨습니다.`,
-          timeStamp: new Date().toTimeString().slice(0, 5),
-        };
-        setMessages(prevMessages => [...prevMessages, newMessage]);
-
-        const targetName = response.data;
-        setUserListData(prevUserList =>
-          prevUserList.filter(user => user.nickname !== targetName)
-        );
-        scrollToBottom();
-      } else if (response.type === 'QUIT') {
-        window.location.reload();
-        console.log(response.data);
-      } else if (response.type === 'ERROR' && response.code === 403) {
-        const isConfirmed = window.confirm(
-          '로그인이 되어있지 않습니다. 로그인 하시겠습니까?'
-        );
-        console.log('룸에러', response.code);
-        if (isConfirmed) {
-          navigate('/signin');
-        } else {
-          navigate('/');
-        }
+      switch (response.type) {
+        case 'JOIN':
+        case 'READ':
+          handleJoinReadMessage(response);
+          break;
+        case 'SEND':
+          handleSendMessage(response);
+          break;
+        case 'COME':
+          handleUserJoinMessage(response);
+          break;
+        case 'LEAVE':
+          handleUserLeaveMessage(response);
+          break;
+        case 'QUIT':
+          handleQuitMessage(response);
+          break;
+        case 'ERROR':
+          handleError(response);
+          break;
+        default:
+          break;
       }
     };
-
     if (socket) {
       socket.addEventListener('message', handleMessage);
     }
@@ -143,9 +75,99 @@ const ChattingRoomPage = () => {
         socket.removeEventListener('message', handleMessage);
       }
     };
-  }, [socket, messages]);
+  }, [socket, isOpenClose]);
 
-  console.log('messages', messages);
+  const handleJoinReadMessage = response => {
+    const chatLogs = response?.data?.chatLogDTOList || [];
+    const newMessages = chatLogs.map(log => ({
+      nickname: log.nickname,
+      content: log.content,
+      timeStamp: log.timestamp?.slice(11, 16),
+    }));
+    setMessages(newMessages);
+    console.log('채팅이 연결되고 이전 채팅 데이터 출력', chatLogs);
+
+    const roomInfo = response.data?.chatroomBriefDTO || [];
+    setChatRoomInfo({
+      title: roomInfo.title,
+      tags: roomInfo.tags,
+      closed: `${roomInfo.closedAt?.slice(0, 10)} ${roomInfo.closedAt?.slice(
+        11,
+        16
+      )}`,
+    });
+    console.log('방 이름, 태그, ', roomInfo);
+
+    const userList = response?.data?.joinedChatUserDTOList || [];
+    const newUsers = userList.map(user => ({
+      nickname: user.nickname,
+      level: user.level,
+      userId: user.userId,
+      isBad: user.isBad,
+      isCertified: user.isCertified,
+    }));
+    setUserListData(newUsers);
+    console.log('유저 리스트', userList);
+  };
+
+  const handleSendMessage = response => {
+    console.log('채팅이 실시간으로 오는 영역', response.data);
+    const newMessage = {
+      nickname: response.data.nickname,
+      content: response.data.content,
+      timeStamp: response.data.timestamp.slice(11, 16),
+    };
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    scrollToBottom();
+  };
+
+  const handleUserJoinMessage = response => {
+    console.log('서버 알림 입장', response.data);
+    const newData = response.data;
+    const newMessage = {
+      nickname: '[SERVER]',
+      content: `[notice] : ${newData.nickname} 님이 입장하셨습니다.`,
+      timeStamp: new Date().toTimeString().slice(0, 5),
+    };
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    //유저가 새로들어오면 리스트에 추가
+    const newUsers = {
+      nickname: newData.nickname,
+      level: newData.level,
+      userId: newData.userId,
+      isBad: newData.isBad,
+      isCertified: newData.isCertified,
+    };
+    setUserListData(prev => [...prev, newUsers]);
+  };
+
+  const handleUserLeaveMessage = response => {
+    console.log('서버 알림 퇴장', response.data);
+    const newMessage = {
+      nickname: '[SERVER]',
+      content: `[notice] : ${response.data} 님이 퇴장하셨습니다.`,
+      timeStamp: new Date().toTimeString().slice(0, 5),
+    };
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    const targetName = response.data;
+    setUserListData(prevUserList =>
+      prevUserList.filter(user => user.nickname !== targetName)
+    );
+    scrollToBottom();
+  };
+
+  const handleQuitMessage = response => {
+    console.log(response.data);
+    // window.location.reload();
+  };
+
+  const handleError = response => {
+    if (response.data.message === '퇴장 상태가 아닙니다.') {
+      roomExit();
+    } else {
+      console.log('룸에러', response.code);
+    }
+  };
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -164,10 +186,8 @@ const ChattingRoomPage = () => {
   useEffect(() => {
     const handleBeforeUnload = event => {
       event.preventDefault();
-      // 경고 메시지를 표시 (일부 브라우저에서는 이 설정이 필요할 수 있습니다)
       event.returnValue = '';
       alert('세션이 끊겼습니다.');
-      // 여기서 특정 페이지로 이동
       window.location.href = '/chat';
     };
 
@@ -206,13 +226,17 @@ const ChattingRoomPage = () => {
     setAnchorEl(null);
   };
 
-  const returnChatList = () => {
+  const roomExit = () => {
     socket.send(
       JSON.stringify({
         type: 'EXIT',
         data: params.roomId,
       })
     );
+  };
+
+  const returnChatList = () => {
+    roomExit();
     navigate('/chat');
   };
 
@@ -233,7 +257,7 @@ const ChattingRoomPage = () => {
         <div className={style.chatTitleBox}>
           <div className={style.chatTitle}>
             <span className={style.title}>{chatRoomInfo.title}</span>
-            {userListData.length === 0 ? (
+            {!isOpenClose ? (
               <span className={style.close}>종료된 채팅방입니다.</span>
             ) : (
               <></>
@@ -282,12 +306,22 @@ const ChattingRoomPage = () => {
                   </div>
                 ) : data.nickname !== user.result.nickname ? (
                   <div className={style.othersChatBox} key={idx}>
-                    <label>{data.nickname}</label>
-                    <div className={style.othersChat}>{data.content}</div>
+                    <span className={style.othersChatNickname}>
+                      {data.nickname}
+                    </span>
+                    <div className={style.othersChatInerBox}>
+                      <div className={style.othersChat}>{data.content}</div>
+                      <span className={style.othersChatTimeStamp}>
+                        {data.timeStamp}
+                      </span>
+                    </div>
                   </div>
                 ) : (
                   <div className={style.myChatBox} key={idx}>
                     <div className={style.myChat}>{data.content}</div>
+                    <span className={style.myChatTimeStamp}>
+                      {data.timeStamp}
+                    </span>
                   </div>
                 )
               )
@@ -314,7 +348,12 @@ const ChattingRoomPage = () => {
           )}
         </div>
       </div>
-      <ChatReportModal isOpen={open} onClose={closeModal} />
+      <ChatReportModal
+        isOpen={open}
+        onClose={closeModal}
+        userListData={userListData}
+        userReportId={userReportId}
+      />
       <Backdrop
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.Popper + 1 }}
         open={listOpen}
@@ -343,6 +382,8 @@ const ChattingRoomPage = () => {
             <ChatParticipantList
               setOpen={setOpen}
               userListData={userListData}
+              roomExit={roomExit}
+              setUserReportId={setUserReportId}
             />
           </Box>
         </Popper>

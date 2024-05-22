@@ -9,15 +9,25 @@ import style from './chattingRoom/ChatRoom.module.css';
 import { ListItemIcon } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const ChatParticipantList = ({ setOpen, userListData }) => {
+const ChatParticipantList = ({
+  setOpen,
+  userListData,
+  roomExit,
+  setUserReportId,
+}) => {
   const navigate = useNavigate();
-  console.log(userListData);
+
   const Demo = styled('div')({
     color: '#fff',
   });
 
-  const openModal = () => {
+  const openModal = userId => {
     setOpen(true);
+    setUserReportId(userId);
+  };
+  const userInfoClick = userId => {
+    roomExit();
+    navigate(`/userInfo/${userId}`);
   };
 
   return (
@@ -29,14 +39,17 @@ const ChatParticipantList = ({ setOpen, userListData }) => {
               key={info.userId}
               sx={{ pr: 14 }}
               secondaryAction={
-                <button className={style.reportBtn} onClick={openModal}>
+                <button
+                  className={style.reportBtn}
+                  onClick={() => openModal(info.userId)}
+                >
                   <img src={Report} />
                 </button>
               }
             >
               <ListItemText
                 sx={{ p: '4px', cursor: 'pointer' }}
-                onClick={() => navigate(`/userInfo/${info.userId}`)}
+                onClick={() => userInfoClick(info.userId)}
               >
                 Lv.{info.level} {info.nickname}
               </ListItemText>
@@ -54,20 +67,20 @@ const ChatParticipantList = ({ setOpen, userListData }) => {
               ) : (
                 <></>
               )}
-              {/* {info.isBad ? ( */}
-              <ListItemIcon
-                sx={{
-                  minWidth: '23px',
-                  color: 'unset',
-                  fontSize: 'larger',
-                  p: '1px',
-                }}
-              >
-                ☠️
-              </ListItemIcon>
-              {/* ) : (
+              {info.isBad ? (
+                <ListItemIcon
+                  sx={{
+                    minWidth: '23px',
+                    color: 'unset',
+                    fontSize: 'larger',
+                    p: '1px',
+                  }}
+                >
+                  ☠️
+                </ListItemIcon>
+              ) : (
                 <></>
-              )} */}
+              )}
             </ListItem>
           ))}
         </List>
