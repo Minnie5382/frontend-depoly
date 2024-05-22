@@ -22,7 +22,7 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
   useEffect(() => {
     if (userReportId) {
       const userToReport = userListData.find(
-        user => user.userId === userReportId
+        (user) => user.userId === userReportId
       );
       if (userToReport) {
         setUser(userToReport);
@@ -39,7 +39,7 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
     }
   };
 
-  const clickFileInput = e => {
+  const clickFileInput = (e) => {
     e.preventDefault();
     imgRef.current?.click();
   };
@@ -52,7 +52,7 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
       padding: '20px',
     },
   };
-  const deleteClick = e => {
+  const deleteClick = (e) => {
     e.preventDefault();
     if (imgRef.current.value !== '') {
       setReportImg('첨부파일');
@@ -69,12 +69,12 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
       setReportImg('첨부파일');
       onClose();
     },
-    onError: error => {
+    onError: (error) => {
       alert(`신고가 실패하였습니다. : ${error.message}`);
     },
   });
 
-  const reportUserGo = e => {
+  const reportUserGo = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -93,7 +93,6 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
     }
   };
 
-  console.log(userListData);
   const textFieldStyle = {
     // bgcolor: 'var(--sub-color)',
     '& .MuiInputLabel-root': {
@@ -119,7 +118,7 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
       color: 'var(--text-color)',
     },
   };
-  console.log(user);
+
   const typographyTagStyle = {
     position: 'absolute',
     bottom: 158,
@@ -131,27 +130,27 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose} sx={dialogStyle}>
-      <form onSubmit={reportUserGo} method="post" encType="multipart/form-data">
+      <form onSubmit={reportUserGo} method='post' encType='multipart/form-data'>
         <DialogTitle
-          id="form-dialog-title"
+          id='form-dialog-title'
           sx={{ m: 1, color: 'var(--text-color)' }}
         >
           신고하기
         </DialogTitle>
         <DialogContent sx={{ p: '5px 24px' }}>
-          <Box component="form" sx={{ m: 1 }} noValidate autoComplete="off">
+          <Box component='form' sx={{ m: 1 }} noValidate autoComplete='off'>
             <TextField
-              id="outlined-select-currency"
-              label="채팅 참여자 목록"
+              id='outlined-select-currency'
+              label='채팅 참여자 목록'
               select
               fullWidth
-              helperText="신고할 유저를 선택하세요"
+              helperText='신고할 유저를 선택하세요'
               sx={textFieldStyle}
-              variant="outlined"
+              variant='outlined'
               value={user}
-              onChange={e => setUser(e.target.value)}
+              onChange={(e) => setUser(e.target.value)}
             >
-              {userListData.map(option => (
+              {userListData.map((option) => (
                 <MenuItem
                   key={option.userId}
                   // onClick={handleClick}
@@ -164,18 +163,18 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
             </TextField>
 
             <TextField
-              margin="dense"
-              id="name"
-              label="신고 내용"
-              type="text"
+              margin='dense'
+              id='name'
+              label='신고 내용'
+              type='text'
               fullWidth
-              height="100px"
+              height='100px'
               rows={6}
               multiline
               value={reportContent}
-              onChange={e => setReportContent(e.target.value)}
+              onChange={(e) => setReportContent(e.target.value)}
               sx={textFieldStyle}
-              variant="outlined"
+              variant='outlined'
               InputProps={{
                 inputProps: {
                   maxLength: 300,
@@ -183,15 +182,15 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
               }}
             />
 
-            <Typography variant="caption" sx={typographyTagStyle}>
+            <Typography variant='caption' sx={typographyTagStyle}>
               {reportContent.length}/ 300
             </Typography>
             <Box sx={{ width: '100%', height: 60 }}>
               <input
                 className={style.imgInput}
-                type="file"
-                id="file"
-                accept="image/*"
+                type='file'
+                id='file'
+                accept='image/*'
                 onChange={handleFileChange}
                 ref={imgRef}
                 hidden
@@ -218,7 +217,7 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
         <DialogActions sx={{ m: '0px 25px', justifyContent: 'space-between' }}>
           <Button
             onClick={onClose}
-            color="primary"
+            color='primary'
             sx={{
               // right: '290px',
               bgcolor: 'var(--sub-color)',
@@ -230,8 +229,8 @@ const ChatReportModal = ({ isOpen, onClose, userListData, userReportId }) => {
             취소
           </Button>
           <Button
-            type="submit"
-            color="primary"
+            type='submit'
+            color='primary'
             sx={{
               bgcolor: 'primary.main',
               color: 'var(--text-color)',

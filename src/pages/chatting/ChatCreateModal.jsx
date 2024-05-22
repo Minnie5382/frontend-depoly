@@ -21,7 +21,7 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const onClose = e => {
+  const onClose = (e) => {
     e.preventDefault();
     setOpen(false);
     setTitle('');
@@ -29,9 +29,8 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
     setTagList([]);
     setErrorMessage('');
   };
-  console.log(tagText);
 
-  const onKeyTag = e => {
+  const onKeyTag = (e) => {
     if (
       e.target.value.length !== 0 &&
       (e.key === 'Enter' ||
@@ -54,12 +53,12 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
     }
   };
 
-  const handleTagTextChange = e => {
+  const handleTagTextChange = (e) => {
     const value = e.target.value.replace(tagRegex, '');
     setTagText(value);
   };
 
-  const onKeyEnter = e => {
+  const onKeyEnter = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // 기본 동작 방지
       if (e.target.value.length !== 0 && e.target === firstRef.current) {
@@ -76,9 +75,9 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
     }
   };
 
-  const deleteTagItem = e => {
+  const deleteTagItem = (e) => {
     const deleteTagItem = e.target.parentElement.firstChild.innerText;
-    const filteredTagList = tagList.filter(tag => tag !== deleteTagItem);
+    const filteredTagList = tagList.filter((tag) => tag !== deleteTagItem);
     setTagList(filteredTagList);
   };
 
@@ -154,10 +153,9 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
   };
   const tagRegex = /[\s!@#$%^&*()_+\-={}\[\]|\\:;"'<>,.?/]/gi;
 
-  const handleError = event => {
+  const handleError = (event) => {
     const response = JSON.parse(event.data);
     if (response.type === 'ERROR') {
-      console.log(response);
       setErrorMessage(
         '같은 이름의 채팅방이 존재 합니다. 다른 이름을 사용해주세요'
       );
@@ -181,27 +179,26 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
     };
   }, [socket]);
 
-  const handleMessageChange = e => {
+  const handleMessageChange = (e) => {
     setTitle(e.target.value);
-    console.log(e.target.value);
     if (errorMessage) {
       setErrorMessage('');
     }
   };
 
   return (
-    <Dialog open={isOpen} aria-labelledby="form-dialog-title" sx={dialogStyle}>
-      <DialogTitle id="form-dialog-title" sx={{ color: 'var(--text-color)' }}>
+    <Dialog open={isOpen} aria-labelledby='form-dialog-title' sx={dialogStyle}>
+      <DialogTitle id='form-dialog-title' sx={{ color: 'var(--text-color)' }}>
         채팅방 생성하기
       </DialogTitle>
       <DialogContent sx={{ p: '0px 24px' }}>
         <Box sx={{ position: 'relative', width: '100%' }}>
           <TextField
             autoFocus
-            margin="dense"
-            id="name"
-            label="제목"
-            type="text"
+            margin='dense'
+            id='name'
+            label='제목'
+            type='text'
             fullWidth
             rows={6}
             value={title}
@@ -209,7 +206,7 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
             sx={textFieldStyle}
             error={errorMessage ? true : false}
             helperText={errorMessage}
-            variant="outlined"
+            variant='outlined'
             InputProps={{
               inputProps: {
                 maxLength: 50,
@@ -218,20 +215,20 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
               },
             }}
           />
-          <Typography variant="caption" sx={typographyTitleStyle}>
+          <Typography variant='caption' sx={typographyTitleStyle}>
             {title.length} / 50
           </Typography>
           <TextField
-            margin="dense"
-            id="tagText"
-            label="태그"
-            type="text"
+            margin='dense'
+            id='tagText'
+            label='태그'
+            type='text'
             fullWidth
             rows={6}
             value={tagText}
             onChange={handleTagTextChange}
             sx={textFieldStyle}
-            variant="outlined"
+            variant='outlined'
             InputProps={{
               inputProps: {
                 maxLength: 300,
@@ -239,7 +236,7 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
                 ref: secondRef,
               },
             }}
-            placeholder="Enter를 치면 태그가 생성됩니다."
+            placeholder='Enter를 치면 태그가 생성됩니다.'
           />
           <div className={style.tagBox}>
             {tagList.map((tag, index) => (
@@ -252,16 +249,16 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
             ))}
           </div>
 
-          <Typography variant="caption" sx={typographyTagStyle}>
+          <Typography variant='caption' sx={typographyTagStyle}>
             {tagList.length} / 30
           </Typography>
         </Box>
       </DialogContent>
       <DialogActions>
         <Button
-          type="button"
+          type='button'
           onClick={onClose}
-          color="primary"
+          color='primary'
           sx={{
             right: '290px',
             bgcolor: 'var(--sub-color)',
@@ -273,9 +270,9 @@ const ChatCreateModal = ({ isOpen, setOpen }) => {
           취소
         </Button>
         <Button
-          type="button"
+          type='button'
           onClick={createRoom}
-          color="primary"
+          color='primary'
           sx={{
             right: '18px',
             bgcolor: 'primary.main',
