@@ -12,8 +12,6 @@ export const SocketProvider = ({ children }) => {
   const location = useLocation();
   const userId = user?.result?.userId;
 
-  console.log(location.pathname);
-
   const confirmAlert = () => {
     const isConfirmed = window.confirm(
       '로그인이 되어있지 않습니다. 로그인 하시겠습니까?'
@@ -38,26 +36,21 @@ export const SocketProvider = ({ children }) => {
           `${process.env.REACT_APP_API_WEBSOCKET_URL}${userId}`
         );
 
-        ws.onopen = () => {
-          console.log('Connected to WebSocket');
-        };
+        ws.onopen = () => {};
 
-        ws.onmessage = event => {
-          console.log('Message from WebSocket:', event.data);
+        ws.onmessage = (event) => {
           const response = JSON.parse(event.data);
           if (response.type === 'QUIT') {
             window.location.reload();
             // ws.onopen();
-            console.log('리로드!');
           }
         };
 
-        ws.onerror = error => {
+        ws.onerror = (error) => {
           console.error('WebSocket error:', error);
         };
 
         ws.onclose = () => {
-          console.log('WebSocket disconnected');
           setTimeout(connectWebSocket, 1000);
         };
         setSocket(ws);

@@ -40,7 +40,7 @@ const ChattingRoomPage = () => {
       alert('WebSocket is not connected.');
     }
 
-    const handleMessage = event => {
+    const handleMessage = (event) => {
       const response = JSON.parse(event.data);
       switch (response.type) {
         case 'JOIN':
@@ -77,15 +77,14 @@ const ChattingRoomPage = () => {
     };
   }, [socket, isOpenClose]);
 
-  const handleJoinReadMessage = response => {
+  const handleJoinReadMessage = (response) => {
     const chatLogs = response?.data?.chatLogDTOList || [];
-    const newMessages = chatLogs.map(log => ({
+    const newMessages = chatLogs.map((log) => ({
       nickname: log.nickname,
       content: log.content,
       timeStamp: log.timestamp?.slice(11, 16),
     }));
     setMessages(newMessages);
-    console.log('채팅이 연결되고 이전 채팅 데이터 출력', chatLogs);
 
     const roomInfo = response.data?.chatroomBriefDTO || [];
     setChatRoomInfo({
@@ -96,10 +95,9 @@ const ChattingRoomPage = () => {
         16
       )}`,
     });
-    console.log('방 이름, 태그, ', roomInfo);
 
     const userList = response?.data?.joinedChatUserDTOList || [];
-    const newUsers = userList.map(user => ({
+    const newUsers = userList.map((user) => ({
       nickname: user.nickname,
       level: user.level,
       userId: user.userId,
@@ -107,29 +105,26 @@ const ChattingRoomPage = () => {
       isCertified: user.isCertified,
     }));
     setUserListData(newUsers);
-    console.log('유저 리스트', userList);
   };
 
-  const handleSendMessage = response => {
-    console.log('채팅이 실시간으로 오는 영역', response.data);
+  const handleSendMessage = (response) => {
     const newMessage = {
       nickname: response.data.nickname,
       content: response.data.content,
       timeStamp: response.data.timestamp.slice(11, 16),
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     scrollToBottom();
   };
 
-  const handleUserJoinMessage = response => {
-    console.log('서버 알림 입장', response.data);
+  const handleUserJoinMessage = (response) => {
     const newData = response.data;
     const newMessage = {
       nickname: '[SERVER]',
       content: `[notice] : ${newData.nickname} 님이 입장하셨습니다.`,
       timeStamp: new Date().toTimeString().slice(0, 5),
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     //유저가 새로들어오면 리스트에 추가
     const newUsers = {
       nickname: newData.nickname,
@@ -138,34 +133,31 @@ const ChattingRoomPage = () => {
       isBad: newData.isBad,
       isCertified: newData.isCertified,
     };
-    setUserListData(prev => [...prev, newUsers]);
+    setUserListData((prev) => [...prev, newUsers]);
   };
 
-  const handleUserLeaveMessage = response => {
-    console.log('서버 알림 퇴장', response.data);
+  const handleUserLeaveMessage = (response) => {
     const newMessage = {
       nickname: '[SERVER]',
       content: `[notice] : ${response.data} 님이 퇴장하셨습니다.`,
       timeStamp: new Date().toTimeString().slice(0, 5),
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     const targetName = response.data;
-    setUserListData(prevUserList =>
-      prevUserList.filter(user => user.nickname !== targetName)
+    setUserListData((prevUserList) =>
+      prevUserList.filter((user) => user.nickname !== targetName)
     );
     scrollToBottom();
   };
 
-  const handleQuitMessage = response => {
-    console.log(response.data);
+  const handleQuitMessage = (response) => {
     // window.location.reload();
   };
 
-  const handleError = response => {
+  const handleError = (response) => {
     if (response.data.message === '퇴장 상태가 아닙니다.') {
       roomExit();
     } else {
-      console.log('룸에러', response.code);
     }
   };
 
@@ -184,7 +176,7 @@ const ChattingRoomPage = () => {
   };
 
   useEffect(() => {
-    const handleBeforeUnload = event => {
+    const handleBeforeUnload = (event) => {
       event.preventDefault();
       event.returnValue = '';
       alert('세션이 끊겼습니다.');
@@ -216,7 +208,7 @@ const ChattingRoomPage = () => {
     }
   };
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
@@ -240,7 +232,7 @@ const ChattingRoomPage = () => {
     navigate('/chat');
   };
 
-  const onKeyEnter = e => {
+  const onKeyEnter = (e) => {
     if (
       e.target.value.length !== 0 &&
       (e.key === 'Enter' || e.code === 'Enter')
@@ -264,7 +256,7 @@ const ChattingRoomPage = () => {
             )}
 
             <span className={style.tags}>
-              {chatRoomInfo?.tags?.map(tag => ' #' + tag)}
+              {chatRoomInfo?.tags?.map((tag) => ' #' + tag)}
             </span>
           </div>
           <div className={style.btnBox}>
@@ -333,10 +325,10 @@ const ChattingRoomPage = () => {
           {userListData.length !== 0 ? (
             <div className={style.chatInputBox}>
               <input
-                type="text"
+                type='text'
                 className={style.chatInput}
                 value={message}
-                onChange={e => setMessage(e.target.value)}
+                onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={onKeyEnter}
               />
               <button className={style.sandBtn} onClick={sendMessage}>
@@ -355,14 +347,14 @@ const ChattingRoomPage = () => {
         userReportId={userReportId}
       />
       <Backdrop
-        sx={{ color: '#fff', zIndex: theme => theme.zIndex.Popper + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.Popper + 1 }}
         open={listOpen}
         onClick={listClose}
       >
         <Popper
           open={listOpen}
           anchorEl={anchorEl}
-          placement="bottom-start"
+          placement='bottom-start'
           sx={{
             overflow: 'auto',
             height: 225,
