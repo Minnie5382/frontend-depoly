@@ -34,8 +34,8 @@ const MovieReview = ({
               <Link to={`/userInfo/${userId}`}>
                 Lv.{level} {nickname}
               </Link>
-              {isCertified && { isCertified }}
-              {isBad && { isBad }}
+              {isCertified && <span className={style.icon}>👑</span>}
+              {isBad && <span className={style.icon}>💀</span>}
             </div>
             <div className={style.time}>{createdAt}</div>
           </div>
